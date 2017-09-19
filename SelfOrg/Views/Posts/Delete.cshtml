@@ -1,0 +1,71 @@
+@model SelfOrg.Models.Post
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Post</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="PostID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.PostName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.content)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostDescr)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostDescr)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostSlug)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostSlug)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.CatDescr)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
