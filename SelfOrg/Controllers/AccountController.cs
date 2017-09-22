@@ -35,7 +35,12 @@ namespace SelfOrg.Controllers
 
         private readonly ApplicationDbContext _context;
 
-      
+        //public AccountController(ApplicationDbContext context, IHostingEnvironment appEnvironment)
+        //{
+        //    _context = context;
+        //    _appEnvironment = appEnvironment;
+        //}
+
 
         public AccountController(
             UserManager<User> userManager,
@@ -43,7 +48,9 @@ namespace SelfOrg.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context, 
+            IHostingEnvironment appEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,6 +58,8 @@ namespace SelfOrg.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         //
@@ -128,18 +137,20 @@ namespace SelfOrg.Controllers
                 if (model.displayedname != null) shownname = model.displayedname;
                 else shownname = model.UserName;
                 var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname };
-                if (model.Avatar != null)
-                {
-                    string path = "/Files/" + model.Avatar.FileName;
-                    // сохраняем файл в папку Files в каталоге wwwroot
-                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        await model.Avatar.CopyToAsync(fileStream);
-                    }
-                    Pic file = new Pic { Name = model.Avatar.FileName, Path = path };
-                    _context.Pics.Add(file);
-                    user.Avatar = file.Path;
-                }
+                //if (model.Avatar != null)
+                //{
+                //    string path = "/Files/" + model.Avatar.FileName;
+                //    // сохраняем файл в папку Files в каталоге wwwroot
+                //    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                //    {
+                //        await model.Avatar.CopyToAsync(fileStream);
+                //    }
+                //    Pic file = new Pic { Name = model.Avatar.FileName, Path = path };
+                //    _context.Pics.Add(file);
+                //    user.Avatar = file.Path;
+                //}
+                user.Avatar = "/Files/defaultpic.jpg";
+                user.RegDate = DateTime.Now;
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

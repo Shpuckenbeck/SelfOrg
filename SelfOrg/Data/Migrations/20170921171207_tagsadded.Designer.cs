@@ -8,9 +8,10 @@ using SelfOrg.Data;
 namespace SelfOrg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170921171207_tagsadded")]
+    partial class tagsadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -185,24 +186,6 @@ namespace SelfOrg.Data.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("SelfOrg.Models.PostTag", b =>
-                {
-                    b.Property<int>("PostTagId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("PostId");
-
-                    b.Property<int>("TagId");
-
-                    b.HasKey("PostTagId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
-                });
-
             modelBuilder.Entity("SelfOrg.Models.Tag", b =>
                 {
                     b.Property<int>("TagId")
@@ -329,19 +312,6 @@ namespace SelfOrg.Data.Migrations
                     b.HasOne("SelfOrg.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("SelfOrg.Models.PostTag", b =>
-                {
-                    b.HasOne("SelfOrg.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SelfOrg.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

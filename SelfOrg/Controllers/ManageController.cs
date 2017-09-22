@@ -10,26 +10,44 @@ using Microsoft.Extensions.Options;
 using SelfOrg.Models;
 using SelfOrg.Models.ManageViewModels;
 using SelfOrg.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Security.Claims;
+using System.Diagnostics;
+using SelfOrg.Data;
+
 
 namespace SelfOrg.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        IHostingEnvironment _appEnvironment;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly string _externalCookieScheme;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
-
+        //public ManageController(ApplicationDbContext context, IHostingEnvironment appEnvironment)
+        //{
+        //    _context = context;
+        //    _appEnvironment = appEnvironment;
+        //}
         public ManageController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          ApplicationDbContext context, 
+          IHostingEnvironment appEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,6 +55,8 @@ namespace SelfOrg.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         //
@@ -45,12 +65,13 @@ namespace SelfOrg.Controllers
         public async Task<IActionResult> Index(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Пароль обновлён"
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.Error ? "Возникла ошибка"
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.UpdateUserSuccess? "Данные обновлены"
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -69,6 +90,53 @@ namespace SelfOrg.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddAvatar(IFormFile uploadedFile)
+        {
+            if (uploadedFile != null)
+            {
+                // путь к папке Files
+                string path = "/Files/" + uploadedFile.FileName;
+                // сохраняем файл в папку Files в каталоге wwwroot
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await uploadedFile.CopyToAsync(fileStream);
+                }
+                Pic file = new Pic { Name = uploadedFile.FileName, Path = path};
+                _context.Pics.Add(file);
+                var user = await GetCurrentUserAsync();
+                user.Avatar = file.Path;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateUser()
+        {
+            var user = await GetCurrentUserAsync();
+            UpdateUserViewModel model = new UpdateUserViewModel();
+            model.Name = user.Name;
+            model.UserName = user.UserName;
+            model.Surname = user.Surname;
+            model.Email = user.Email;
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
+        {
+            var user = await GetCurrentUserAsync();
+
+            user.Email = model.Email;
+            user.Name = model.Name;
+            user.Surname = model.Surname;
+            user.UserName = model.UserName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.UpdateUserSuccess });
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
@@ -360,6 +428,7 @@ namespace SelfOrg.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            UpdateUserSuccess,
             Error
         }
 

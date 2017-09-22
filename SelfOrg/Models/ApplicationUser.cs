@@ -30,6 +30,9 @@ namespace SelfOrg.Models
         //[Required(ErrorMessage = "Выберите аватар")]
         [Display(Name = "Аватар")]
         public string Avatar { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Дата регистрации")]
+        public DateTime RegDate { get; set; }
     }
 
     public class Post
@@ -78,5 +81,23 @@ namespace SelfOrg.Models
         public int PicId { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
+    }
+
+    public class Tag
+    {
+        public int TagId { get; set; }
+        public string TagName { get; set; }
+        public string TagSlug { get; set; }
+       
+    }
+    public class PostTag
+    {
+        public int PostTagId { get; set; }
+
+        public int PostId { get; set; }
+        public Post Post { get; set; }
+
+        public int TagId { get; set; }
+        public Tag Tag { get; set; }
     }
 }

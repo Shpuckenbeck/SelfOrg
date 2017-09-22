@@ -1,4 +1,4 @@
-@model IEnumerable<SelfOrg.Models.Post>
+@model IEnumerable<SelfOrg.Models.PostTag>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,23 +13,23 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.PostName)
+                    @Html.DisplayNameFor(model => model.Post.PostName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.content)
+                    @Html.DisplayNameFor(model => model.Post.content)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PostDescr)
+                    @Html.DisplayNameFor(model => model.Post.PostDescr)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PostDate)
+                    @Html.DisplayNameFor(model => model.Post.PostDate)
                 </th>
                
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.Post.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.Post.User)
             </th>
             <th></th>
         </tr>
@@ -38,28 +38,28 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PostName)
+                @Html.DisplayFor(modelItem => item.Post.PostName)
             </td>
             <td>
-                @Html.Raw(@item.content)
+                @Html.Raw(@item.Post.content)
             </td>
             <td>
-                @Html.Raw(@item.PostDescr)
+                @Html.Raw(@item.Post.PostDescr)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PostDate)
+                @Html.DisplayFor(modelItem => item.Post.PostDate)
             </td>
             <td>
-                <a asp-action="Sorting" asp-route-id="@item.Category.CategoryId">@item.Category.CatName</a>
+                <a asp-action="Sorting" asp-route-id="@item.Post.Category.CategoryId">@item.Post.Category.CatName</a>
                 
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.displayedname)
+                @Html.DisplayFor(modelItem => item.Post.User.displayedname)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PostID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PostID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PostID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Post.PostID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Post.PostID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Post.PostID">Delete</a>
             </td>
         </tr>
 }

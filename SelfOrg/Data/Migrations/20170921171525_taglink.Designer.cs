@@ -8,9 +8,10 @@ using SelfOrg.Data;
 namespace SelfOrg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170921171525_taglink")]
+    partial class taglink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -192,13 +193,15 @@ namespace SelfOrg.Data.Migrations
 
                     b.Property<int>("PostId");
 
-                    b.Property<int>("TagId");
+                    b.Property<string>("TagId");
+
+                    b.Property<int?>("TagId1");
 
                     b.HasKey("PostTagId");
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("TagId1");
 
                     b.ToTable("PostTags");
                 });
@@ -340,8 +343,7 @@ namespace SelfOrg.Data.Migrations
 
                     b.HasOne("SelfOrg.Models.Tag", "Tag")
                         .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TagId1");
                 });
         }
     }

@@ -48,7 +48,8 @@ namespace SelfOrg.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
+            //var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
+            var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -104,8 +105,47 @@ namespace SelfOrg.Controllers
                 var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
                 post.UserId = currentUserID;
                 post.PostDate = DateTime.Now;
-                    _context.Add(post);
-               
+                string postslug = Slugifier.Transliterate(post.PostName);
+                postslug = Slugifier.Slugify(postslug);
+                post.PostSlug = postslug;
+                String[] rawtags = model.Tags.Split(','); //входная строка тегов разбивается запятыми на отдельные теги
+                _context.Add(post); //пост добавлне, работаем с тегами
+                await _context.SaveChangesAsync();                
+                var addedpost = await _context.Posts.SingleOrDefaultAsync(m => m.PostSlug == postslug); //находим id нового поста
+                foreach (string separtag in rawtags) //добавление, если необходимо, тегов
+                {
+                    string tagname;
+                    if (separtag.Substring(0, 1) == " ") //Возможно, надо обрезать первый пробел. ПРОВЕРИТЬ
+                    {
+                        tagname = separtag.Substring(1, separtag.Length-1);
+                    }
+                    else tagname = separtag; //сохраняем имя тега
+                   string tagtoadd = Slugifier.Transliterate(tagname);
+                    tagtoadd = Slugifier.Slugify(tagtoadd); //подготовка слага
+                    var tag = await _context.Tags.SingleOrDefaultAsync(m => m.TagSlug == tagtoadd);
+                    int tagid;
+                    if (tag == null) //добавление тега
+                    {
+                        Tag added = new Tag();
+                        added.TagName = tagname;
+                        added.TagSlug = tagtoadd;
+                        _context.Tags.Add(added);
+                        await _context.SaveChangesAsync();
+                        var addedtag = await _context.Tags.SingleOrDefaultAsync(m => m.TagSlug == tagtoadd);
+                        tagid = addedtag.TagId;
+                    }
+                    else
+                    {
+                        tagid = tag.TagId;
+                    }
+                    PostTag link = new PostTag(); //добавление связи "тег-пост"
+                    link.PostId = addedpost.PostID;
+                    link.TagId = tagid;
+                    _context.PostTags.Add(link);
+                    await _context.SaveChangesAsync();
+
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

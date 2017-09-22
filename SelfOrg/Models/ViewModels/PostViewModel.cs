@@ -21,6 +21,11 @@ namespace SelfOrg.Models
             [Display(Name = "Категория")]
             public int Cat { get; set; }
 
-        
+
+        [Required(ErrorMessage = "Укажите теги")]
+        [Display(Name = "Теги")]
+        public string Tags { get; set; }
+
+
     }
 }

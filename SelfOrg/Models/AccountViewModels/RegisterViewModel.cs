@@ -34,8 +34,8 @@ namespace SelfOrg.Models.AccountViewModels
 
 
 
-        [Display(Name = "Аватар")]
-        public IFormFile Avatar { get; set; }
+        //[Display(Name = "Аватар")]
+        //public IFormFile Avatar { get; set; }
 
 
 
