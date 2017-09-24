@@ -31,11 +31,19 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post.User)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post.User)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+       @{ 
+           int lastitem = 0;
+       }
+@foreach (var item in Model)
+{if (item.PostId != lastitem) //И это, на самом деле, дикий костыль, чтобы избежать повторного отображения постов. Однажды НЕОБХОДИМО будет переписать. Но не сейчас, не сейчас. Однажды
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Post.PostName)
@@ -62,6 +70,9 @@
                 <a asp-action="Delete" asp-route-id="@item.Post.PostID">Delete</a>
             </td>
         </tr>
+        lastitem = item.PostId;
+    }
+
 }
     </tbody>
 </table>
