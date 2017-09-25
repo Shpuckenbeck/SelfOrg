@@ -42,7 +42,8 @@ namespace SelfOrg.Models
         [Required(ErrorMessage = "Введите название")]
         [Display(Name = "Название")]
         public string PostName { get; set; }
-        [Display(Name = "Содержимое")]
+        [Required(ErrorMessage = "Введите текст")]
+        [Display(Name = "Текст")]
         public string content { get; set; }
         [Required(ErrorMessage = "Введите описание")]
         [Display(Name = "Описание")]
@@ -62,6 +63,27 @@ namespace SelfOrg.Models
         public string UserId { get; set; }
         [Display(Name = "Автор")]
         public User User { get; set; }
+    }
+
+    public class Comment
+    {
+        public int CommentId { get; set; }
+        public string UserId { get; set; }
+        [Display(Name = "Автор")]
+        public User User { get; set; }
+        [Required(ErrorMessage = "Введите текст")]
+        [Display(Name = "Текст")]
+        public string Text { get; set; }
+        [Required(ErrorMessage = "Выберите дату")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Опубликовано")]
+        public DateTime CommentDate { get; set; }
+        [Required(ErrorMessage = "Укажите пост")]
+        [Display(Name = "Пост")]
+        public int PostId { get; set; }
+        public Post Post { get; set; }
+        public DateTime? LastModified { get; set; } //дата изменения
+        public int? ReplyTo { get; set; } //будет использоваться в дальнейшем для ответов на комментарии; указывает на id комментария, на который отвечают
     }
 
     public class Category

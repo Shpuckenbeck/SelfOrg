@@ -1,14 +1,12 @@
-@model IEnumerable<SelfOrg.Models.PostTag>
+п»ї@model IEnumerable<SelfOrg.Models.PostTag>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "РџРѕСЃС‚С‹";
 }
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -32,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.Post.User)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post.User)
+                РўРµРіРё
             </th>
             <th></th>
         </tr>
@@ -42,7 +40,7 @@
            int lastitem = 0;
        }
 @foreach (var item in Model)
-{if (item.PostId != lastitem) //И это, на самом деле, дикий костыль, чтобы избежать повторного отображения постов. Однажды НЕОБХОДИМО будет переписать. Но не сейчас, не сейчас. Однажды
+{if (item.PostId != lastitem) //Р СЌС‚Рѕ, РЅР° СЃР°РјРѕРј РґРµР»Рµ, РґРёРєРёР№ РєРѕСЃС‚С‹Р»СЊ, С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РїРѕРІС‚РѕСЂРЅРѕРіРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РїРѕСЃС‚РѕРІ. РћРґРЅР°Р¶РґС‹ РќР•РћР‘РҐРћР”РРњРћ Р±СѓРґРµС‚ РїРµСЂРµРїРёСЃР°С‚СЊ. РќРѕ РЅРµ СЃРµР№С‡Р°СЃ, РЅРµ СЃРµР№С‡Р°СЃ. РћРґРЅР°Р¶РґС‹
     {
         <tr>
             <td>
@@ -63,6 +61,19 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Post.User.displayedname)
+            </td>
+            <td>
+                @{ 
+                    foreach (var ex in Model)
+                    {
+                        if (ex.PostId == item.PostId)
+                        {
+                            Html.Display(ex.Tag.TagName);
+
+                        }
+
+                    }
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Post.PostID">Edit</a> |

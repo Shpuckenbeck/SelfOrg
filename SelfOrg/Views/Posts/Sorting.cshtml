@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SelfOrg.Models.Post>
 
 @{
-    ViewData["Title"] = "Поиск";
+    ViewData["Title"] = Model.Last().Category.CatName;
 }
 
 <h2>Категория</h2>
