@@ -9,6 +9,7 @@ using SelfOrg.Data;
 using SelfOrg.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using SelfOrg.Components;
 
 namespace SelfOrg.Controllers
 {

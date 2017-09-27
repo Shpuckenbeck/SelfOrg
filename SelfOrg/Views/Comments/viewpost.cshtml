@@ -43,7 +43,14 @@
         <dd>
             @Html.DisplayFor(model => model.post.PostDate)
         </dd>
+        <dt>
+            Теги
+        </dt>
+        <dd>
+            <p>@await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
+        </dd>
     </dl>
+    
     <hr />
 </div>
 <div>

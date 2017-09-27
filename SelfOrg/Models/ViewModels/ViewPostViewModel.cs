@@ -17,9 +17,11 @@ namespace SelfOrg.Models
         //public List<string> postcategory;
         //public List<string> username;
         //public List<string[]> tags;
-        public List<Post> posts;
-        public List<Category> categories;
-        public List<User> users;
+        //public List<Post> posts;
+        //public List<Category> categories;
+        //public List<User> users;
+        //public List<List<Tag>> tags;
+        public Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Post, User> stuff;
         public List<List<Tag>> tags;
 
     }

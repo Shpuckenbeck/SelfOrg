@@ -48,8 +48,8 @@ namespace SelfOrg.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            //var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
-            var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag);
+            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
+            //var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Post.PostTags).Include(p => p.Tag);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -143,6 +143,10 @@ namespace SelfOrg.Controllers
                     link.TagId = tagid;
                     _context.PostTags.Add(link);
                     await _context.SaveChangesAsync();
+                    //addedpost.PostTags.Add(link);
+                    //_context.Posts.Update(addedpost);
+                    //await _context.SaveChangesAsync();
+
 
                 }
 
