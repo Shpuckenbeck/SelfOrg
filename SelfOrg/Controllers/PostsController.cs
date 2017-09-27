@@ -59,6 +59,11 @@ namespace SelfOrg.Controllers
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id);
             return View(await applicationDbContext.ToListAsync());
         }
+        public async Task<IActionResult> tags(int id)
+        {
+            var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id);
+            return View(await applicationDbContext.ToListAsync());
+        }
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {

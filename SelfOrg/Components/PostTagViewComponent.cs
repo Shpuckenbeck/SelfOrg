@@ -11,7 +11,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 namespace SelfOrg.Components
 {
     public class PostTags : ViewComponent
@@ -24,16 +25,17 @@ namespace SelfOrg.Components
             _context = context;
         }
 
-        public string Invoke(int id)
+        public IViewComponentResult Invoke(int id)
         {
             var neededpt = _context.PostTags.Where(p => p.PostId == id).Include(p => p.Tag);
             string output = "";
             foreach (PostTag item in neededpt)
             {
-                output += item.Tag.TagName+", ";
+                output += "<a href = \"/Posts/tags/" + item.Tag.TagId+"\">"+item.Tag.TagName+" </a>";
             }
 
-            return output;
+            return new HtmlContentViewComponentResult(
+               new HtmlString(output));
         }
     }
 }

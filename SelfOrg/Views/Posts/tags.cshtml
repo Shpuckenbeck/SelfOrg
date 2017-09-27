@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SelfOrg.Models.PostTag>
+
+    @{
+        ViewData["Title"] = "Тест";
+    }
+
+   
+
+    <p>
+
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.PostName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.PostDescr)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.PostDate)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.User)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Post.PostName)
+                    </td>
+                    <td>
+                        @Html.Raw(@item.Post.content)
+                    </td>
+                    <td>
+                        @Html.Raw(@item.Post.PostDescr)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Post.PostDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Post.Category.CatName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Post.User.displayedname)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Post.PostID">Edit</a> |
+                        <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID">Подробно</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Post.PostID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
