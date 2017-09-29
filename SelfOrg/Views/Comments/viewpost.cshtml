@@ -70,20 +70,22 @@
 </form>
 </div>
 
-    
-        @foreach (Comment item in Model.comments)
-        {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.User.displayedname) написал
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CommentDate) :
-                    </td>
-                    @Html.Raw(@item.Text)
-                    </tr>
-        }
-    
+
+    @foreach (Comment item in Model.comments)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.displayedname) написал
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentDate) :
+            </td>
+            @Html.Raw(@item.Text)
+        </tr>
+    }
+
+
+
 
 
 @section Scripts {

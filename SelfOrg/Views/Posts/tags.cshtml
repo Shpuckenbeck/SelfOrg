@@ -16,9 +16,6 @@
                     @Html.DisplayNameFor(model => model.Post.PostName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Post.content)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Post.PostDescr)
                 </th>
                 <th>
@@ -40,9 +37,6 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Post.PostName)
-                    </td>
-                    <td>
-                        @Html.Raw(@item.Post.content)
                     </td>
                     <td>
                         @Html.Raw(@item.Post.PostDescr)
