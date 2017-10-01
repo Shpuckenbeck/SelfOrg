@@ -1,0 +1,39 @@
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = Model.User.displayedname;
+}
+
+<div>
+    <h4>Профиль @Model.User.displayedname</h4>
+    <dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.User.displayedname)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.displayedname)
+    </dd>
+    <dt>
+        Имя и фамилия
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.Name) @Html.DisplayFor(model => model.User.Surname)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User.Avatar)
+    </dt>
+    <dd>
+        <p><img style='width:90px; height:90px;' src="@Url.Content(Model.User.Avatar)"></p>
+    </dd>
+
+    <dt>Зарегистрирован</dt>
+    <dd>@Html.DisplayFor(model => model.User.RegDate)</dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User.rating)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.rating)
+    </dd>
+    </dl>
+</div>
+

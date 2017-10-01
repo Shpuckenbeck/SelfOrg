@@ -56,12 +56,12 @@ namespace SelfOrg.Controllers
        
         public async Task<IActionResult> Sorting(int id)
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id);
+            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id).OrderByDescending(p => p.PostDate);
             return View(await applicationDbContext.ToListAsync());
         }
         public async Task<IActionResult> tags(int id)
         {
-            var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id);
+            var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id).OrderByDescending(p => p.Post.PostDate);
             return View(await applicationDbContext.ToListAsync());
         }
         //public async Task<IActionResult> gettags(int id)
@@ -125,7 +125,7 @@ namespace SelfOrg.Controllers
                 foreach (string separtag in rawtags) //добавление, если необходимо, тегов
                 {
                     string tagname;
-                    if (separtag.Substring(0, 1) == " ") //Возможно, надо обрезать первый пробел. ПРОВЕРИТЬ
+                    if (separtag.Substring(0, 1) == " ") //Обрезает первый пробел
                     {
                         tagname = separtag.Substring(1, separtag.Length-1);
                     }

@@ -17,5 +17,6 @@ namespace SelfOrg.Models.ManageViewModels
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+        public User User { get; set; }
     }
 }
