@@ -63,6 +63,8 @@ namespace SelfOrg.Models
         public string UserId { get; set; }
         [Display(Name = "Автор")]
         public User User { get; set; }
+        [Display(Name = "Рейтинг")]
+        public float rating { get; set; }
 
         public virtual ICollection<PostTag> PostTags { get; set; }
     }

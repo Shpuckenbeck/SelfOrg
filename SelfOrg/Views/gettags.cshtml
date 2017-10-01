@@ -1,16 +1,14 @@
-п»ї@model IEnumerable<SelfOrg.Models.PostTag>
+@model IEnumerable<SelfOrg.Models.PostTag>
 
     @{
-        ViewData["Title"] = "РўРµСЃС‚";
+        ViewData["Title"] = "Тест";
     }
 
-   
+
 
     <p>
 
     </p>
-
-
     <table class="table">
         <thead>
             <tr>
@@ -54,7 +52,7 @@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Post.PostID">Edit</a> |
-                        <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID">РџРѕРґСЂРѕР±РЅРѕ</a> |
+                        <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID">Подробно</a> |
                         <a asp-action="Delete" asp-route-id="@item.Post.PostID">Delete</a>
                     </td>
                 </tr>

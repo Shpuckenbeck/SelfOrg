@@ -2,6 +2,9 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.1": {
+      "dropzone/4.2.0": {
+        "type": "package"
+      },
       "HtmlAgilityPack/1.5.5": {
         "type": "package",
         "dependencies": {
@@ -17,6 +20,9 @@
         "runtime": {
           "lib/netstandard1.6/HtmlAgilityPack.dll": {}
         }
+      },
+      "jQuery/1.8.0": {
+        "type": "package"
       },
       "Libuv/1.9.1": {
         "type": "package",
@@ -1612,6 +1618,12 @@
         },
         "runtime": {
           "lib/netstandard1.0/Microsoft.Extensions.WebEncoders.dll": {}
+        }
+      },
+      "Microsoft.jQuery.Unobtrusive.Ajax/3.2.3": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.8.0"
         }
       },
       "Microsoft.Net.Http.Headers/1.1.1": {
@@ -4293,6 +4305,23 @@
     }
   },
   "libraries": {
+    "dropzone/4.2.0": {
+      "sha512": "DPgbwxoCOH4QIpZYZ0CNU0sAjP15LnkYhANItOoEjPJdeSzN2omYVqvjM6sM7F1EH+Ul4w6Fz8V8rgsdhAmKFg==",
+      "type": "package",
+      "path": "dropzone/4.2.0",
+      "files": [
+        "content/Scripts/dropzone/basic.css",
+        "content/Scripts/dropzone/basic.min.css",
+        "content/Scripts/dropzone/dropzone-amd-module.js",
+        "content/Scripts/dropzone/dropzone-amd-module.min.js",
+        "content/Scripts/dropzone/dropzone.css",
+        "content/Scripts/dropzone/dropzone.js",
+        "content/Scripts/dropzone/dropzone.min.css",
+        "content/Scripts/dropzone/dropzone.min.js",
+        "dropzone.4.2.0.nupkg.sha512",
+        "dropzone.nuspec"
+      ]
+    },
     "HtmlAgilityPack/1.5.5": {
       "sha512": "hpFIMzdcovUVV1UCk1XpSrRUay5pwqCWiCubrUUqbQniVDOdjdbsTVV4+hQm83sWsrHivftM/0aLN02w1iQ2WQ==",
       "type": "package",
@@ -4327,6 +4356,22 @@
         "lib/uap10.0/HtmlAgilityPack.dll",
         "lib/uap10.0/HtmlAgilityPack.pdb",
         "lib/uap10.0/HtmlAgilityPack.pri"
+      ]
+    },
+    "jQuery/1.8.0": {
+      "sha512": "laDFQRJrIRHT0Z0GVYklMt3bE0iu0MZFJwHwg21kt3SHb7Bj8TdNiM3K+ZdK1DzB8ZxKy8z7NkJvwMas+dmHBw==",
+      "type": "package",
+      "path": "jquery/1.8.0",
+      "files": [
+        "Content/Scripts/jquery-1.8.0-vsdoc.js",
+        "Content/Scripts/jquery-1.8.0.js",
+        "Content/Scripts/jquery-1.8.0.min.js",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-1.8.0.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.1.8.0.nupkg.sha512",
+        "jquery.nuspec"
       ]
     },
     "Libuv/1.9.1": {
@@ -5656,6 +5701,17 @@
         "lib/netstandard1.0/Microsoft.Extensions.WebEncoders.xml",
         "microsoft.extensions.webencoders.1.1.1.nupkg.sha512",
         "microsoft.extensions.webencoders.nuspec"
+      ]
+    },
+    "Microsoft.jQuery.Unobtrusive.Ajax/3.2.3": {
+      "sha512": "bp8G1m66xaNE9RLm58qk7eXNDlH/yUBc/Dt8dMof/t0hBN3JpUQpPF7pavEVAauPCmcvM90pTrATG8nXbCi9yw==",
+      "type": "package",
+      "path": "microsoft.jquery.unobtrusive.ajax/3.2.3",
+      "files": [
+        "Content/Scripts/jquery.unobtrusive-ajax.js",
+        "Content/Scripts/jquery.unobtrusive-ajax.min.js",
+        "microsoft.jquery.unobtrusive.ajax.3.2.3.nupkg.sha512",
+        "microsoft.jquery.unobtrusive.ajax.nuspec"
       ]
     },
     "Microsoft.Net.Http.Headers/1.1.1": {
@@ -11085,6 +11141,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v1.1": [
+      "Dropzone >= 4.2.0",
       "HtmlAgilityPack >= 1.5.5",
       "Microsoft.ApplicationInsights.AspNetCore >= 2.0.0",
       "Microsoft.AspNetCore >= 1.1.1",
@@ -11101,7 +11158,8 @@
       "Microsoft.Extensions.Logging.Debug >= 1.1.1",
       "Microsoft.NETCore.App >= 1.1.1",
       "Microsoft.VisualStudio.Web.BrowserLink >= 1.1.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 1.1.0"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 1.1.0",
+      "Microsoft.jQuery.Unobtrusive.Ajax >= 3.2.3"
     ]
   },
   "packageFolders": {
@@ -11148,6 +11206,10 @@
             "target": "Package",
             "version": "1.1.0"
           },
+          "Microsoft.jQuery.Unobtrusive.Ajax": {
+            "target": "Package",
+            "version": "3.2.3"
+          },
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "suppressParent": "All",
             "target": "Package",
@@ -11183,6 +11245,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "1.1.1"
+          },
+          "Dropzone": {
+            "target": "Package",
+            "version": "4.2.0"
           },
           "Microsoft.AspNetCore.Mvc": {
             "target": "Package",

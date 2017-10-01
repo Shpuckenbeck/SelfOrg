@@ -1,95 +1,19 @@
-﻿@model SelfOrg.Models.CommentViewModel
-
-    @{
-        ViewData["Title"] = Model.post.PostName;
-    }
-
-  
-
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.post.PostName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.post.PostName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.post.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.post.User.displayedname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.post.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.post.Category.CatName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.post.content)
-        </dt>
-        <dd>
-            @Html.Raw(Model.post.content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.post.PostDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.post.PostDate)
-        </dd>
-        <dt>
-            Теги
-        </dt>
-        <dd>
-            <p>@await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
-        </dd>
-    </dl>
-    
-    <hr />
+﻿@model SelfOrg.Models.ReplyViewModel
+<form>
+<div class="form-group">
+    <div class="col-md-10">
+        <textarea asp-for="comment" ></textarea>
+    </div>
 </div>
-<div>
-<h4>Есть что добавить?</h4>
-<form asp-action="viewpost" asp-controller="Comments" method="post" enctype="multipart/form-data">
+<input type="hidden" asp-for="PostId" />
+<input type="hidden" name="CommentId" />
 
-    <div class="form-group">
-        <div class="col-md-10">
-            <textarea name="comment" ></textarea>
-        </div>
+<div class="form-group">
+    <div class="col-md-10">
+        <input type="submit" value="Ответ" />
     </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Оставить комментарий" />
-        </div>
-    </div>
+</div>
 </form>
-</div>
-
-<div>
-    @foreach (Comment item in Model.comments)
-    {
-
-        <div>
-        
-            
-                @Html.DisplayFor(modelItem => item.User.displayedname) написал
-            
-            
-                @Html.DisplayFor(modelItem => item.CommentDate) :
-            <br />
-            @Html.Raw(@item.Text)
-        
-        <input type="button" id="replybut" value="Ответить" onclick="replyto(@item.CommentId)" />
-            </div>
-        <div id="replydiv"></div>
-      
-    }
-    </div>
 
 @section Scripts {
     @{
@@ -153,25 +77,7 @@ tinymce.init({
                 content_css: '//www.tinymce.com/css/codepen.min.css'
 
             });</script>
-            <script>
-                var replyto = function (commentid) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Comments/reply",
-                        data: { CommentId: commentid },
-                        success: function (response)
-                        {
-                            $("#replydiv").html(response);
-                            $("#replydiv").modal(show);
-
-                        }
-
-
-
-                    })
-
-                }
-            </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
 

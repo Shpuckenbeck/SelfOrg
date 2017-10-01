@@ -58,7 +58,35 @@ namespace SelfOrg.Controllers
             model.comments = _context.Comments.Where(p => p.PostId == id);
             return View(model);
         }
+        [HttpGet]
+        public ActionResult reply (int CommentId)
+        {
+            ReplyViewModel model = new ReplyViewModel();
+            model.CommentId = CommentId;
+            Comment pls = _context.Comments.Where(p => p.CommentId == CommentId).SingleOrDefault();
+            model.PostId = pls.PostId;
+            return PartialView("reply", model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> reply (ReplyViewModel inmodel)
+        {
 
+            Comment newcom = new Comment();
+            ClaimsPrincipal currentUser = this.User;
+            newcom.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            newcom.PostId = inmodel.PostId;
+            newcom.Text = inmodel.comment;
+            newcom.CommentDate = DateTime.Now;
+            newcom.ReplyTo = inmodel.CommentId;
+            _context.Comments.Add(newcom);
+            await _context.SaveChangesAsync();
+            CommentViewModel model = new CommentViewModel();
+            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == inmodel.PostId);
+            model.post = post;
+            model.comments = _context.Comments.Where(p => p.PostId == inmodel.PostId);
+            return View(model);
+
+        }
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "8918ac3054d961857559bcf92749ccdb2663a4a5"
+    "signature": "253963ebe2809f1d4de9a0dfbd4cdda0b4ec284d"
   },
   "compilationOptions": {
     "defines": [
@@ -23,6 +23,7 @@
     ".NETCoreApp,Version=v1.1": {
       "selforg/1.0.0": {
         "dependencies": {
+          "dropzone": "4.2.0",
           "HtmlAgilityPack": "1.5.5",
           "Microsoft.ApplicationInsights.AspNetCore": "2.0.0",
           "Microsoft.AspNetCore": "1.1.1",
@@ -39,7 +40,8 @@
           "Microsoft.Extensions.Logging.Debug": "1.1.1",
           "Microsoft.NETCore.App": "1.1.1",
           "Microsoft.VisualStudio.Web.BrowserLink": "1.1.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.1.0"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.1.0",
+          "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"
         },
         "runtime": {
           "SelfOrg.dll": {}
@@ -48,6 +50,7 @@
           "SelfOrg.dll": {}
         }
       },
+      "dropzone/4.2.0": {},
       "htmlagilitypack/1.5.5": {
         "dependencies": {
           "NETStandard.Library": "1.6.1",
@@ -63,6 +66,7 @@
           "lib/netstandard1.6/HtmlAgilityPack.dll": {}
         }
       },
+      "jquery/1.8.0": {},
       "microsoft.applicationinsights/2.2.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
@@ -1381,6 +1385,11 @@
         },
         "compile": {
           "lib/netstandard1.0/Microsoft.Extensions.WebEncoders.dll": {}
+        }
+      },
+      "microsoft.jquery.unobtrusive.ajax/3.2.3": {
+        "dependencies": {
+          "jQuery": "1.8.0"
         }
       },
       "microsoft.net.http.headers/1.1.1": {
@@ -3609,12 +3618,26 @@
       "serviceable": false,
       "sha512": ""
     },
+    "dropzone/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DPgbwxoCOH4QIpZYZ0CNU0sAjP15LnkYhANItOoEjPJdeSzN2omYVqvjM6sM7F1EH+Ul4w6Fz8V8rgsdhAmKFg==",
+      "path": "dropzone/4.2.0",
+      "hashPath": "dropzone.4.2.0.nupkg.sha512"
+    },
     "htmlagilitypack/1.5.5": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-hpFIMzdcovUVV1UCk1XpSrRUay5pwqCWiCubrUUqbQniVDOdjdbsTVV4+hQm83sWsrHivftM/0aLN02w1iQ2WQ==",
       "path": "htmlagilitypack/1.5.5",
       "hashPath": "htmlagilitypack.1.5.5.nupkg.sha512"
+    },
+    "jquery/1.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-laDFQRJrIRHT0Z0GVYklMt3bE0iu0MZFJwHwg21kt3SHb7Bj8TdNiM3K+ZdK1DzB8ZxKy8z7NkJvwMas+dmHBw==",
+      "path": "jquery/1.8.0",
+      "hashPath": "jquery.1.8.0.nupkg.sha512"
     },
     "microsoft.applicationinsights/2.2.0": {
       "type": "package",
@@ -4252,6 +4275,13 @@
       "sha512": "sha512-orwMgiF/lf/Uwt1CGV3o8OnycVLXg7rCk+y1BlNgDARtoBnC5VE4xoRfh0WkX+QktGSigt3dEPAuDANfWtqlCg==",
       "path": "microsoft.extensions.webencoders/1.1.1",
       "hashPath": "microsoft.extensions.webencoders.1.1.1.nupkg.sha512"
+    },
+    "microsoft.jquery.unobtrusive.ajax/3.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bp8G1m66xaNE9RLm58qk7eXNDlH/yUBc/Dt8dMof/t0hBN3JpUQpPF7pavEVAauPCmcvM90pTrATG8nXbCi9yw==",
+      "path": "microsoft.jquery.unobtrusive.ajax/3.2.3",
+      "hashPath": "microsoft.jquery.unobtrusive.ajax.3.2.3.nupkg.sha512"
     },
     "microsoft.net.http.headers/1.1.1": {
       "type": "package",
