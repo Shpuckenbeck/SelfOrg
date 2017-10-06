@@ -74,19 +74,14 @@
     @foreach (Comment item in Model.comments)
     {
 
-        <div>
-        
-            
-                @Html.DisplayFor(modelItem => item.User.displayedname) написал
-            
-            
+        <div id="comment-@item.CommentId">     
+                @Html.DisplayFor(modelItem => item.User.displayedname) написал         
                 @Html.DisplayFor(modelItem => item.CommentDate) :
             <br />
-            @Html.Raw(@item.Text)
-        
+            @Html.Raw(@item.Text)        
         <input type="button" id="replybut" value="Ответить" onclick="replyto(@item.CommentId)" />
             </div>
-        <div id="replydiv"></div>
+        @*<div id="replydiv-@item.CommentId"></div>*@
       
     }
     </div>
@@ -154,24 +149,43 @@ tinymce.init({
 
             });</script>
             <script>
+
+
                 var replyto = function (commentid) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Comments/reply",
-                        data: { CommentId: commentid },
-                        success: function (response)
-                        {
-                            $("#replydiv").html(response);
-                            $("#replydiv").modal(show);
+                    var whatever = commentid;
+        var div = document.createElement('div');
 
-                        }
+        div.className = 'row';
+                div.innerHTML = '<textarea name="comment"/></textarea>\
+            <br />\
+        <input type="hidden" name="commentid" value='+ whatever +'>\
+         \
+        <input type="button" value="Ответ" >';
+                var name = "comment-" + whatever;
+                document.getElementById(name).appendChild(div);
 
 
-
-                    })
-
-                }
+    }
             </script>
+        //var output = new Object();
+        //output.CommentId = commentid;
+        //console.log(output.CommentId);
+        //$.ajax({
+        //    headers: {
+        //        'Accept': 'application/json',
+        //        'Content-Type': 'application/json'
+        //    },
+        //    type: "GET",
+        //    url: "/Comments/reply/",
+        //    data: JSON.stringify(output),
+        //    success: function (result)
+        //    {
+        //        $("#replydiv").html(response);
+        //        $("#replydiv").modal(show);
+        //    }
+        //})
+
+
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 

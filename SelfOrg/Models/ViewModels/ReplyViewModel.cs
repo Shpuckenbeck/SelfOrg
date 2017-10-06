@@ -12,4 +12,9 @@ namespace SelfOrg.Models
         public int PostId;
 
     }
+
+    public class ResultViewModel
+    {
+        public string CommentId;
+    }
 }

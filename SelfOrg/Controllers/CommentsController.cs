@@ -59,11 +59,11 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpGet]
-        public ActionResult reply (int CommentId)
+        public ActionResult reply ([FromBody] ResultViewModel input)
         {
             ReplyViewModel model = new ReplyViewModel();
-            model.CommentId = CommentId;
-            Comment pls = _context.Comments.Where(p => p.CommentId == CommentId).SingleOrDefault();
+            model.CommentId = Convert.ToInt32(input.CommentId);
+            Comment pls = _context.Comments.Where(p => p.CommentId == model.CommentId).SingleOrDefault();
             model.PostId = pls.PostId;
             return PartialView("reply", model);
         }
