@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using SelfOrg.Data;
+using SelfOrg.Models;
 
 namespace SelfOrg.Data.Migrations
 {
@@ -164,6 +165,24 @@ namespace SelfOrg.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("SelfOrg.Models.Criterion", b =>
+                {
+                    b.Property<int>("CriterionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("description")
+                        .IsRequired();
+
+                    b.Property<string>("name")
+                        .IsRequired();
+
+                    b.Property<int>("prio");
+
+                    b.HasKey("CriterionId");
+
+                    b.ToTable("Criteria");
                 });
 
             modelBuilder.Entity("SelfOrg.Models.Pic", b =>

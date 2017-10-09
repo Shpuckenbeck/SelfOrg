@@ -1,0 +1,63 @@
+﻿@model SelfOrg.Models.Criterion
+@using SelfOrg
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Criterion</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="description" class="form-control" />
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="prio" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="prio" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"><option selected="selected" value="">Выберите важность</option></select>
+                <span asp-validation-for="prio" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+        @*<input id="ex1" data-slider-id='ex1Slider'  type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14" />*@
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@*@section Scripts {
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+        <link rel="stylesheet" href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+        <script>
+            $('#ex1').slider({
+                formatter: function (value) {
+                    return 'Current value: ' + value;
+                }
+            });
+        </script>
+
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@

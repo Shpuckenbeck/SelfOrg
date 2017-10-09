@@ -7,7 +7,7 @@
   
 
 
-<div>
+<div id="headdiv">
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -23,7 +23,12 @@
         <dd>
             @Html.DisplayFor(model => model.post.User.displayedname)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.post.rating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.post.rating)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.post.Category)
         </dt>
@@ -50,9 +55,14 @@
             <p>@await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
         </dd>
     </dl>
-    
+    <a class="btn btn-primary" href="" id="showbut">Раскрыть</a>
+    <div class="well" style="display: none">
+        <span id="ex18-label-1" class="hidden">Example slider label</span>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-provide="slider" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+    </div>
     <hr />
 </div>
+
 <div>
 <h4>Есть что добавить?</h4>
 <form asp-action="viewpost" asp-controller="Comments" method="post" enctype="multipart/form-data">
@@ -79,7 +89,8 @@
                 @Html.DisplayFor(modelItem => item.CommentDate) :
             <br />
             @Html.Raw(@item.Text)        
-        <input type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+        <input class="btn btn-primary" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+            
             </div>
         @*<div id="replydiv-@item.CommentId"></div>*@
       
@@ -90,6 +101,8 @@
     @{
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+        <link rel="stylesheet" href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
         <script>
 tinymce.init({
                 theme: "modern",
@@ -160,7 +173,7 @@ tinymce.init({
             <br />\
         <input type="hidden" name="commentid" value='+ commentid +'>\
          \
-        <input type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
+        <input class="btn btn-primary" type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
                 var name = "comment-" + commentid;
                 document.getElementById(name).appendChild(div);
            
@@ -188,33 +201,22 @@ tinymce.init({
                     {
                         console.log(output);
                     }
-                })
-                   
-
-                    
-
-                    
-
+                }) 
                 }
             </script>
-        //var output = new Object();
-        //output.CommentId = commentid;
-        //console.log(output.CommentId);
-        //$.ajax({
-        //    headers: {
-        //        'Accept': 'application/json',
-        //        'Content-Type': 'application/json'
-        //    },
-        //    type: "GET",
-        //    url: "/Comments/reply/",
-        //    data: JSON.stringify(output),
-        //    success: function (result)
-        //    {
-        //        $("#replydiv").html(response);
-        //        $("#replydiv").modal(show);
-        //    }
-        //})
-
+          
+           
+            <script>
+                $('#showbut').on('click', function (e) {
+                    $('#showbut')
+                        .parent()
+                        .find(' >.well')
+                        .toggle()
+                        .find('input')
+                        .slider('relayout');
+                    e.preventDefault();
+                });
+            </script>
 
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

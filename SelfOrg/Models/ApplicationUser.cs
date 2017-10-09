@@ -8,6 +8,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SelfOrg.Models
 {
+    public enum Priority //важность критериев в оценке
+    {
+        Low,
+        Medium,
+        High
+    }
     // Add profile data for application users by adding properties to the User class
     public class User : IdentityUser
     {
@@ -125,5 +131,18 @@ namespace SelfOrg.Models
 
         public int TagId { get; set; }
         public Tag Tag { get; set; }
+    }
+
+    public class Criterion
+    {
+        public int CriterionId { get; set; }
+        [Required(ErrorMessage = "Задайте название")]
+        [Display(Name = "Критерий")]
+        public string name { get; set; }
+        [Display(Name = "Описание")]
+        [Required(ErrorMessage = "Введите описание")]
+        public string description { get; set; }
+        [Display(Name = "Важность")]
+        public Priority prio { get; set; }
     }
 }
