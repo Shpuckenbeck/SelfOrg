@@ -58,33 +58,35 @@ namespace SelfOrg.Controllers
             model.comments = _context.Comments.Where(p => p.PostId == id);
             return View(model);
         }
-        [HttpGet]
-        public ActionResult reply ([FromBody] ResultViewModel input)
-        {
-            ReplyViewModel model = new ReplyViewModel();
-            model.CommentId = Convert.ToInt32(input.CommentId);
-            Comment pls = _context.Comments.Where(p => p.CommentId == model.CommentId).SingleOrDefault();
-            model.PostId = pls.PostId;
-            return PartialView("reply", model);
-        }
+        //[HttpGet]
+        //public ActionResult reply ([FromBody] ResultViewModel input)
+        //{
+        //    ReplyViewModel model = new ReplyViewModel();
+        //    model.CommentId = Convert.ToInt32(input.CommentId);
+        //    Comment pls = _context.Comments.Where(p => p.CommentId == model.CommentId).SingleOrDefault();
+        //    model.PostId = pls.PostId;
+        //    return PartialView("reply", model);
+        //}
         [HttpPost]
-        public async Task<IActionResult> reply (ReplyViewModel inmodel)
+        public async Task<IActionResult> reply ([FromBody] ReplyViewModel inmodel)
         {
 
             Comment newcom = new Comment();
             ClaimsPrincipal currentUser = this.User;
             newcom.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            newcom.PostId = inmodel.PostId;
+            int neededid = Convert.ToInt32(inmodel.CommentId);
+            Comment com = await _context.Comments.Where(p => p.CommentId == neededid).SingleOrDefaultAsync();
+            newcom.PostId = com.PostId;
             newcom.Text = inmodel.comment;
             newcom.CommentDate = DateTime.Now;
-            newcom.ReplyTo = inmodel.CommentId;
+            newcom.ReplyTo = com.CommentId;
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
             CommentViewModel model = new CommentViewModel();
-            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == inmodel.PostId);
+            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == com.PostId);
             model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == inmodel.PostId);
-            return View(model);
+            model.comments = _context.Comments.Where(p => p.PostId == com.PostId);
+            return RedirectToAction("Index");
 
         }
         // GET: Comments/Details/5

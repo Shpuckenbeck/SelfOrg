@@ -79,7 +79,7 @@
                 @Html.DisplayFor(modelItem => item.CommentDate) :
             <br />
             @Html.Raw(@item.Text)        
-        <input type="button" id="replybut" value="Ответить" onclick="replyto(@item.CommentId)" />
+        <input type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
             </div>
         @*<div id="replydiv-@item.CommentId"></div>*@
       
@@ -152,20 +152,50 @@ tinymce.init({
 
 
                 var replyto = function (commentid) {
-                    var whatever = commentid;
-        var div = document.createElement('div');
-
+                    //var whatever = commentid;
+                    var div = document.createElement('div');
+                    div.id = "replydiv-" + commentid;
         div.className = 'row';
-                div.innerHTML = '<textarea name="comment"/></textarea>\
+                div.innerHTML = '<form id="form-' + commentid +'"><textarea id="comment-' + commentid +'"/></textarea>\
             <br />\
-        <input type="hidden" name="commentid" value='+ whatever +'>\
+        <input type="hidden" name="commentid" value='+ commentid +'>\
          \
-        <input type="button" value="Ответ" >';
-                var name = "comment-" + whatever;
+        <input type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
+                var name = "comment-" + commentid;
                 document.getElementById(name).appendChild(div);
-
+           
 
     }
+            </script>
+            <script>
+                var postreply = function (id)
+                {
+                    var getname = "comment-" + id;
+                    var test = $("textarea#" + getname).val();
+                    var output = new Object();
+                    output.CommentId = id;
+                    output.comment = test;
+                    console.log(JSON.stringify(output));
+                    $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    url: "/Comments/reply/",
+                    data: JSON.stringify(output),
+                    success: function (result)
+                    {
+                        console.log(output);
+                    }
+                })
+                   
+
+                    
+
+                    
+
+                }
             </script>
         //var output = new Object();
         //output.CommentId = commentid;

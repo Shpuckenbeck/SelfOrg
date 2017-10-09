@@ -8,8 +8,8 @@ namespace SelfOrg.Models
     public class ReplyViewModel
     {
        public string comment;
-      public  int CommentId;
-        public int PostId;
+      public  string CommentId;
+     
 
     }
 
