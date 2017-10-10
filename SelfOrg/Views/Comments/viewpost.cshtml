@@ -55,10 +55,16 @@
             <p>@await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
         </dd>
     </dl>
-    <a class="btn btn-primary" href="" id="showbut">Раскрыть</a>
-    <div class="well" style="display: none">
-        <span id="ex18-label-1" class="hidden">Example slider label</span>
-        <input id="ex1" data-slider-id='ex1Slider' type="text" data-provide="slider" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+    <button class="btn btn-default" id="showbut" >Оценить</button>
+    <div id="ratediv" class="well" style="display: none; background-color: white">
+        @foreach (var a in Model.crits)
+        {
+        <p> @a.name: </p> <b>-5</b>  <input id="rate-@a.CriterionId" name="@a.CriterionId" data-slider-id="@a.CriterionId-slider" data-provide="slider" 
+                                            data-slider-min="-5" data-slider-max="5" data-slider-step="1" data-slider-value="2"/><b>5</b>
+        }
+        <br />
+        <br />
+        <button class="btn btn-default" id="ratebut" onclick="submitrate(@Model.post.PostID)">Сохранить</button>
     </div>
     <hr />
 </div>
@@ -67,20 +73,21 @@
 <h4>Есть что добавить?</h4>
 <form asp-action="viewpost" asp-controller="Comments" method="post" enctype="multipart/form-data">
 
-    <div class="form-group">
+    <div class="row">
         <div class="col-md-10">
             <textarea name="comment" ></textarea>
         </div>
     </div>
+    <br />
     <div class="form-group">
         <div class="col-md-10">
-            <input type="submit" value="Оставить комментарий" />
+            <input type="submit" class="btn btn-default" value="Оставить комментарий" />
         </div>
     </div>
 </form>
 </div>
-
-<div>
+<br />
+<div >
     @foreach (Comment item in Model.comments)
     {
 
@@ -89,7 +96,7 @@
                 @Html.DisplayFor(modelItem => item.CommentDate) :
             <br />
             @Html.Raw(@item.Text)        
-        <input class="btn btn-primary" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+        <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
             
             </div>
         @*<div id="replydiv-@item.CommentId"></div>*@
@@ -162,10 +169,7 @@ tinymce.init({
 
             });</script>
             <script>
-
-
                 var replyto = function (commentid) {
-                    //var whatever = commentid;
                     var div = document.createElement('div');
                     div.id = "replydiv-" + commentid;
         div.className = 'row';
@@ -175,9 +179,7 @@ tinymce.init({
          \
         <input class="btn btn-primary" type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
                 var name = "comment-" + commentid;
-                document.getElementById(name).appendChild(div);
-           
-
+                document.getElementById(name).appendChild(div);       
     }
             </script>
             <script>
@@ -203,9 +205,8 @@ tinymce.init({
                     }
                 }) 
                 }
-            </script>
-          
-           
+            </script>        
+
             <script>
                 $('#showbut').on('click', function (e) {
                     $('#showbut')
@@ -217,7 +218,14 @@ tinymce.init({
                     e.preventDefault();
                 });
             </script>
+            <script>
+                var submitrate = function (id)
+                {
+                  
+                   
 
+                }
+            </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
