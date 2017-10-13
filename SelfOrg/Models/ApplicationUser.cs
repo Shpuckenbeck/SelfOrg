@@ -70,7 +70,7 @@ namespace SelfOrg.Models
         [Display(Name = "Автор")]
         public User User { get; set; }
         [Display(Name = "Рейтинг")]
-        public float rating { get; set; }
+        public float rating { get; set; } //не будет нужен?
 
         public virtual ICollection<PostTag> PostTags { get; set; }
     }
@@ -144,5 +144,17 @@ namespace SelfOrg.Models
         public string description { get; set; }
         [Display(Name = "Важность")]
         public Priority prio { get; set; }
+    }
+
+    public class Rating //будет использован чуть позднее
+    {
+        public int RatingId { get; set; }
+        public int CriterionId { get; set; }
+        public Criterion Criterion { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
+        public int PostId { get; set; }
+        public Post Post { get; set; }
+        public float rating { get; set; }
     }
 }

@@ -59,7 +59,7 @@
     <div id="ratediv" class="well" style="display: none; background-color: white">
         @foreach (var a in Model.crits)
         {
-        <p> @a.name: </p> <b>-5</b>  <input id="rate-@a.CriterionId" name="@a.CriterionId" data-slider-id="@a.CriterionId-slider" data-provide="slider" 
+        <p> @a.name: </p> <b>-5</b>  <input id="rate-@a.CriterionId" class="valueslider" name="@a.CriterionId" weight="@Convert.ToInt32(a.prio)" data-slider-id="@a.CriterionId-slider" data-provide="slider" 
                                             data-slider-min="-5" data-slider-max="5" data-slider-step="1" data-slider-value="2"/><b>5</b>
         }
         <br />
@@ -218,12 +218,39 @@ tinymce.init({
                     e.preventDefault();
                 });
             </script>
-            <script>
-                var submitrate = function (id)
-                {
-                  
-                   
+            <script>                
+                var submitrate = function (id) {
 
+                    var postdata = [];
+                    var counter = 0;
+                    $('.valueslider').each(function () {
+                        var name = $(this).attr('name');
+                        var value = $(this).val();
+                        var weight = $(this).attr('weight');
+                        postdata[counter] = {
+                            "id": name,
+                            "rating": value,
+                            "weight": weight,
+                            "post" : id
+
+                        }
+                        console.log(postdata[counter]);
+                        counter++;
+                        //console.log($(this).attr('id'));
+                    });
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/rate/",
+                        data: JSON.stringify(postdata),
+                        success: function (result) {
+                            console.log(output);
+                        }
+
+                    })
                 }
             </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}

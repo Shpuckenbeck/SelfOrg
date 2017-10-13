@@ -40,11 +40,7 @@ namespace SelfOrg.Controllers
         [HttpPost]
         public async Task<IActionResult> viewpost(int id, string comment)
         {
-            //CommentViewModel model = new CommentViewModel();
-            //var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
-            //model.post = post;
-            //model.comments = _context.Comments.Where(p => p.PostId == id);
-            //return View(model);
+           
             Comment newcom = new Comment();
             ClaimsPrincipal currentUser = this.User;
             newcom.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -59,15 +55,6 @@ namespace SelfOrg.Controllers
             model.comments = _context.Comments.Where(p => p.PostId == id);
             return View(model);
         }
-        //[HttpGet]
-        //public ActionResult reply ([FromBody] ResultViewModel input)
-        //{
-        //    ReplyViewModel model = new ReplyViewModel();
-        //    model.CommentId = Convert.ToInt32(input.CommentId);
-        //    Comment pls = _context.Comments.Where(p => p.CommentId == model.CommentId).SingleOrDefault();
-        //    model.PostId = pls.PostId;
-        //    return PartialView("reply", model);
-        //}
         [HttpPost]
         public async Task<IActionResult> reply ([FromBody] ReplyViewModel inmodel)
         {
@@ -89,6 +76,25 @@ namespace SelfOrg.Controllers
             model.comments = _context.Comments.Where(p => p.PostId == com.PostId);
             return RedirectToAction("Index");
 
+        }
+        [HttpPost] async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) //сейчас рейтинг присваивается посту, потому что мне западло прокидывать рейтинги
+        {
+            double amount = 0;
+            foreach (RatingViewModel item in ratings)
+            {
+                amount += Math.Pow(2, Convert.ToInt32(item.weight));
+            }
+            double alpha = 1 / amount;
+            float result = 0;
+            foreach (RatingViewModel item in ratings)
+            {
+                result += Convert.ToSingle(Convert.ToInt32(item.value) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha);
+            }
+            Post ratedpost = await _context.Posts.SingleOrDefaultAsync(p => p.PostID == Convert.ToInt32(ratings[0].id));
+            ratedpost.rating += result;
+            _context.Update(ratedpost);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
