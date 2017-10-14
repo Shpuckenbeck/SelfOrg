@@ -228,13 +228,14 @@ tinymce.init({
                         var value = $(this).val();
                         var weight = $(this).attr('weight');
                         postdata[counter] = {
-                            "id": name,
+                            "category": name,
                             "rating": value,
                             "weight": weight,
                             "post" : id
 
                         }
                         console.log(postdata[counter]);
+                        console.log(JSON.stringify(postdata));
                         counter++;
                         //console.log($(this).attr('id'));
                     });
@@ -247,7 +248,7 @@ tinymce.init({
                         url: "/Comments/rate/",
                         data: JSON.stringify(postdata),
                         success: function (result) {
-                            console.log(output);
+                            
                         }
 
                     })

@@ -56,7 +56,7 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> reply ([FromBody] ReplyViewModel inmodel)
+        public async Task<IActionResult> reply([FromBody] ReplyViewModel inmodel) //ответ на комментарий
         {
 
             Comment newcom = new Comment();
@@ -65,7 +65,7 @@ namespace SelfOrg.Controllers
             int neededid = Convert.ToInt32(inmodel.CommentId);
             Comment com = await _context.Comments.Where(p => p.CommentId == neededid).SingleOrDefaultAsync();
             newcom.PostId = com.PostId;
-            newcom.Text = "<p>"+inmodel.comment+"</p>";
+            newcom.Text = "<p>" + inmodel.comment + "</p>";
             newcom.CommentDate = DateTime.Now;
             newcom.ReplyTo = com.CommentId;
             _context.Comments.Add(newcom);
@@ -77,7 +77,8 @@ namespace SelfOrg.Controllers
             return RedirectToAction("Index");
 
         }
-        [HttpPost] async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) //сейчас рейтинг присваивается посту, потому что мне западло прокидывать рейтинги
+        [HttpPost]
+        public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) //сейчас рейтинг присваивается посту, потому что мне западло прокидывать рейтинги
         {
             double amount = 0;
             foreach (RatingViewModel item in ratings)
@@ -86,11 +87,12 @@ namespace SelfOrg.Controllers
             }
             double alpha = 1 / amount;
             float result = 0;
+            //result += Convert.ToSingle(alpha);
             foreach (RatingViewModel item in ratings)
             {
-                result += Convert.ToSingle(Convert.ToInt32(item.value) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha);
+                result += Convert.ToSingle(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha);
             }
-            Post ratedpost = await _context.Posts.SingleOrDefaultAsync(p => p.PostID == Convert.ToInt32(ratings[0].id));
+            Post ratedpost = await _context.Posts.SingleOrDefaultAsync(p => p.PostID == Convert.ToInt32(ratings[0].post));
             ratedpost.rating += result;
             _context.Update(ratedpost);
             await _context.SaveChangesAsync();
