@@ -18,3 +18,14 @@ C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.
 C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.dll
 C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.pdb
 C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\bin\Debug\netcoreapp1.1\SelfOrg.deps.json
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\bin\Debug\netcoreapp1.1\SelfOrg.runtimeconfig.json
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\bin\Debug\netcoreapp1.1\SelfOrg.runtimeconfig.dev.json
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\bin\Debug\netcoreapp1.1\SelfOrg.dll
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\bin\Debug\netcoreapp1.1\SelfOrg.pdb
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.csprojResolveAssemblyReference.cache
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.csproj.CoreCompileInputs.cache
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.AssemblyInfo.cs
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.dll
+C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.pdb

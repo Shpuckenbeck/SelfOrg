@@ -35,6 +35,13 @@ namespace SelfOrg.Controllers
             model.post = post;
             model.comments = _context.Comments.Where(p => p.PostId == id);
             model.crits =  _context.Criteria;
+            var ratings = _context.Ratings.Where(p => p.PostId == id);
+            float sum = 0;
+            foreach (Rating item in ratings)
+            {
+                sum += item.rating;
+            }
+            model.post.rating = sum;
             return View(model);
         }
         [HttpPost]
@@ -80,6 +87,8 @@ namespace SelfOrg.Controllers
         [HttpPost]
         public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) //сейчас рейтинг присваивается посту, потому что мне западло прокидывать рейтинги
         {
+            ClaimsPrincipal currentUser = this.User;
+           string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             double amount = 0;
             foreach (RatingViewModel item in ratings)
             {
@@ -91,7 +100,15 @@ namespace SelfOrg.Controllers
             foreach (RatingViewModel item in ratings)
             {
                 result += Convert.ToSingle(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha);
+                Rating newrate = new Rating();
+                newrate.CriterionId = Convert.ToInt16(item.criterion);
+                newrate.PostId = Convert.ToInt16(item.post);
+                newrate.UserId = userid;
+                newrate.rating = Convert.ToSingle(Math.Round(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha, 3));
+                _context.Add(newrate);
+                await _context.SaveChangesAsync();
             }
+            Math.Round(result, 3);
             Post ratedpost = await _context.Posts.SingleOrDefaultAsync(p => p.PostID == Convert.ToInt32(ratings[0].post));
             ratedpost.rating += result;
             _context.Update(ratedpost);

@@ -22,6 +22,7 @@ namespace SelfOrg.Data
         public DbSet<PostTag> PostTags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Criterion> Criteria { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

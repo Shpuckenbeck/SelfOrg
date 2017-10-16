@@ -29,7 +29,7 @@
         <div class="form-group">
             <label asp-for="prio" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="prio" class="form-control"></select>
+                <select asp-for="prio" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"></select>
                 <span asp-validation-for="prio" class="text-danger"></span>
             </div>
         </div>
