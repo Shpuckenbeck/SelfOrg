@@ -75,6 +75,7 @@ namespace SelfOrg.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
+
             if (user == null)
             {
                 return View("Error");
@@ -88,6 +89,13 @@ namespace SelfOrg.Controllers
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 User = user
             };
+            var ratings = _context.Ratings.Where(p => p.Post.UserId == user.Id);
+            float sum = 0;
+            foreach (Rating item in ratings)
+            {
+                sum += item.rating;
+            }
+            model.User.rating = sum;
             return View(model);
         }
 

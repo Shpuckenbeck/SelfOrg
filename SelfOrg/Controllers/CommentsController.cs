@@ -94,7 +94,7 @@ namespace SelfOrg.Controllers
             {
                 amount += Math.Pow(2, Convert.ToInt32(item.weight));
             }
-            double alpha = 1 / amount;
+            double alpha = 1 / amount; //рассчёт веса критериев
             float result = 0;
             //result += Convert.ToSingle(alpha);
             foreach (RatingViewModel item in ratings)
