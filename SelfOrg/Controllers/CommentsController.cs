@@ -60,6 +60,14 @@ namespace SelfOrg.Controllers
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
             model.comments = _context.Comments.Where(p => p.PostId == id);
+            model.crits = _context.Criteria;
+            var ratings = _context.Ratings.Where(p => p.PostId == id);
+            float sum = 0;
+            foreach (Rating item in ratings)
+            {
+                sum += item.rating;
+            }
+            model.post.rating = sum;
             return View(model);
         }
         [HttpPost]

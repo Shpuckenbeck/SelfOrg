@@ -87,10 +87,25 @@
 </form>
 </div>
 <br />
+<script>
+    var appendreply = function (data)
+    {
+        var obj = JSON.parse(data);
+        console.log(obj);
+        var div = document.createElement('div');
+        div.id = "comment-" + obj.id;
+        div.innerHTML = obj.author + ' ответил ' + obj.date + ' : <br />' + obj.text +
+            '<br /><input class="btn btn-default" type="button" id="replybut-'+obj.id+'" value="Ответить" onclick="replyto('+obj.id+')" />';
+        var name = "comment-" + obj.replyto;
+        document.getElementById(name).appendChild(div);
+
+    }
+</script>
 <div >
     @foreach (Comment item in Model.comments)
     {
-
+        if (item.ReplyTo == null)
+        {
         <div id="comment-@item.CommentId">     
                 @Html.DisplayFor(modelItem => item.User.displayedname) написал         
                 @Html.DisplayFor(modelItem => item.CommentDate) :
@@ -99,6 +114,22 @@
         <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
             
             </div>
+        }
+        else
+        {
+          <script>
+              var transcomment = {
+                  "id": '@item.CommentId',
+                  "author": '@item.User.displayedname',
+                  "date": '@item.CommentDate',
+                  "text": '@item.Text', 
+                  "replyto" : '@item.ReplyTo'
+
+              }
+              var data = JSON.stringify(transcomment);
+              console.log(data);
+              appendreply(data);</script>
+        }
         @*<div id="replydiv-@item.CommentId"></div>*@
       
     }
