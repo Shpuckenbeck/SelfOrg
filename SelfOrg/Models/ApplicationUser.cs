@@ -39,6 +39,8 @@ namespace SelfOrg.Models
         [DataType(DataType.Date)]
         [Display(Name = "Дата регистрации")]
         public DateTime RegDate { get; set; }
+        [Display(Name="Вес")]
+        public float Weight { get; set; } //вес голоса пользователя
     }
 
     public class Post
@@ -156,5 +158,13 @@ namespace SelfOrg.Models
         public int PostId { get; set; }
         public Post Post { get; set; }
         public float rating { get; set; }
+    }
+
+    public class Multiplier //вес голоса по рейтингу
+    {
+        public int MultiplierId { get; set; }
+        public int Lower { get; set; }
+        public int Higher { get; set; }
+        public float Mul { get; set; }
     }
 }

@@ -9,9 +9,10 @@ using SelfOrg.Models;
 namespace SelfOrg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171024140044_weights2")]
+    partial class weights2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -183,22 +184,6 @@ namespace SelfOrg.Data.Migrations
                     b.HasKey("CriterionId");
 
                     b.ToTable("Criteria");
-                });
-
-            modelBuilder.Entity("SelfOrg.Models.Multiplier", b =>
-                {
-                    b.Property<int>("MultiplierId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Higher");
-
-                    b.Property<int>("Lower");
-
-                    b.Property<float>("Mul");
-
-                    b.HasKey("MultiplierId");
-
-                    b.ToTable("Multipliers");
                 });
 
             modelBuilder.Entity("SelfOrg.Models.Pic", b =>

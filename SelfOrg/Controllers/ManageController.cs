@@ -89,16 +89,25 @@ namespace SelfOrg.Controllers
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 User = user
             };
-            var ratings = _context.Ratings.Where(p => p.Post.UserId == user.Id);
+            var ratings = _context.Ratings.Where(p => p.Post.UserId == user.Id).Include(p => p.User);
             float sum = 0;
             foreach (Rating item in ratings)
             {
-                sum += item.rating;
+                sum += item.rating*item.User.Weight;
             }
             model.User.rating = sum;
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> rateupdate(float Rating)
+        {
+            var user = await GetCurrentUserAsync();
+            var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < Rating) && (p.Higher > Rating));
+            user.Weight = level.Mul;
+            var result = await _userManager.UpdateAsync(user);
+            return RedirectToAction("Index");
 
+        }
         [HttpPost]
         public async Task<IActionResult> AddAvatar(IFormFile uploadedFile)
         {

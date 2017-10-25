@@ -9,10 +9,15 @@ namespace SelfOrg.Models
 {
     public class RatingViewModel //модель для парсинга оценок. категория+значение. если рабоатет - пост не передаётся
     {
-        public string criterion { get; set; }        //id - это категория, нужен ренейм
+        public string criterion { get; set; }        
         public string rating { get; set; } 
         public string weight { get; set; }
         public string post { get; set; }
 
     }
+    public class RecalcModel //мм, ещё костыль
+    {
+        public string Rating { get; set; }
+    }
+
 }

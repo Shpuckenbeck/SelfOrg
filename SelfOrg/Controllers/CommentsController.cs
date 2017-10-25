@@ -33,13 +33,13 @@ namespace SelfOrg.Controllers
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == id);
+            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
             model.crits =  _context.Criteria;
-            var ratings = _context.Ratings.Where(p => p.PostId == id);
+            var ratings = _context.Ratings.Where(p => p.PostId == id).Include(p => p.User);
             float sum = 0;
             foreach (Rating item in ratings)
             {
-                sum += item.rating;
+                sum += item.rating*item.User.Weight;
             }
             model.post.rating = sum;
             return View(model);
@@ -59,7 +59,7 @@ namespace SelfOrg.Controllers
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == id);
+            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
             model.crits = _context.Criteria;
             var ratings = _context.Ratings.Where(p => p.PostId == id);
             float sum = 0;

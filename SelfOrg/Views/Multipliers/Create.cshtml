@@ -1,0 +1,46 @@
+@model SelfOrg.Models.Multiplier
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Multiplier</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Lower" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Lower" class="form-control" />
+                <span asp-validation-for="Lower" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Higher" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Higher" class="form-control" />
+                <span asp-validation-for="Higher" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Mul" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Mul" class="form-control" />
+                <span asp-validation-for="Mul" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

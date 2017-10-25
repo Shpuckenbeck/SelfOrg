@@ -53,13 +53,26 @@
 
         <dt>Зарегистрирован</dt>
         <dd>@Html.DisplayFor(model => model.User.RegDate)</dd>
+        
         <dt>
             @Html.DisplayNameFor(model => model.User.rating)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.User.rating)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Weight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Weight)
+        </dd>
         </dl>
+    @*<input class="btn btn-default" type="button" id="recalculate" value="Пересчитать" onclick="recalc('@Model.User.rating')" />*@
+    <form asp-action="rateupdate" asp-controller="Manage" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="Rating" value="@Model.User.rating" /><br>
+        <input class="btn btn-default" type="submit" value="Пересчитать" />
+    </form>
+    <br />
     
 
             <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Изменить профиль</a>
@@ -74,9 +87,37 @@
 
     
 </div>
+@section Scripts{
 
+@{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    var recalc = function (rate)
+    {
+        console.log(rate);
+        var output = new Object();
+        output.Rating = rate;
+        console.log(JSON.stringify(output));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            url: "/Manage/rateupdate",
+            data: JSON.stringify(output),
+            success: function (result) {
+                console.log(output);
+            }
+        })
+
+    }
+</script>
 
     @*<script src="~/js/dist/dropzone.js"></script>
 <link rel="stylesheet" href="~/js/dist/dropzone.css">*@
+           await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
 
 

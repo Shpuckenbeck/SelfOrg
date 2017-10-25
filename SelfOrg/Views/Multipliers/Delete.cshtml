@@ -1,0 +1,41 @@
+@model SelfOrg.Models.Multiplier
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Multiplier</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="MultiplierId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Lower)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lower)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Higher)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Higher)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mul)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mul)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
