@@ -24,6 +24,7 @@ namespace SelfOrg.Data
         public DbSet<Criterion> Criteria { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Multiplier> Multipliers { get; set; }
+        public DbSet<CatCrit> CatCrits { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -91,7 +91,7 @@
     @foreach (Comment item in Model.comments)
     {
         
-        <div id="comment-@item.CommentId">     
+        <div id="comment-@item.CommentId" class="parentcomment">     
                 @Html.DisplayFor(modelItem => item.User.displayedname) написал         
                 @Html.DisplayFor(modelItem => item.CommentDate) :
             <br />
@@ -106,6 +106,8 @@
               var name = "comment-" + "@item.ReplyTo";
               var childname = "comment-" + "@item.CommentId";
               var childdiv = document.getElementById(childname);
+              childdiv.classList.remove('parentcomment');
+              childdiv.classList.add('childcomment');
               document.getElementById(name).appendChild(childdiv);
            </script>
            
@@ -121,6 +123,7 @@
         <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
         <script type="text/javascript" src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
         <link rel="stylesheet" href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+        <link rel="stylesheet" href="~/css/comments.css" />
         <script>
 tinymce.init({
                 theme: "modern",

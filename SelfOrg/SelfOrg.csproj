@@ -11,6 +11,10 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-SelfOrg-bfe62d55-aa2a-4a97-a5eb-b6a476bb1be1</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\comments.css" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dropzone" Version="4.2.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />

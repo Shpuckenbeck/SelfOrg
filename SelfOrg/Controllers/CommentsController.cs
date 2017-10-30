@@ -93,7 +93,7 @@ namespace SelfOrg.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) //сейчас рейтинг присваивается посту, потому что мне западло прокидывать рейтинги
+        public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) 
         {
             ClaimsPrincipal currentUser = this.User;
            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;

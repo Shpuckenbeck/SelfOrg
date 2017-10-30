@@ -148,7 +148,7 @@ namespace SelfOrg.Models
         public Priority prio { get; set; }
     }
 
-    public class Rating //будет использован чуть позднее
+    public class Rating 
     {
         public int RatingId { get; set; }
         public int CriterionId { get; set; }
@@ -166,5 +166,15 @@ namespace SelfOrg.Models
         public int Lower { get; set; }
         public int Higher { get; set; }
         public float Mul { get; set; }
+    }
+
+    public class CatCrit //критерии категорий
+    {
+        public int CatCritId { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+        public int CriterionId { get; set; }
+        public Criterion Criterion { get; set; }
+        public Priority prio { get; set; }
     }
 }

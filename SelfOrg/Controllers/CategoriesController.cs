@@ -145,6 +145,31 @@ namespace SelfOrg.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult set(int id)
+        {
+            CatCritViewModel model = new CatCritViewModel();
+            model.category = _context.Categories.SingleOrDefault(p => p.CategoryId == id);
+            model.crits = _context.Criteria;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> set (CatCritViewModel model)
+        {
+            int count = 0;
+            foreach (int item in model.critid)
+            {
+                CatCrit catcrit = new CatCrit();
+                catcrit.CategoryId = model.catid;
+                catcrit.CriterionId = item;
+                catcrit.prio = model.prio[count];
+                count++;
+                _context.CatCrits.Add(catcrit);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+        }
+
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.CategoryId == id);

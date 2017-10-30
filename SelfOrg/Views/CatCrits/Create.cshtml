@@ -1,5 +1,5 @@
-﻿@model SelfOrg.Models.Criterion
-@using SelfOrg
+@model SelfOrg.Models.CatCrit
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -8,27 +8,25 @@
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Criterion</h4>
+        <h4>CatCrit</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="name" class="col-md-2 control-label"></label>
+            <label asp-for="CategoryId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger"></span>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="description" class="col-md-2 control-label"></label>
+            <label asp-for="CriterionId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="description" class="form-control" />
-                <span asp-validation-for="description" class="text-danger"></span>
+                <select asp-for="CriterionId" class ="form-control" asp-items="ViewBag.CriterionId"></select>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="prio" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="prio" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"><option selected="selected" value="">Выберите важность</option></select>
+                <select asp-for="prio" class="form-control"></select>
                 <span asp-validation-for="prio" class="text-danger"></span>
             </div>
         </div>
@@ -43,5 +41,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 
