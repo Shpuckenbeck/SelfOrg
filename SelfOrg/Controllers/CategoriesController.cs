@@ -150,7 +150,18 @@ namespace SelfOrg.Controllers
         {
             CatCritViewModel model = new CatCritViewModel();
             model.category = _context.Categories.SingleOrDefault(p => p.CategoryId == id);
-            model.crits = _context.Criteria;
+            model.crits = _context.Criteria;            
+            model.prio = new Priority[_context.Criteria.Count()];
+            int count = 0;
+            foreach (Criterion item in _context.Criteria)
+            {
+                CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == id) && (p.CriterionId == item.CriterionId)));
+                if (check != null)
+                {
+                    model.prio[count] = check.prio;
+                }
+                count++;
+            }
             return View(model);
         }
         [HttpPost]
@@ -159,13 +170,23 @@ namespace SelfOrg.Controllers
             int count = 0;
             foreach (int item in model.critid)
             {
-                CatCrit catcrit = new CatCrit();
-                catcrit.CategoryId = model.catid;
-                catcrit.CriterionId = item;
-                catcrit.prio = model.prio[count];
+                CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == model.catid) && (p.CriterionId == item)));  
+                if (check != null)
+                {
+                    check.prio = model.prio[count];
+                    _context.CatCrits.Update(check);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    CatCrit catcrit = new CatCrit();
+                    catcrit.CategoryId = model.catid;
+                    catcrit.CriterionId = item;
+                    catcrit.prio = model.prio[count];
+                    _context.CatCrits.Add(catcrit);
+                    await _context.SaveChangesAsync();
+                }
                 count++;
-                _context.CatCrits.Add(catcrit);
-                await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
         }

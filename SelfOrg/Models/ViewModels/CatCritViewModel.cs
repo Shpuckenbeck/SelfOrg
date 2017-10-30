@@ -16,10 +16,10 @@ namespace SelfOrg.Models
         public Priority[] prio { get; set; }
     }
 
-    public class CritPostModel
-    {
-        public string category { get; set; }
-        public string criteria { get; set; }
-        public string weight { get; set; }
-    }
+    //public class CritPostModel
+    //{
+    //    public string category { get; set; }
+    //    public string criteria { get; set; }
+    //    public string weight { get; set; }
+    //}
 }
