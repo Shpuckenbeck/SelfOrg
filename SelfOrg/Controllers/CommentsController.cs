@@ -34,7 +34,7 @@ namespace SelfOrg.Controllers
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
             model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
-            model.crits =  _context.Criteria;
+            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
             var ratings = _context.Ratings.Where(p => p.PostId == id).Include(p => p.User);
             float sum = 0;
             foreach (Rating item in ratings)
@@ -60,7 +60,7 @@ namespace SelfOrg.Controllers
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
             model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
-            model.crits = _context.Criteria;
+            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
             var ratings = _context.Ratings.Where(p => p.PostId == id);
             float sum = 0;
             foreach (Rating item in ratings)
