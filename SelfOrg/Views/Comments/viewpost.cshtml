@@ -91,19 +91,24 @@
     @foreach (Comment item in Model.comments)
     {
         
-        <div id="comment-@item.CommentId" class="parentcomment">     
-                @Html.DisplayFor(modelItem => item.User.displayedname) написал         
+        <div id="comment-@item.CommentId" class="parentcomment">    
+            <div id="info-@item.CommentId" class="info">
+                <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
+                @Html.DisplayFor(modelItem => item.User.displayedname) написал
                 @Html.DisplayFor(modelItem => item.CommentDate) :
-            <br />
-            @Html.Raw(@item.Text)        
-        <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+                <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
+            </div>
+            <div id="message-@item.CommentId" class="message" >
+               <span> @Html.Raw(@item.Text)</span>
+                <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+            </div>
             
             </div>
         if (item.ReplyTo != null)
         {
             
           <script>
-              var name = "comment-" + "@item.ReplyTo";
+              var name = "message-" + "@item.ReplyTo";
               var childname = "comment-" + "@item.CommentId";
               var childdiv = document.getElementById(childname);
               childdiv.classList.remove('parentcomment');
@@ -266,6 +271,27 @@ tinymce.init({
                         }
 
                     })
+                }
+            </script>
+            <script>
+                var togglecomment = function (id)
+                {
+                    
+                    var name = "comment-" + id;
+                    var toggleddiv = document.getElementById(name);
+                    $(toggleddiv).find(' >.message').toggle();
+                    var toggledinfo = document.getElementById("info-" + id);
+                    $(toggledinfo).find(' >.placeholder').toggle();
+                    var linkname = "#toggle-" + id;
+                    var currenttext = $(linkname).text();
+                    if (currenttext == '[-]')
+                    {
+                        $(linkname).text('[+]');
+                    }
+                    else {
+                        $(linkname).text('[-]');
+                    }
+
                 }
             </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
