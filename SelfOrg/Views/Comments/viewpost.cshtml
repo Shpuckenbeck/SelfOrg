@@ -87,7 +87,7 @@
 </form>
 </div>
 <br />
-<div >
+@*<div >
     @foreach (Comment item in Model.comments)
     {
         
@@ -120,7 +120,9 @@
 
 
     }
-    </div>
+    </div>*@
+
+@Html.Partial("postcomments", Model.commmodel)
 
 @section Scripts {
     @{
@@ -222,7 +224,11 @@ tinymce.init({
                     {
                         console.log(output);
                     }
-                }) 
+                    }) 
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
                 }
             </script>        
 

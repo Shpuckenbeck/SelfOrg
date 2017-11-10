@@ -9,6 +9,12 @@ namespace SelfOrg.Models
     {
         public Post post { get; set; }
         public IQueryable<Comment> comments { get; set; }
+        public CommentsModel commmodel { get; set; }
         public IQueryable<CatCrit> crits { get; set; }
+    }
+
+    public class CommentsModel
+    {
+        public IQueryable<Comment> comments { get; set; }
     }
 }

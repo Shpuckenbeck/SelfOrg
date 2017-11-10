@@ -33,7 +33,9 @@ namespace SelfOrg.Controllers
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
+            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User); //возможно, не нужно
+            model.commmodel = new CommentsModel();
+            model.commmodel.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
             model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
             var ratings = _context.Ratings.Where(p => p.PostId == id).Include(p => p.User);
             float sum = 0;
@@ -59,7 +61,9 @@ namespace SelfOrg.Controllers
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
             model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
+            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User); //как и это может быть не нужно
+            model.commmodel = new CommentsModel();
+            model.commmodel.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
             model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
             var ratings = _context.Ratings.Where(p => p.PostId == id);
             float sum = 0;
@@ -85,11 +89,14 @@ namespace SelfOrg.Controllers
             newcom.ReplyTo = com.CommentId;
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
-            CommentViewModel model = new CommentViewModel();
-            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == com.PostId);
-            model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == com.PostId);
-            return RedirectToAction("Index");
+            //CommentViewModel model = new CommentViewModel();
+            //var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == com.PostId);
+            //model.post = post;
+            //model.comments = _context.Comments.Where(p => p.PostId == com.PostId);
+            //return RedirectToAction("Index");
+            CommentsModel model = new CommentsModel();
+            model.comments = _context.Comments.Where(p => p.PostId == com.PostId).Include(p => p.User);
+            return PartialView("postcomments", model);
 
         }
         [HttpPost]
