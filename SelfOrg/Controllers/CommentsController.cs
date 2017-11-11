@@ -44,6 +44,32 @@ namespace SelfOrg.Controllers
                 sum += item.rating*item.User.Weight;
             }
             model.post.rating = sum;
+            //--------------------------проверка на доступность оценки---------------------------------
+            ClaimsPrincipal currentUser = this.User;
+            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;          
+            if (post.UserId == userid)
+                {
+                model.rateable = false;
+            }
+            else 
+            {
+                var check = _context.Ratings.Where(p => (p.PostId == post.PostID) && (p.UserId == userid));
+                if (check != null)
+                {
+                    model.rateable = false;
+                }
+                else model.rateable = true;
+            }
+            model.userrating = 0;
+            if (model.rateable == false)
+            {
+                foreach (Rating your in ratings)
+                {
+                    if (your.UserId == userid)
+                        model.userrating += your.rating*your.User.Weight;
+                }
+            }
+            
             return View(model);
         }
         [HttpPost]

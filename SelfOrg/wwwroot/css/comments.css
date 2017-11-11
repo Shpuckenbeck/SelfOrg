@@ -8,3 +8,13 @@
     position: relative;
     left: 10px;
 }
+.userfont
+{
+    font-size: 120%;
+    font-weight: bold;
+    color: red;
+}
+.postdate
+{
+    color: blue;
+}
