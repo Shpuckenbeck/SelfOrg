@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace SelfOrg.Models
 {
-    public class ReplyViewModel
+    public class ReplyViewModel //также используется для создания родительских комментариев, тогда CommentId хранит id поста, а не комментария
     {
        public string comment;
-      public  string CommentId;
+      public  string id;
      
 
     }

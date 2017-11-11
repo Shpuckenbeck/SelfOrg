@@ -71,20 +71,20 @@
 
 <div>
 <h4>Есть что добавить?</h4>
-<form asp-action="viewpost" asp-controller="Comments" method="post" enctype="multipart/form-data">
+<div id="commentform">
 
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10" id="thecomment">
             <textarea name="comment" ></textarea>
         </div>
     </div>
     <br />
     <div class="form-group">
         <div class="col-md-10">
-            <input type="submit" class="btn btn-default" value="Оставить комментарий" />
+            <button class="btn btn-default" id="postbut" onclick="comment(@Model.post.PostID)" >Оставить комментарий</button>
         </div>
     </div>
-</form>
+</div>
 </div>
 <br />
 @*<div >
@@ -209,7 +209,7 @@ tinymce.init({
                     var getname = "comment-" + id;
                     var test = $("textarea#" + getname).val();
                     var output = new Object();
-                    output.CommentId = id;
+                    output.id = id;
                     output.comment = test;
                     console.log(JSON.stringify(output));
                     $.ajax({
@@ -230,7 +230,35 @@ tinymce.init({
                         });
 
                 }
-            </script>        
+            </script>
+
+            <script>
+                var comment = function (id) {
+                    //var getname = "thecomment";
+                    //var test = $(getname).find('textarea').val();
+                    var output = new Object();
+                    output.id = id;
+                    output.comment = tinymce.activeEditor.getContent();
+                    tinymce.activeEditor.setContent("");
+                    console.log(JSON.stringify(output));
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/comment/",
+                        data: JSON.stringify(output),
+                        success: function (result) {
+                            console.log(output);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
+                }
+            </script>
 
             <script>
                 $('#showbut').on('click', function (e) {

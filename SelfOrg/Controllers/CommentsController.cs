@@ -47,32 +47,21 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> viewpost(int id, string comment)
+        public async Task<IActionResult> comment([FromBody] ReplyViewModel inmodel)
         {
            
             Comment newcom = new Comment();
             ClaimsPrincipal currentUser = this.User;
             newcom.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            newcom.PostId = id;
-            newcom.Text = comment;
+            int properid = Convert.ToInt32(inmodel.id);
+            newcom.PostId = properid;
+            newcom.Text = inmodel.comment;
             newcom.CommentDate = DateTime.Now;
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
-            CommentViewModel model = new CommentViewModel();
-            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
-            model.post = post;
-            model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User); //как и это может быть не нужно
-            model.commmodel = new CommentsModel();
-            model.commmodel.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
-            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
-            var ratings = _context.Ratings.Where(p => p.PostId == id);
-            float sum = 0;
-            foreach (Rating item in ratings)
-            {
-                sum += item.rating;
-            }
-            model.post.rating = sum;
-            return View(model);
+            CommentsModel model = new CommentsModel();
+            model.comments = _context.Comments.Where(p => p.PostId == properid).Include(p => p.User);
+            return PartialView("postcomments", model);
         }
         [HttpPost]
         public async Task<IActionResult> reply([FromBody] ReplyViewModel inmodel) //ответ на комментарий
@@ -81,7 +70,7 @@ namespace SelfOrg.Controllers
             Comment newcom = new Comment();
             ClaimsPrincipal currentUser = this.User;
             newcom.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            int neededid = Convert.ToInt32(inmodel.CommentId);
+            int neededid = Convert.ToInt32(inmodel.id);
             Comment com = await _context.Comments.Where(p => p.CommentId == neededid).SingleOrDefaultAsync();
             newcom.PostId = com.PostId;
             newcom.Text = "<p>" + inmodel.comment + "</p>";
