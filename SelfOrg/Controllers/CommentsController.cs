@@ -46,15 +46,16 @@ namespace SelfOrg.Controllers
             model.post.rating = sum;
             //--------------------------проверка на доступность оценки---------------------------------
             ClaimsPrincipal currentUser = this.User;
-            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;          
+            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            model.rateable = true;
             if (post.UserId == userid)
-                {
+            {
                 model.rateable = false;
             }
-            else 
+            else
             {
-                var check = _context.Ratings.Where(p => (p.PostId == post.PostID) && (p.UserId == userid));
-                if (check != null)
+                bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
+                if (check == true)
                 {
                     model.rateable = false;
                 }

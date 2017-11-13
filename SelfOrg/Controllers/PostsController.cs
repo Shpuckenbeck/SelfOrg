@@ -122,6 +122,8 @@ namespace SelfOrg.Controllers
                 _context.Add(post); //пост добавлне, работаем с тегами
                 await _context.SaveChangesAsync();                
                 var addedpost = await _context.Posts.SingleOrDefaultAsync(m => m.PostSlug == postslug); //находим id нового поста
+                addedpost.PostSlug += "-" +addedpost.PostID.ToString(); //уникальность слагов
+                _context.Update(addedpost);
                 foreach (string separtag in rawtags) //добавление, если необходимо, тегов
                 {
                     string tagname;
