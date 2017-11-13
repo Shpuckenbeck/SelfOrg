@@ -5,12 +5,147 @@
     }
 
   
-@Html.Partial("posthead", Model)
 
 
+<div id="headdiv">
+    <hr />
+    @*<dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.post.PostName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.post.PostName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.post.User.displayedname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.post.rating)
+        </dt>
+        <dd>
+            @{Html.DisplayFor(model => model.post.rating);
+                if (@Model.rateable == false)
+                {
+                    Html.DisplayFor(model => model.userrating);
+
+                }
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.post.Category.CatName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.content)
+        </dt>
+        <dd>
+            @Html.Raw(Model.post.content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.post.PostDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.post.PostDate)
+        </dd>
+        <dt>
+            Теги
+        </dt>
+        <dd>
+            <p>@await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
+        </dd>
+    </dl>*@
+    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<span>(категория: @Model.post.Category.CatName)</span>
+    <br />
+    <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <time style="font-size: 90%" >@Model.post.PostDate</time>
+    <br/>
+    <span style="font-weight: bold">Рейтинг: @Model.post.rating</span> 
+    @if ((Model.rateable == false)&&(Model.userrating != 0))
+    { 
+        <span style="font-style: italic; font-size:90%">  (ваша оценка: @Model.userrating)</span>
+    }
+    <br />
+    <div id="postcontent">
+        @Html.Raw(Model.post.content)
+    </div>
+    <p>Теги: @await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
 
 
+   @{if (@Model.rateable == true) {
+    <button class="btn btn-default" id="showbut" >Оценить</button>
+    <div id="ratediv" class="well" style="display: none; background-color: white">
+        @foreach (var a in Model.crits)
+        {
+        <p> @a.Criterion.name: </p> <b>-5</b>  <input id="rate-@a.CriterionId" class="valueslider" name="@a.CriterionId" weight="@Convert.ToInt32(a.prio)" data-slider-id="@a.CriterionId-slider" data-provide="slider" 
+                                            data-slider-min="-5" data-slider-max="5" data-slider-step="1" data-slider-value="2"/><b>5</b>
+        }
+        <br />
+        <br />
+        <button class="btn btn-default" id="ratebut" onclick="submitrate(@Model.post.PostID)">Сохранить</button>
+    </div>
+           }
+       }
+    <hr />
+</div>
 
+<div>
+<h4>Есть что добавить?</h4>
+<div id="commentform">
+
+    <div class="row">
+        <div class="col-md-10" id="thecomment">
+            <textarea name="comment" ></textarea>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <button class="btn btn-default" id="postbut" onclick="comment(@Model.post.PostID)" >Оставить комментарий</button>
+        </div>
+    </div>
+</div>
+</div>
+<br />
+@*<div >
+    @foreach (Comment item in Model.comments)
+    {
+        
+        <div id="comment-@item.CommentId" class="parentcomment">    
+            <div id="info-@item.CommentId" class="info">
+                <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
+                @Html.DisplayFor(modelItem => item.User.displayedname) написал
+                @Html.DisplayFor(modelItem => item.CommentDate) :
+                <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
+            </div>
+            <div id="message-@item.CommentId" class="message" >
+               <span> @Html.Raw(@item.Text)</span>
+                <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+            </div>
+            
+            </div>
+        if (item.ReplyTo != null)
+        {
+            
+          <script>
+              var name = "message-" + "@item.ReplyTo";
+              var childname = "comment-" + "@item.CommentId";
+              var childdiv = document.getElementById(childname);
+              childdiv.classList.remove('parentcomment');
+              childdiv.classList.add('childcomment');
+              document.getElementById(name).appendChild(childdiv);
+           </script>
+           
+        }
+
+
+    }
+    </div>*@
 
 @Html.Partial("postcomments", Model.commmodel)
 
