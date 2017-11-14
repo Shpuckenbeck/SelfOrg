@@ -214,7 +214,6 @@ tinymce.init({
                 }
             </script>
 
-
             <script>
                 $('#editbut').on('click', function (e) {
                     console.log('working');
@@ -222,7 +221,42 @@ tinymce.init({
                     var text = document.getElementById('postcontent').innerHTML;
                     tinymce.get('editing').setContent(text);
                     $(document.getElementById('postcontent')).toggle();
+                    //if ($(this).text == 'Редактировать') {
+                    //    $(this).text('Отменить');
+                    //}
+                    //else
+                    //{
+                    //    $(this).text('Редактировать');
+
+                    //}
                 });
+            </script>
+
+            <script>
+                var updatepost = function (id)
+                {
+                    var update = new Object();
+                    update.postid = id;
+                    update.postbody = tinymce.get('editing').getContent();
+                    tinymce.get('editing').setContent('');
+                    console.log(JSON.stringify(update));
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/editpost/",
+                        data: JSON.stringify(update),
+                        success: function (result) {
+                            console.log(update);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#headdiv").html(partialViewResult);
+                        });
+
+                }
             </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

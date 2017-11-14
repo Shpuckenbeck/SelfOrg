@@ -4,9 +4,16 @@
 <div id="headdiv">
     <hr />
 
-    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<span>(категория: @Model.post.Category.CatName)</span>
+    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<span style="font-style:italic; color:gray">(категория: @Model.post.Category.CatName)</span>
     <br />
     <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <time style="font-size: 90%">@Model.post.PostDate</time>
+    @{ 
+        if(Model.post.LastModified != null)
+        {
+            <span style="font-style: italic; font-size:70%">(изменён @Model.post.LastModified)</span>
+
+        }
+    }
     <br />
     <span style="font-weight: bold">Рейтинг: @Model.post.rating</span>
     @if ((Model.rateable == false) && (Model.userrating != 0))
@@ -24,7 +31,9 @@
     <div id="editform">
         <input type="button" class="btn btn-default" id="editbut" value="Редактировать">
         <div id="editcontrols" style="display:none">
+            <br />
             <textarea name="editing"></textarea>
+            <a href="javascript:void(0)" onclick="updatepost(@Model.post.PostID)">Сохранить</a>
         </div>
     </div>
             }

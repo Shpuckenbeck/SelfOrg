@@ -99,6 +99,63 @@ namespace SelfOrg.Controllers
             return PartialView("postcomments", model);
         }
         [HttpPost]
+        public async Task<IActionResult> editpost([FromBody] PostUpdateModel upmodel) //слишком много повторных действий. есть смысл тащить из поста аяксом?
+        {
+            int postid = Convert.ToInt32(upmodel.postid);
+            Post changedpost = _context.Posts.Single(p => p.PostID == postid);
+            changedpost.content = upmodel.postbody;
+            changedpost.LastModified = DateTime.Now;
+            _context.Update(changedpost);
+            CommentViewModel model = new CommentViewModel();
+            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == postid);
+            model.post = post;           
+            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
+            var ratings = _context.Ratings.Where(p => p.PostId == postid).Include(p => p.User);
+            float sum = 0;
+            foreach (Rating item in ratings)
+            {
+                sum += item.rating * item.User.Weight;
+            }
+            model.post.rating = sum;
+            //--------------------------проверка на доступность оценки---------------------------------
+            ClaimsPrincipal currentUser = this.User;
+            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            model.rateable = true;
+            if (post.UserId == userid)
+            {
+                model.rateable = false;
+            }
+            else
+            {
+                bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
+                if (check == true)
+                {
+                    model.rateable = false;
+                }
+                else model.rateable = true;
+            }
+            model.userrating = 0;
+            if (model.rateable == false)
+            {
+                foreach (Rating your in ratings)
+                {
+                    if (your.UserId == userid)
+                        model.userrating += your.rating * your.User.Weight;
+                }
+            }
+            //---------------------првоерка на доступность редактирования---------------------------
+            if (userid == post.UserId)
+            {
+                model.editable = true;
+            }
+            else
+            {
+                model.editable = false;
+            }
+            return PartialView("posthead", model);
+
+        }
+        [HttpPost]
         public async Task<IActionResult> reply([FromBody] ReplyViewModel inmodel) //ответ на комментарий
         {
 
