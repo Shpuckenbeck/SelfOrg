@@ -13,6 +13,7 @@ namespace SelfOrg.Models
         public IQueryable<CatCrit> crits { get; set; }
         public bool rateable { get; set; } //может ли пользователь оценить пост (если автор/уже голосовал - нет)
         public float userrating { get; set; } //оценка, данная пользователем посту - временное решение?
+        public bool editable { get; set; } //определяет возможность редактирования поста
     }
 
     public class CommentsModel

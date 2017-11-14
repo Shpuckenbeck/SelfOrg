@@ -213,6 +213,17 @@ tinymce.init({
 
                 }
             </script>
+
+
+            <script>
+                $('#editbut').on('click', function (e) {
+                    console.log('working');
+                    $(this).next('div').toggle();
+                    var text = document.getElementById('postcontent').innerHTML;
+                    tinymce.get('editing').setContent(text);
+                    $(document.getElementById('postcontent')).toggle();
+                });
+            </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 

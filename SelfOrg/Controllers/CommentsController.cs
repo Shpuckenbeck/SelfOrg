@@ -70,7 +70,15 @@ namespace SelfOrg.Controllers
                         model.userrating += your.rating*your.User.Weight;
                 }
             }
-            
+            //---------------------првоерка на доступность редактирования---------------------------
+            if (userid == post.UserId)
+            {
+                model.editable = true;
+            }
+            else
+            {
+                model.editable = false;
+            }
             return View(model);
         }
         [HttpPost]

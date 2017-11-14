@@ -17,6 +17,19 @@
     <div id="postcontent">
         @Html.Raw(Model.post.content)
     </div>
+    @{ 
+        if (Model.editable == true)
+        {
+
+    <div id="editform">
+        <input type="button" class="btn btn-default" id="editbut" value="Редактировать">
+        <div id="editcontrols" style="display:none">
+            <textarea name="editing"></textarea>
+        </div>
+    </div>
+            }
+
+        }
     <p>Теги: @await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
   
    
@@ -57,3 +70,4 @@
     </div>
 </div>
 <br />
+
