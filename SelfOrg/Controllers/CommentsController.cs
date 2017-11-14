@@ -106,6 +106,7 @@ namespace SelfOrg.Controllers
             changedpost.content = upmodel.postbody;
             changedpost.LastModified = DateTime.Now;
             _context.Update(changedpost);
+            _context.SaveChanges();
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == postid);
             model.post = post;           
