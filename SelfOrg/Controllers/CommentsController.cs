@@ -171,11 +171,6 @@ namespace SelfOrg.Controllers
             newcom.ReplyTo = com.CommentId;
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
-            //CommentViewModel model = new CommentViewModel();
-            //var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == com.PostId);
-            //model.post = post;
-            //model.comments = _context.Comments.Where(p => p.PostId == com.PostId);
-            //return RedirectToAction("Index");
             CommentsModel model = new CommentsModel();
             model.comments = _context.Comments.Where(p => p.PostId == com.PostId).Include(p => p.User);
             return PartialView("postcomments", model);
@@ -206,11 +201,56 @@ namespace SelfOrg.Controllers
                 await _context.SaveChangesAsync();
             }
             Math.Round(result, 3);
-            Post ratedpost = await _context.Posts.SingleOrDefaultAsync(p => p.PostID == Convert.ToInt32(ratings[0].post));
+            int theid = Convert.ToInt32(ratings[0].post);
+            Post ratedpost = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == theid);
             ratedpost.rating += result;
             _context.Update(ratedpost);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            //---- 
+            CommentViewModel model = new CommentViewModel();
+            model.post = ratedpost;
+            model.crits = _context.CatCrits.Where(p => p.CategoryId == ratedpost.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
+            var rates = _context.Ratings.Where(p => p.PostId == theid).Include(p => p.User);
+            float sum = 0;
+            foreach (Rating item in rates)
+            {
+                sum += item.rating * item.User.Weight;
+            }
+            model.post.rating = sum;
+            //--------------------------проверка на доступность оценки---------------------------------
+            model.rateable = true;
+            if (ratedpost.UserId == userid)
+            {
+                model.rateable = false;
+            }
+            else
+            {
+                bool check = _context.Ratings.Any(p => (p.PostId == ratedpost.PostID) && (p.UserId == userid));
+                if (check == true)
+                {
+                    model.rateable = false;
+                }
+                else model.rateable = true;
+            }
+            model.userrating = 0;
+            if (model.rateable == false)
+            {
+                foreach (Rating your in rates)
+                {
+                    if (your.UserId == userid)
+                        model.userrating += your.rating * your.User.Weight;
+                }
+            }
+            //---------------------првоерка на доступность редактирования---------------------------
+            if (userid == ratedpost.UserId)
+            {
+                model.editable = true;
+            }
+            else
+            {
+                model.editable = false;
+            }
+            return PartialView("posthead", model);
         }
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)

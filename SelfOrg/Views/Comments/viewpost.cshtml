@@ -207,7 +207,9 @@ tinymce.init({
                             
                         }
 
-                    })
+                    }).done(function (partialViewResult) {
+                        $("#headdiv").html(partialViewResult);
+                    });
                 }
             </script>
             <script>

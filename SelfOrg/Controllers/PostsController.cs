@@ -124,6 +124,7 @@ namespace SelfOrg.Controllers
                 var addedpost = await _context.Posts.SingleOrDefaultAsync(m => m.PostSlug == postslug); //находим id нового поста
                 addedpost.PostSlug += "-" +addedpost.PostID.ToString(); //уникальность слагов
                 _context.Update(addedpost);
+                int redir = addedpost.PostID;
                 foreach (string separtag in rawtags) //добавление, если необходимо, тегов
                 {
                     string tagname;
@@ -163,7 +164,7 @@ namespace SelfOrg.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Redirect("/Comments/viewpost/"+redir);
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CatName", model.Cat);
            
