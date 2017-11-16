@@ -32,7 +32,7 @@ namespace SelfOrg.Controllers
             doc.LoadHtml(input);
             //Regex.Replace(input, "<.*?>", string.Empty);
             string text = doc.DocumentNode.InnerText;
-            result = Truncate(text, 500);
+            result = Truncate(text, 200);
             return result;
         }
 

@@ -51,12 +51,34 @@
                    <a asp-action="user" asp-route-id="@item.User.UserName">@item.User.displayedname</a>
                 </td>
                 <td>
-                    @*<a asp-action="Edit" asp-route-id="@item.PostID">Edit</a> |*@
+                    <a asp-action="Edit" asp-route-id="@item.PostID">Edit</a> |
                     <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.PostID">Читать полностью</a> 
-                    @*<a asp-action="Delete" asp-route-id="@item.PostID">Delete</a>*@
+                    <a asp-action="Delete" asp-route-id="@item.PostID">Delete</a>
                 </td>
             </tr>
 
         }
     </tbody>
 </table>
+@*@{ 
+    foreach (var item in Model)
+    {
+        <div class="post">
+            <div class="postside">
+                <span class="rating" style="vertical-align: middle">@item.rating</span>
+            </div>
+            <div class="postmain">
+                <span class="title" style=" vertical-align: middle">@item.PostName</span>
+                <br />
+
+                <span>@item.User.displayedname</span> <span>@item.PostDate</span>
+            </div>
+        </div>
+        <br />
+        <br />
+
+    }
+}
+
+
+<link rel="stylesheet" href="~/css/main.css" />*@
