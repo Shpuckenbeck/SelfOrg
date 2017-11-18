@@ -1,0 +1,9 @@
+﻿.parentcomment {
+    position: relative;
+    left: 1px;
+}
+
+.childcomment {
+    position: relative;
+    left: 10px;
+}
