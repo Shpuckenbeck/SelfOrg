@@ -8,18 +8,24 @@
     {
 
         <div id="comment-@item.CommentId" class="parentcomment">
-            <div id="info-@item.CommentId" class="info">
-                <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
-                @Html.DisplayFor(modelItem => item.User.displayedname) написал
-                @Html.DisplayFor(modelItem => item.CommentDate) :
-                <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
+            <div id="comrate" class="voting">
+                <input type="image" src="~/images/updoot.svg" class="inactive" id="uparrow" height="12" width="12"/>
+                <br />
+                <input type="image" src="~/images/downdoot.svg" class="inactive" id="downarrow" height="12" width="12" />
             </div>
-            <div id="message-@item.CommentId" class="message">
-                <span> @Html.Raw(@item.Text)</span>
-                <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+           
+                <div id="info-@item.CommentId" class="info">
+                    <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
+                    @Html.DisplayFor(modelItem => item.User.displayedname) написал
+                    @Html.DisplayFor(modelItem => item.CommentDate) :
+                    <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
+                </div>
+                <div id="message-@item.CommentId" class="message">
+                    <span> @Html.Raw(@item.Text)</span>
+                    <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+                </div>
             </div>
-
-        </div>
+        
         if (item.ReplyTo != null)
         {
 

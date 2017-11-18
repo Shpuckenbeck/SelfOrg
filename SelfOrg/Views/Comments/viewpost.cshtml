@@ -33,7 +33,7 @@
         <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
         <script type="text/javascript" src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
         <link rel="stylesheet" href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
-        <link rel="stylesheet" href="~/css/commentstyle.css" />
+        <link rel="stylesheet" href="~/css/poststyle.css" />
         <script>
 tinymce.init({
                 theme: "modern",
@@ -219,6 +219,7 @@ tinymce.init({
                     var name = "comment-" + id;
                     var toggleddiv = document.getElementById(name);
                     $(toggleddiv).find(' >.message').toggle();
+                    $(toggleddiv).find(' >.voting').toggle();
                     var toggledinfo = document.getElementById("info-" + id);
                     $(toggledinfo).find(' >.placeholder').toggle();
                     var linkname = "#toggle-" + id;
