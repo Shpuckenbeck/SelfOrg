@@ -9,9 +9,10 @@
 
         <div id="comment-@item.CommentId" class="parentcomment">
             <div id="comrate" class="voting">
-                <input type="image" src="~/images/updoot.svg" class="inactive" id="uparrow" height="12" width="12"/>
-                <br />
-                <input type="image" src="~/images/downdoot.svg" class="inactive" id="downarrow" height="12" width="12" />
+                <input type="image" src="~/images/updoot.svg" class="upvote inactive" id="uparrow" onclick="arrowchange(this)" height="12" width="12"/>
+                 +1
+              
+                <input type="image" src="~/images/downdoot.svg" class="upvote inactive" id="downarrow" onclick="arrowchange(this)" height="12" width="12" />
             </div>
            
                 <div id="info-@item.CommentId" class="info">
