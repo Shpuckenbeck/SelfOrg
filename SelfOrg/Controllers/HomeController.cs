@@ -31,6 +31,10 @@ namespace SelfOrg.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).OrderByDescending(p => p.PostDate);
+            foreach (Post item in applicationDbContext)
+            {
+                item.rating = Convert.ToSingle(Math.Round(item.rating, 3));
+            }
             //var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Post.PostTags).Include(p => p.Tag);
             return View(await applicationDbContext.ToListAsync());
         }

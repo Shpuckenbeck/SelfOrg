@@ -19,5 +19,6 @@ namespace SelfOrg.Models
     public class CommentsModel
     {
         public IQueryable<Comment> comments { get; set; }
+        public int[] commrates { get; set; } //оценки комментариев ДАННЫМ пользователем
     }
 }

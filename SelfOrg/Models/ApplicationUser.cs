@@ -90,6 +90,7 @@ namespace SelfOrg.Models
         [DataType(DataType.Date)]
         [Display(Name = "Опубликовано")]
         public DateTime CommentDate { get; set; }
+        public int rating { get; set; } //не дублирует commrates; она нужна только для отслеживания
         [Required(ErrorMessage = "Укажите пост")]
         [Display(Name = "Пост")]
         public int PostId { get; set; }
@@ -176,5 +177,15 @@ namespace SelfOrg.Models
         public int CriterionId { get; set; }
         public Criterion Criterion { get; set; }
         public Priority prio { get; set; }
+    }
+
+    public class CommRate //рейтинг комментария
+    {
+        public int CommRateId { get; set; }
+        public int value { get; set; }
+        public int CommentId { get; set; }
+        public Comment Comment { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }

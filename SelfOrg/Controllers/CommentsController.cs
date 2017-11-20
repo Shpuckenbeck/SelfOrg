@@ -177,6 +177,64 @@ namespace SelfOrg.Controllers
 
         }
         [HttpPost]
+        public async Task<IActionResult> ratecom([FromBody] CommentRateModel ratemodel)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            int commid = Convert.ToInt32(ratemodel.commentid);
+            int value;
+            if (ratemodel.action == "up")
+            {
+                value = 1;
+            }
+            else
+            {
+                value = -1;
+            }
+            string uid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            CommRate existing = _context.CommRates.SingleOrDefault(p => ((p.CommentId == commid) && (p.UserId == uid))); //оценивался ли комментарий ранее
+            Comment rated = _context.Comments.Single(p => p.CommentId == commid);
+            if (existing == null) //если оценки ещё не было
+            {
+                CommRate added = new CommRate();
+                added.CommentId = commid;
+                added.UserId = uid;
+                added.value = value;
+                _context.CommRates.Add(added);
+                await _context.SaveChangesAsync();
+                rated.rating += value;
+                _context.Update(rated);
+                await _context.SaveChangesAsync();
+            }
+            else //если оценка уже была
+            {
+                //rated.rating -= value;
+                //_context.Update(rated);
+                //await _context.SaveChangesAsync();
+                if (existing.value == value) //если оценка совпадает
+                {
+                    rated.rating -= value;
+                    _context.Update(rated); //откатили рейтинг
+                    await _context.SaveChangesAsync();
+                    _context.CommRates.Remove(existing); //убрали оценку из базы
+                    await _context.SaveChangesAsync();
+                }
+                else //не совпадает - меняем лайк на дизлайк или наоборот
+                {
+                    existing.value = value; //просто закидываем новое значение
+                    _context.Update(existing);
+                    await _context.SaveChangesAsync();
+                    rated.rating += value * 2;
+                    _context.Update(rated);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            CommentsModel model = new CommentsModel();
+            model.comments = _context.Comments.Where(p => p.PostId == rated.PostId).Include(p => p.User);
+            return PartialView("postcomments", model);
+
+        }
+
+        [HttpPost]
         public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) 
         {
             ClaimsPrincipal currentUser = this.User;

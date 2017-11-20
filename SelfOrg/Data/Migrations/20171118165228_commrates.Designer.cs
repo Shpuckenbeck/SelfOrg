@@ -9,9 +9,10 @@ using SelfOrg.Models;
 namespace SelfOrg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171118165228_commrates")]
+    partial class commrates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -177,8 +178,6 @@ namespace SelfOrg.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("UserId");
-
-                    b.Property<int>("rating");
 
                     b.HasKey("CommentId");
 

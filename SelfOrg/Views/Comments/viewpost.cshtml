@@ -276,6 +276,32 @@ tinymce.init({
             </script>
 
             <script>
+                vote = function (arrow, id)
+                {
+                    obj = new Object();
+                    obj.action = arrow.id;
+                    obj.commentid = id;
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/ratecom/",
+                        data: JSON.stringify(obj),
+                        success: function (result) {
+                            console.log(obj);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
+
+                }
+            </script>
+
+            <script>
                 var updatepost = function (id)
                 {
                     var update = new Object();

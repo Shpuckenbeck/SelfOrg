@@ -25,6 +25,7 @@ namespace SelfOrg.Data
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Multiplier> Multipliers { get; set; }
         public DbSet<CatCrit> CatCrits { get; set; }
+        public DbSet<CommRate> CommRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
