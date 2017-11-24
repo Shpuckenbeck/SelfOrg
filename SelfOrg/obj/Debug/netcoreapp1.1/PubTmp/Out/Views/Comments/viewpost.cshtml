@@ -6,7 +6,10 @@
 
 @Html.Partial("posthead", Model)
 
+
 <div id="commentblock">
+    @{ if (Model.islogged == true)
+        {
     <h4>Есть что добавить?</h4>
     <div id="commentform">
 
@@ -22,8 +25,16 @@
             </div>
         </div>
     </div>
+        }
+        else
+        {
+            <p style="font-size: 130%">Для того, чтобы оставлять комментарии или оценки, пожалуйста, <a asp-controller="Account" asp-action="Login">войдите</a> или <a asp-controller="Account" asp-action="Register">зарегистрируйтесь</a></p>
+
+        }
+        }
 </div>
 <br />
+
 
 @Html.Partial("postcomments", Model.commmodel)
 
