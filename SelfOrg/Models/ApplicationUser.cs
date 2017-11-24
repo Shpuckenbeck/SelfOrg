@@ -145,8 +145,8 @@ namespace SelfOrg.Models
         [Display(Name = "Описание")]
         [Required(ErrorMessage = "Введите описание")]
         public string description { get; set; }
-        [Display(Name = "Важность")]
-        public Priority prio { get; set; }
+        //[Display(Name = "Важность")]
+        //public Priority prio { get; set; }
     }
 
     public class Rating 

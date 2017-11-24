@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZ6QtQulIr0a6amg8z+ifOgAAAAACAAAAAAAQZgAAAAEAACAAAAAX0ty4RSb6V3TOTO2kuv3VremZBoW3p1RGRhywdnZpsQAAAAAOgAAAAAIAACAAAABi427crxzSV++1y0YLM76p1a3uQxLlunZ3gSnkuJM1hYAAAAA4tt1SeajUpmYuSm+hQq/v8qdge1mGnDHbwDBVP/UZ53Nw5pKInRHg1AQFxoOvxEX7V0J9zn3WJStLhpoUA4W/oMHj6q4iDfiFy62oCa4q0VyENDi8eSQVx7Pso6tpf07hAEvZzLS/qQcgIXEv/F2Dgo8ihGiw7woF7BjTUY80kEAAAABnqrVppRazNGwakbZRab6KKKlCswMFPPrxbYh4O7BNjOWZaJGX4lOvmZQwG/60VvHTiAt1E7Ks/J+PrLwJr6/9</EncryptedPassword>
+    <_NewBackgroundProfile>False</_NewBackgroundProfile>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:selforgdbserver.database.windows.net,1433;Initial Catalog=SelfOrgWebDB;User Id=sqladmin@selforgdbserver;Password=ADGjmp2580</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZ6QtQulIr0a6amg8z+ifOgAAAAACAAAAAAAQZgAAAAEAACAAAAAX1LbZYCiyEgAwjgyg6vKrsX77NM/46aTWyBE5n71kFgAAAAAOgAAAAAIAACAAAACIgy0gnCE8/JqnkBs2rmnOFNBDrZfEqghM54Z4Nh+gAiAAAADBCa99QMZJGhpyQefNM2qtdxmi/mtWdMMotuLfZviiF0AAAACRvEpPK/bCBzNYPYjleGo8Uu/5TRzaGDSZXOxsQ021jb4eMErq7acWgwp5hW1+k4p+E4sbhFpQy+Im453ufdgH</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=SQL6002.site4now.net;Database=DB_A2E444_SelfOrgDB;User Id=DB_A2E444_SelfOrgDB_admin; Password=9758909a;</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

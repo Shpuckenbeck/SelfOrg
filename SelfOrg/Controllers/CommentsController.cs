@@ -45,40 +45,51 @@ namespace SelfOrg.Controllers
             }
             model.post.rating = sum;
             //--------------------------проверка на доступность оценки---------------------------------
-            ClaimsPrincipal currentUser = this.User;
-            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            model.rateable = true;
-            if (post.UserId == userid)
+
+            bool islogged = (User.Identity.IsAuthenticated); 
+            if (islogged)
             {
-                model.rateable = false;
-            }
-            else
-            {
-                bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
-                if (check == true)
+                ClaimsPrincipal currentUser = this.User;
+                string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+                model.rateable = true;
+                if (post.UserId == userid)
                 {
                     model.rateable = false;
                 }
-                else model.rateable = true;
-            }
-            model.userrating = 0;
-            if (model.rateable == false)
-            {
-                foreach (Rating your in ratings)
+                else
                 {
-                    if (your.UserId == userid)
-                        model.userrating += your.rating*your.User.Weight;
+                    bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
+                    if (check == true)
+                    {
+                        model.rateable = false;
+                    }
+                    else model.rateable = true;
+                }
+                model.userrating = 0;
+                if (model.rateable == false)
+                {
+                    foreach (Rating your in ratings)
+                    {
+                        if (your.UserId == userid)
+                            model.userrating += your.rating * your.User.Weight;
+                    }
+                }
+                //---------------------првоерка на доступность редактирования---------------------------
+                if (userid == post.UserId)
+                {
+                    model.editable = true;
+                }
+                else
+                {
+                    model.editable = false;
                 }
             }
-            //---------------------првоерка на доступность редактирования---------------------------
-            if (userid == post.UserId)
-            {
-                model.editable = true;
-            }
+
             else
             {
                 model.editable = false;
             }
+            model.islogged = islogged;
             return View(model);
         }
         [HttpPost]
@@ -118,41 +129,52 @@ namespace SelfOrg.Controllers
                 sum += item.rating * item.User.Weight;
             }
             model.post.rating = sum;
-            //--------------------------проверка на доступность оценки---------------------------------
-            ClaimsPrincipal currentUser = this.User;
-            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            model.rateable = true;
-            if (post.UserId == userid)
+           //--------------------------проверка на доступность оценки---------------------------------
+
+            bool islogged = (User.Identity.IsAuthenticated); 
+            if (islogged)
             {
-                model.rateable = false;
-            }
-            else
-            {
-                bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
-                if (check == true)
+                ClaimsPrincipal currentUser = this.User;
+                string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+                model.rateable = true;
+                if (post.UserId == userid)
                 {
                     model.rateable = false;
                 }
-                else model.rateable = true;
-            }
-            model.userrating = 0;
-            if (model.rateable == false)
-            {
-                foreach (Rating your in ratings)
+                else
                 {
-                    if (your.UserId == userid)
-                        model.userrating += your.rating * your.User.Weight;
+                    bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
+                    if (check == true)
+                    {
+                        model.rateable = false;
+                    }
+                    else model.rateable = true;
+                }
+                model.userrating = 0;
+                if (model.rateable == false)
+                {
+                    foreach (Rating your in ratings)
+                    {
+                        if (your.UserId == userid)
+                            model.userrating += your.rating * your.User.Weight;
+                    }
+                }
+                //---------------------првоерка на доступность редактирования---------------------------
+                if (userid == post.UserId)
+                {
+                    model.editable = true;
+                }
+                else
+                {
+                    model.editable = false;
                 }
             }
-            //---------------------првоерка на доступность редактирования---------------------------
-            if (userid == post.UserId)
-            {
-                model.editable = true;
-            }
+
             else
             {
                 model.editable = false;
             }
+            model.islogged = islogged;
             return PartialView("posthead", model);
 
         }

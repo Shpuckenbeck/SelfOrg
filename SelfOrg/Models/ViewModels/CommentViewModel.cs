@@ -14,6 +14,7 @@ namespace SelfOrg.Models
         public bool rateable { get; set; } //может ли пользователь оценить пост (если автор/уже голосовал - нет)
         public float userrating { get; set; } //оценка, данная пользователем посту - временное решение?
         public bool editable { get; set; } //определяет возможность редактирования поста
+        public bool islogged { get; set; } //залогинен ли
     }
 
     public class CommentsModel

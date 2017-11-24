@@ -1,0 +1,25 @@
+﻿.parentcomment {
+    position: relative;
+    left: 1px;
+}
+
+.childcomment {
+    position: relative;
+    left: 10px;
+}
+.head
+{
+    width: 750px;
+}
+.voting
+{
+    float: left;
+}
+.inactive
+{
+    opacity: 0.5;    
+}
+.active
+{
+    opacity: 1;
+}

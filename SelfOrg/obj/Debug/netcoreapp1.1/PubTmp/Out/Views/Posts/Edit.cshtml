@@ -1,0 +1,85 @@
+@model SelfOrg.Models.Post
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Post</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PostID" />
+        <div class="form-group">
+            <label asp-for="PostName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PostName" class="form-control" />
+                <span asp-validation-for="PostName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="content" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="content" class="form-control" />
+                <span asp-validation-for="content" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PostDescr" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PostDescr" class="form-control" />
+                <span asp-validation-for="PostDescr" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PostDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PostDate" class="form-control" />
+                <span asp-validation-for="PostDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PostSlug" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PostSlug" class="form-control" />
+                <span asp-validation-for="PostSlug" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastModified" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastModified" class="form-control" />
+                <span asp-validation-for="LastModified" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

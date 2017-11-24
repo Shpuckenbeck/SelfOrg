@@ -1,0 +1,65 @@
+﻿@model SelfOrg.Models.CommentViewModel
+
+
+<div id="headdiv" class="head">
+    <hr />
+
+    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<span style="font-style:italic; color:gray">(категория: @Model.post.Category.CatName)</span>
+    <br />
+    <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <time style="font-size: 90%">@Model.post.PostDate</time>
+    @{ 
+        if(Model.post.LastModified != null)
+        {
+            <span style="font-style: italic; font-size:70%">(изменён @Model.post.LastModified)</span>
+
+        }
+    }
+    <br />
+    <span style="font-weight: bold">Рейтинг: @Model.post.rating</span>
+    @if ((Model.rateable == false) && (Model.userrating != 0))
+    {
+        <span style="font-style: italic; font-size:90%">  (ваша оценка: @Model.userrating)</span>
+    }
+    <br />
+    <div id="postcontent">
+        @Html.Raw(Model.post.content)
+    </div>
+    @{ 
+        if (Model.editable == true)
+        {
+
+    <div id="editform">
+        <input type="button" class="btn btn-default" id="editbut" value="Редактировать">
+        <div id="editcontrols" style="display:none">
+            <br />
+            <textarea name="editing"></textarea>
+            <a href="javascript:void(0)" onclick="updatepost(@Model.post.PostID)">Сохранить</a>
+        </div>
+    </div>
+            }
+
+        }
+    <p>Теги: @await Component.InvokeAsync("PostTags", new { id = Model.post.PostID })</p>
+  
+   
+    @{if (@Model.rateable == true)
+        {
+            
+            <button class="btn btn-default" id="showbut">Оценить</button>
+            <div id="ratediv" class="well" style="display: none; background-color: white">
+                @foreach (var a in Model.crits)
+                {
+                    <p> @a.Criterion.name: </p> <b>-5</b>  <input id="rate-@a.CriterionId" class="valueslider" name="@a.CriterionId" weight="@Convert.ToInt32(a.prio)" data-slider-id="@a.CriterionId-slider" data-provide="slider"
+                                                                  data-slider-min="-5" data-slider-max="5" data-slider-step="1" data-slider-value="2" /><b>5</b>
+                }
+                <br />
+                <br />
+                <button class="btn btn-default" id="ratebut" onclick="submitrate(@Model.post.PostID)">Сохранить</button>
+            </div>
+        }
+    }
+    <hr />
+</div>
+
+
+

@@ -1,0 +1,332 @@
+﻿@model SelfOrg.Models.CommentViewModel
+
+    @{
+        ViewData["Title"] = Model.post.PostName;
+    }
+
+@Html.Partial("posthead", Model)
+
+<div id="commentblock">
+    <h4>Есть что добавить?</h4>
+    <div id="commentform">
+
+        <div class="row">
+            <div class="col-md-10" id="thecomment">
+                <textarea name="comment"></textarea>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-10">
+                <button class="btn btn-default" id="postbut" onclick="comment(@Model.post.PostID)">Оставить комментарий</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@Html.Partial("postcomments", Model.commmodel)
+
+@section Scripts {
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+        <link rel="stylesheet" href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+        <link rel="stylesheet" href="~/css/poststyle.css" />
+        <script>
+tinymce.init({
+                theme: "modern",
+                selector: 'textarea',
+                branding: false,
+                width: 550,
+                height: 90,
+                language: 'ru',
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media textcolor colorpicker contextmenu paste code'
+                ],
+                toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | link image',
+                image_title: true,
+                // enable automatic uploads of images represented by blob or data URIs
+                automatic_uploads: true,
+                // URL of our upload handler (for more details check: https://www.tinymce.com/docs/configure/file-image-upload/#images_upload_url)
+                images_upload_url: 'postAcceptor.php',
+                // here we add custom filepicker only to Image dialog
+                file_picker_types: 'image',
+                // and here's our custom image picker
+                file_picker_callback: function (cb, value, meta) {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+
+                    // Note: In modern browsers input[type="file"] is functional without
+                    // even adding it to the DOM, but that might not be the case in some older
+                    // or quirky browsers like IE, so you might want to add it to the DOM
+                    // just in case, and visually hide it. And do not forget do remove it
+                    // once you do not need it anymore.
+
+                    input.onchange = function () {
+                        var file = this.files[0];
+
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function () {
+                            // Note: Now we need to register the blob in TinyMCEs image blob
+                            // registry. In the next release this part hopefully won't be
+                            // necessary, as we are looking to handle it internally.
+                            var id = 'blobid' + (new Date()).getTime();
+                            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                            var blobInfo = blobCache.create(id, file, reader.result);
+                            blobCache.add(blobInfo);
+
+                            // call the callback and populate the Title field with the file name
+                            cb(blobInfo.blobUri(), { title: file.name });
+                        };
+                    };
+
+                    input.click();
+                },
+                content_css: '//www.tinymce.com/css/codepen.min.css'
+
+            });</script>
+            <script>
+                var replyto = function (commentid) {
+                    var div = document.createElement('div');
+                    div.id = "replydiv-" + commentid;
+        div.className = 'row';
+                div.innerHTML = '<form id="form-' + commentid +'"><textarea id="comment-' + commentid +'"/></textarea>\
+            <br />\
+        <input type="hidden" name="commentid" value='+ commentid +'>\
+         \
+        <input class="btn btn-primary" type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
+                var name = "comment-" + commentid;
+                document.getElementById(name).appendChild(div);       
+    }
+            </script>
+            <script>
+                var postreply = function (id)
+                {
+                    var getname = "comment-" + id;
+                    var test = $("textarea#" + getname).val();
+                    var output = new Object();
+                    output.id = id;
+                    output.comment = test;
+                    console.log(JSON.stringify(output));
+                    $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    url: "/Comments/reply/",
+                    data: JSON.stringify(output),
+                    success: function (result)
+                    {
+                        console.log(output);
+                    }
+                    }) 
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
+                }
+            </script>
+
+            <script>
+                var comment = function (id) {
+                    //var getname = "thecomment";
+                    //var test = $(getname).find('textarea').val();
+                    var output = new Object();
+                    output.id = id;
+                    output.comment = tinymce.activeEditor.getContent();
+                    tinymce.activeEditor.setContent("");
+                    console.log(JSON.stringify(output));
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/comment/",
+                        data: JSON.stringify(output),
+                        success: function (result) {
+                            console.log(output);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
+                }
+            </script>
+
+            <script>
+                $('#showbut').on('click', function (e) {
+                    $('#showbut')
+                        .parent()
+                        .find(' >.well')
+                        .toggle()
+                        .find('input')
+                        .slider('relayout');
+                    e.preventDefault();
+                });
+            </script>
+            <script>                
+                var submitrate = function (id) {
+
+                    var postdata = [];
+                    var counter = 0;
+                    $('.valueslider').each(function () {
+                        var name = $(this).attr('name');
+                        var value = $(this).val();
+                        var weight = $(this).attr('weight');
+                        postdata[counter] = {
+                            "criterion": name,
+                            "rating": value,
+                            "weight": weight,
+                            "post" : id
+
+                        }
+                        console.log(postdata[counter]);
+                        console.log(JSON.stringify(postdata));
+                        counter++;
+                        //console.log($(this).attr('id'));
+                    });
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/rate/",
+                        data: JSON.stringify(postdata),
+                        success: function (result) {
+                            
+                        }
+
+                    }).done(function (partialViewResult) {
+                        $("#headdiv").html(partialViewResult);
+                    });
+                }
+            </script>
+            <script>
+                var togglecomment = function (id)
+                {
+                    
+                    var name = "comment-" + id;
+                    var toggleddiv = document.getElementById(name);
+                    $(toggleddiv).find(' >.message').toggle();
+                    $(toggleddiv).find(' >.voting').toggle();
+                    var toggledinfo = document.getElementById("info-" + id);
+                    $(toggledinfo).find(' >.placeholder').toggle();
+                    var linkname = "#toggle-" + id;
+                    var currenttext = $(linkname).text();
+                    if (currenttext == '[-]')
+                    {
+                        $(linkname).text('[+]');
+                    }
+                    else {
+                        $(linkname).text('[-]');
+                    }
+
+                }
+            </script>
+
+            <script>
+                $('#editbut').on('click', function (e) {
+                    console.log('working');
+                    $(this).next('div').toggle();
+                    var text = document.getElementById('postcontent').innerHTML;
+                    tinymce.get('editing').setContent(text);
+                    $(document.getElementById('postcontent')).toggle();
+                    //if ($(this).text == 'Редактировать') {
+                    //    $(this).text('Отменить');
+                    //}
+                    //else
+                    //{
+                    //    $(this).text('Редактировать');
+
+                    //}
+                });
+            </script>
+
+            @*<script>
+                $('#uparrow').on('click', function (e) {
+                    console.log('upboated');
+                    $(this).toggleClass("inactive active");
+                    
+                });
+            </script>
+
+            <script>
+                $('#downarrow').on('click', function (e) {
+                    console.log('downboated');
+                    $(this).toggleClass("inactive active");
+                });
+            </script>*@
+            <script>
+                arrowchange = function (arrow)
+                {
+                    $(arrow).toggleClass("inactive active");
+
+                }
+            </script>
+
+            <script>
+                vote = function (arrow, id)
+                {
+                    obj = new Object();
+                    obj.action = arrow.id;
+                    obj.commentid = id;
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/ratecom/",
+                        data: JSON.stringify(obj),
+                        success: function (result) {
+                            console.log(obj);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#comments").html(partialViewResult);
+                        });
+
+
+                }
+            </script>
+
+            <script>
+                var updatepost = function (id)
+                {
+                    var update = new Object();
+                    update.postid = id;
+                    update.postbody = tinymce.get('editing').getContent();
+                    tinymce.get('editing').setContent('');
+                    console.log(JSON.stringify(update));
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Comments/editpost/",
+                        data: JSON.stringify(update),
+                        success: function (result) {
+                            console.log(update);
+                        }
+                    })
+                        .done(function (partialViewResult) {
+                            $("#headdiv").html(partialViewResult);
+                        });
+
+                }
+            </script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

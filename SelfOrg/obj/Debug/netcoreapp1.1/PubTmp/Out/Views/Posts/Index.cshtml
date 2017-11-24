@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SelfOrg.Models.Post>
+
+@{
+    ViewData["Title"] = "Посты";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Написать</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostDescr)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostDate)
+                </th>
+               
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostName)
+            </td>
+            <td>
+                @Html.Raw(@item.PostDescr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostDate)
+            </td>
+            <td>
+                <a asp-action="Sorting" asp-route-id="@item.Category.CategoryId">@item.Category.CatName</a>
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.displayedname)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PostID">Edit</a> |
+                <a asp-controller ="Comments" asp-action="viewpost" asp-route-id="@item.PostID">Подробно</a> |
+                <a asp-action="Delete" asp-route-id="@item.PostID">Delete</a>
+            </td>
+        </tr>
+
+}
+    </tbody>
+</table>

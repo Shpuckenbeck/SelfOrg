@@ -54,7 +54,7 @@ namespace SelfOrg.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CriterionId,name,description,prio")] Criterion criterion)
+        public async Task<IActionResult> Create([Bind("CriterionId,name,description")] Criterion criterion)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace SelfOrg.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CriterionId,name,description,prio")] Criterion criterion)
+        public async Task<IActionResult> Edit(int id, [Bind("CriterionId,name,description")] Criterion criterion)
         {
             if (id != criterion.CriterionId)
             {

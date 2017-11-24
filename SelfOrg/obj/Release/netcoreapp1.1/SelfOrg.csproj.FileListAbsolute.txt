@@ -1,0 +1,10 @@
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\bin\Release\netcoreapp1.1\SelfOrg.deps.json
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\bin\Release\netcoreapp1.1\SelfOrg.runtimeconfig.json
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\bin\Release\netcoreapp1.1\SelfOrg.runtimeconfig.dev.json
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\bin\Release\netcoreapp1.1\SelfOrg.dll
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\bin\Release\netcoreapp1.1\SelfOrg.pdb
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Release\netcoreapp1.1\SelfOrg.csprojResolveAssemblyReference.cache
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Release\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Release\netcoreapp1.1\SelfOrg.AssemblyInfo.cs
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Release\netcoreapp1.1\SelfOrg.dll
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Release\netcoreapp1.1\SelfOrg.pdb

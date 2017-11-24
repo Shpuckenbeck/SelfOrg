@@ -1,0 +1,51 @@
+﻿@model SelfOrg.Models.Post
+
+@{
+    ViewData["Title"] = "Пост";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Post</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PostName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.displayedname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.CatName)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.content)
+        </dt>
+        <dd>
+            @Html.Raw(Model.content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PostID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
