@@ -108,6 +108,11 @@ namespace SelfOrg.Controllers
             return RedirectToAction("Index");
 
         }
+        [HttpGet]
+        public IActionResult system()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> AddAvatar(IFormFile uploadedFile)
         {

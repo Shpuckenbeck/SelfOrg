@@ -152,16 +152,16 @@ namespace SelfOrg.Controllers
             model.category = _context.Categories.SingleOrDefault(p => p.CategoryId == id);
             model.crits = _context.Criteria;            
             model.prio = new Priority[_context.Criteria.Count()];
-            int count = 0;
-            foreach (Criterion item in _context.Criteria)
-            {
-                CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == id) && (p.CriterionId == item.CriterionId)));
-                if (check != null)
-                {
-                    model.prio[count] = check.prio;
-                }
-                count++;
-            }
+            //int count = 0;
+            //foreach (Criterion item in model.crits)
+            //{
+            //    CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == id) && (p.CriterionId == item.CriterionId)));
+            //    if (check != null)
+            //    {
+            //        model.prio[count] = check.prio;
+            //    }
+            //    count++;
+            //}
             return View(model);
         }
         [HttpPost]
