@@ -95,6 +95,11 @@ namespace SelfOrg.Controllers
             {
                 sum += item.rating*item.User.Weight;
             }
+            var comratings = _context.CommRates.Where(p => p.Comment.UserId == user.Id).Include(p => p.User);
+            foreach (CommRate item in comratings)
+            {
+                sum += Convert.ToSingle(item.value * 0.5); //меня напрягают приведения типов, от них стоит избавиться. Олсо не запилить ли раздельные счета за комменты и за посты?
+            }
             model.User.rating = sum;
             return View(model);
         }

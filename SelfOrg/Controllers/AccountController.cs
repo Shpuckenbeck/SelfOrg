@@ -136,7 +136,7 @@ namespace SelfOrg.Controllers
                 string shownname;
                 if (model.displayedname != null) shownname = model.displayedname;
                 else shownname = model.UserName;
-                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname };
+                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname, Weight = 1 };
                 //if (model.Avatar != null)
                 //{
                 //    string path = "/Files/" + model.Avatar.FileName;

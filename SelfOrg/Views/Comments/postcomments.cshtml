@@ -24,18 +24,26 @@
                 </div>
                 <div id="message-@item.CommentId" class="message">
                     <span> @Html.Raw(@item.Text)</span>
-                    <input class="btn btn-default" type="button" id="replybut-@item.CommentId" value="Ответить" onclick="replyto(@item.CommentId)" />
+                    <input class="btn btn-default" type="button" id="replybut" value="Ответить" onclick="replyto(this)" />
+                    <div id="replydiv" class="row"  style="display:none">
+                        <br/>
+                            <textarea id="comment-@item.CommentId"></textarea>
+            <br />
+       
+         
+        <input class="btn btn-primary" type="button" value="Ответ" onclick="postreply(@item.CommentId)">
+                    </div>
                 </div>
             </div>
-        
+
         if (item.ReplyTo != null)
         {
 
             <script>
               var name = "message-" + "@item.ReplyTo";
-              var childname = "comment-" + "@item.CommentId";
-              var childdiv = document.getElementById(childname);
-              childdiv.classList.remove('parentcomment');
+            var childname = "comment-" + "@item.CommentId";
+            var childdiv = document.getElementById(childname);
+            childdiv.classList.remove('parentcomment');
               childdiv.classList.add('childcomment');
               document.getElementById(name).appendChild(childdiv);
             </script>

@@ -104,24 +104,18 @@ tinymce.init({
 
             });</script>
             <script>
-                var replyto = function (commentid) {
-                    var div = document.createElement('div');
-                    div.id = "replydiv-" + commentid;
-        div.className = 'row';
-                div.innerHTML = '<form id="form-' + commentid +'"><textarea id="comment-' + commentid +'"/></textarea>\
-            <br />\
-        <input type="hidden" name="commentid" value='+ commentid +'>\
-         \
-        <input class="btn btn-primary" type="button" value="Ответ" onclick="postreply('+commentid+')"></form>';
-                var name = "comment-" + commentid;
-                document.getElementById(name).appendChild(div);       
-    }
+                   var replyto = function (mydiv)
+                {
+                    $(mydiv).parent().find(' >.row').toggle();
+                    var info = $(mydiv).attr('id');
+
+                }
             </script>
             <script>
                 var postreply = function (id)
                 {
                     var getname = "comment-" + id;
-                    var test = $("textarea#" + getname).val();
+                    var test = tinymce.get(getname).getContent();
                     var output = new Object();
                     output.id = id;
                     output.comment = test;
@@ -148,8 +142,6 @@ tinymce.init({
 
             <script>
                 var comment = function (id) {
-                    //var getname = "thecomment";
-                    //var test = $(getname).find('textarea').val();
                     var output = new Object();
                     output.id = id;
                     output.comment = tinymce.activeEditor.getContent();

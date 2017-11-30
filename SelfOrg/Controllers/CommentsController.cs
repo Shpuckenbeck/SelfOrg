@@ -188,7 +188,7 @@ namespace SelfOrg.Controllers
             int neededid = Convert.ToInt32(inmodel.id);
             Comment com = await _context.Comments.Where(p => p.CommentId == neededid).SingleOrDefaultAsync();
             newcom.PostId = com.PostId;
-            newcom.Text = "<p>" + inmodel.comment + "</p>";
+            newcom.Text = inmodel.comment;
             newcom.CommentDate = DateTime.Now;
             newcom.ReplyTo = com.CommentId;
             _context.Comments.Add(newcom);
