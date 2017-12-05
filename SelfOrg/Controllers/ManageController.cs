@@ -119,21 +119,23 @@ namespace SelfOrg.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddAvatar(IFormFile uploadedFile)
+        public async Task<IActionResult> AddAvatar(IFormFile uploads)
         {
-            if (uploadedFile != null)
+            if (uploads != null)
             {
                 // путь к папке Files
-                string path = "/Files/" + uploadedFile.FileName;
+                string path = "/Files/" + uploads.FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    await uploadedFile.CopyToAsync(fileStream);
+                    await uploads.CopyToAsync(fileStream);
                 }
-                Pic file = new Pic { Name = uploadedFile.FileName, Path = path};
+                Pic file = new Pic { Name = uploads.FileName, Path = path};
                 _context.Pics.Add(file);
+                _context.SaveChanges();
                 var user = await GetCurrentUserAsync();
                 user.Avatar = file.Path;
+                _context.Update(user);
                 _context.SaveChanges();
             }
 

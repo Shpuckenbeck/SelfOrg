@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using SelfOrg.Data;
 using SelfOrg.Models;
 using SelfOrg.Services;
+using FluentValidation.AspNetCore;
 
 namespace SelfOrg
 {
@@ -47,11 +48,14 @@ namespace SelfOrg
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            //services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserValidator>());
             services.AddMvc();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            //services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

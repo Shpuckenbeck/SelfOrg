@@ -5,11 +5,6 @@
 
 <h2>@ViewData["Title"]</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
-<h3>Выберите файл для загрузки</h3>
-<form asp-action="AddAvatar" asp-controller="Manage" method="post" enctype="multipart/form-data">
-    <input type="file" name="uploads" /><br>
-    <input type="submit" value="Загрузить" />
-</form>
 @*<div class="row">
     <div class="col-md-9">
         <div id="dropzone">
@@ -22,9 +17,9 @@
     </div>
 </div>*@
 <div>
-    <h4>Ваш профиль</h4>
+    <h3>Ваш профиль</h3>
     <hr />
-    <dl class="dl-horizontal">
+    @*<dl class="dl-horizontal">
 
         <dt>
             @Html.DisplayNameFor(model => model.User.UserName)
@@ -49,6 +44,8 @@
     </dt>
     <dd>
         <p><img style='width:90px; height:90px;' src="@Url.Content(Model.User.Avatar)"></p>
+
+        <a href="" onclick="avatoggle(this)">Изменить</a>
     </dd>
 
         <dt>Зарегистрирован</dt>
@@ -66,26 +63,36 @@
         <dd>
             @Html.DisplayFor(model => model.User.Weight)
         </dd>
-        </dl>
-    @*<input class="btn btn-default" type="button" id="recalculate" value="Пересчитать" onclick="recalc('@Model.User.rating')" />*@
-    <form asp-action="rateupdate" asp-controller="Manage" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="Rating" value="@Model.User.rating" /><br>
-        <input class="btn btn-default" type="submit" value="Пересчитать" />
-    </form>
+        </dl>*@
+    <div id="avatar" style="float:right; padding-top: 1px; height: auto; width:65%" >
+        <p><img style='width:140px; height:140px;' src="@Url.Content(Model.User.Avatar)"></p>
+        <a href="javascript: void(0)" onclick="avatoggle()">Изменить</a>
+        <div id="avaupdate" style="display:none; width: 20%" >
+            <form asp-action="AddAvatar" asp-controller="Manage" method="post" enctype="multipart/form-data">
+                <input type="file" name="uploads" /><br>
+                <input type="submit" value="Загрузить" />
+            </form>
+        </div>
+    </div>
+    <div id="userdata" style="float:left; width:35%">
+    <p style="font-size:150%">@Model.User.displayedname</p>
+        <p style="font-size:120%">Зарегистрирован @Model.User.RegDate</p>
+        <p><b>Полное имя</b> @Model.User.Surname  @Model.User.Name</p>
+        <p><b>Рейтинг</b> @Model.User.rating</p>
+        <p><b>Вес</b> @Model.User.Weight</p>
+      
+    </div>
     <br />
-    
-
-            <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Изменить профиль</a>
-
-
-        
-        
-           
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Изменить пароль</a>
-          
-
-
-    
+    @*<input class="btn btn-default" type="button" id="recalculate" value="Пересчитать" onclick="recalc('@Model.User.rating')" />*@
+    <div>
+        <form asp-action="rateupdate" asp-controller="Manage" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="Rating" value="@Model.User.rating" /><br>
+            <input class="btn btn-default" type="submit" value="Пересчитать" />
+        </form>
+        <br />
+        <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Изменить профиль</a>
+        <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Изменить пароль</a>
+    </div> 
 </div>
 @section Scripts{
 
@@ -113,6 +120,14 @@
 
     }
 </script>
+    <script>
+        var avatoggle = function ()
+        {
+            var avadiv = document.getElementById('avaupdate');
+            $(avadiv).toggle();
+
+        }
+    </script>
 
     @*<script src="~/js/dist/dropzone.js"></script>
 <link rel="stylesheet" href="~/js/dist/dropzone.css">*@

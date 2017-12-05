@@ -205,23 +205,7 @@ namespace SelfOrg.Controllers
                 {
                     model.editable = false;
                 }
-                //--------------------------состояние комментариев-----------------------------
-
-                int ratecount = 0;
-                model.commmodel.commrates = new int[model.commmodel.comments.Count()];
-                foreach (Comment selected in model.commmodel.comments) //проходим по комментариям к посту
-                {
-                    var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
-                    if (comrate != null)
-                    {
-                        model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
-                    }
-                    else
-                    {
-                        model.commmodel.commrates[ratecount] = 0;
-                    }
-                    ratecount++;
-                }
+               
             }
 
             else

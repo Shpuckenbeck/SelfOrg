@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace SelfOrg.Models
 {
@@ -15,6 +16,7 @@ namespace SelfOrg.Models
         High
     }
     // Add profile data for application users by adding properties to the User class
+    //[FluentValidation.Attributes.Validator(typeof(UserValidator))]
     public class User : IdentityUser
     {
         [Required(ErrorMessage = "Задайте имя")]

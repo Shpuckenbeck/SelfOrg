@@ -49,6 +49,8 @@
     </dt>
     <dd>
         <p><img style='width:90px; height:90px;' src="@Url.Content(Model.User.Avatar)"></p>
+
+        <a href="" onclick="avatoggle(this)">Изменить</a>
     </dd>
 
         <dt>Зарегистрирован</dt>
@@ -72,20 +74,9 @@
         <input type="hidden" name="Rating" value="@Model.User.rating" /><br>
         <input class="btn btn-default" type="submit" value="Пересчитать" />
     </form>
-    <br />
-    
-
-            <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Изменить профиль</a>
-
-
-        
-        
-           
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Изменить пароль</a>
-          
-
-
-    
+    <br />  
+            <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Изменить профиль</a> 
+                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Изменить пароль</a>    
 </div>
 @section Scripts{
 
