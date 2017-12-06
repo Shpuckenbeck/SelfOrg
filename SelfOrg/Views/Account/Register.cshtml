@@ -16,37 +16,39 @@
             <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         <label asp-for="displayedname" class="col-md-2 control-label"></label>
         <div class="col-md-10">
             <input asp-for="displayedname" class="form-control" />
             <span asp-validation-for="displayedname" class="text-danger"></span>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Name" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+    </div>*@
+    @*<p style="padding-top:-3px"><b>Зарегистрировать гостем:  &nbsp; </b> <input asp-for="guest" id="mybutton" onclick="toggleinfo()" type="checkbox" /></p>
+    <div id="notnecessary">*@
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Surname" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Surname" class="form-control" />
-            <span asp-validation-for="Surname" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="Surname" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
         </div>
-    </div>
+    @*</div>*@
 
     @*<p>
         <label>Аватар</label>
@@ -82,6 +84,16 @@
     </div>
 </form>
 
+<a asp-controller="Account" asp-action="RegisterGuest">Зарегистрироваться гостем</a>
+
 @section Scripts {
+    @*<script>
+        toggleinfo = function ()
+        {
+            $(document.getElementById('notnecessary')).toggle();
+           
+        }
+       
+    </script>*@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

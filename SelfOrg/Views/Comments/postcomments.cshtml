@@ -36,7 +36,8 @@
            
                 <div id="info-@item.CommentId" class="info">
                     <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
-                    @Html.DisplayFor(modelItem => item.User.displayedname) написал
+                    @*@Html.DisplayFor(modelItem => item.User.displayedname) написал*@
+                    <span class="@item.User.level" >@item.User.displayedname </span>написал
                     @Html.DisplayFor(modelItem => item.CommentDate) :
                     <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
                 </div>

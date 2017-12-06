@@ -23,3 +23,17 @@
 {
     opacity: 1;
 }
+.guest
+{
+    color: gray;
+    opacity: 0.9;
+}
+.regular
+{
+    color: black;
+}
+.admin
+{
+    color: red;
+    font-weight: bold;
+}

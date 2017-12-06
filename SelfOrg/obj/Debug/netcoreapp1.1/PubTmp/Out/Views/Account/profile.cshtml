@@ -1,0 +1,42 @@
+@model User
+@{
+    ViewData["Title"] = "Профиль пользователя"+Model.displayedname;
+}
+
+<h2>@ViewData["Title"]</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h3>Ваш профиль</h3>
+    <hr />
+    <div id="avatar" style="float:right; padding-top: 1px; height: auto; width:65%">
+        <p><img style='width:140px; height:140px;' src="@Url.Content(Model.Avatar)"></p>
+     
+    </div>
+    <div id="userdata" style="float:left; width:35%">
+        <p style="font-size:150%">@Model.UserName</p>
+        <p style="font-size:120%">Зарегистрирован @Model.RegDate</p>
+        <p><b>Уровень</b> @Model.level</p>
+        @{ if (@Model.level != UserLevel.guest)
+            {
+                <p><b>Полное имя</b> @Model.Surname  @Model.Name</p>
+            }
+        }
+        <p><b>Рейтинг</b> @Model.rating</p>
+        <p><b>Вес</b> @Model.Weight</p>
+
+    </div>
+    <br />
+    @*<input class="btn btn-default" type="button" id="recalculate" value="Пересчитать" onclick="recalc('@Model.User.rating')" />*@
+ 
+</div>
+@section Scripts{
+
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+     
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+

@@ -10,19 +10,32 @@ using FluentValidation;
 namespace SelfOrg.Models
 {
     public enum Priority //важность критериев в оценке
-    {
+    {   [Display(Name ="Низкая")]
         Low,
+        [Display(Name = "Средняя")]
         Medium,
+        [Display(Name = "Высокая")]
         High
+    }
+    public enum UserLevel //уровень пользователя
+    {
+        [Display(Name = "Гость")]
+        guest,
+        [Display(Name = "Пользователь")]
+        regular,
+        [Display(Name = "Подтверждённый пользователь")]
+        confirmed,
+        [Display(Name = "Админ")]
+        admin
     }
     // Add profile data for application users by adding properties to the User class
     //[FluentValidation.Attributes.Validator(typeof(UserValidator))]
     public class User : IdentityUser
     {
-        [Required(ErrorMessage = "Задайте имя")]
+        //[Required(ErrorMessage = "Задайте имя")]
         [Display(Name = "Имя")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Задайте фамилию")]
+        //[Required(ErrorMessage = "Задайте фамилию")]
         [Display(Name = "Фамилия")]
         public string Surname { get; set; }
         [Required(ErrorMessage = "Задайте логин")]
@@ -43,6 +56,10 @@ namespace SelfOrg.Models
         public DateTime RegDate { get; set; }
         [Display(Name="Вес")]
         public float Weight { get; set; } //вес голоса пользователя
+        [Display(Name ="Уровень")]
+        public UserLevel level { get; set; }
+        [Display(Name = "Отчество")]
+        public string Middlename { get; set; }
     }
 
     public class Post

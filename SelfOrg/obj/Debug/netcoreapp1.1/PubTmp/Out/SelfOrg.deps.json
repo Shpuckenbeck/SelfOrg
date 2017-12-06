@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "18545048da3cefe89dbde240e8de52b9f1e96cba"
+    "signature": "c04e927b8bfab478d25c4b56ac3c81166dca86ca"
   },
   "compilationOptions": {
     "defines": [
@@ -24,6 +24,7 @@
       "selforg/1.0.0": {
         "dependencies": {
           "dropzone": "4.2.0",
+          "FluentValidation.AspNetCore": "7.2.1",
           "HtmlAgilityPack": "1.5.5",
           "Microsoft.ApplicationInsights.AspNetCore": "2.0.0",
           "Microsoft.AspNetCore": "1.1.1",
@@ -47,6 +48,30 @@
         }
       },
       "dropzone/4.2.0": {},
+      "fluentvalidation/7.2.1": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.0/FluentValidation.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.0/FluentValidation.dll": {}
+        }
+      },
+      "fluentvalidation.aspnetcore/7.2.1": {
+        "dependencies": {
+          "FluentValidation": "7.2.1",
+          "Microsoft.AspNetCore.Mvc": "1.1.2",
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.6/FluentValidation.AspNetCore.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.6/FluentValidation.AspNetCore.dll": {}
+        }
+      },
       "htmlagilitypack/1.5.5": {
         "dependencies": {
           "NETStandard.Library": "1.6.1",
@@ -3400,6 +3425,20 @@
       "sha512": "sha512-DPgbwxoCOH4QIpZYZ0CNU0sAjP15LnkYhANItOoEjPJdeSzN2omYVqvjM6sM7F1EH+Ul4w6Fz8V8rgsdhAmKFg==",
       "path": "dropzone/4.2.0",
       "hashPath": "dropzone.4.2.0.nupkg.sha512"
+    },
+    "fluentvalidation/7.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cQza24pZdc1aPziHNPOazZzg2/5l8S1zbnIpjKMBq8kopRAGj+YXqGyP8Xo4OIqV16SccmzU1hhKV3Q7FyXglg==",
+      "path": "fluentvalidation/7.2.1",
+      "hashPath": "fluentvalidation.7.2.1.nupkg.sha512"
+    },
+    "fluentvalidation.aspnetcore/7.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-l5NME8hnSMs61vIQez0nEqmB5YBa88j+o+Q8ar9/ALaNKeVgyDtnjIIGy24N44Lwwd0LUMg/6hEwK+51T+iAoQ==",
+      "path": "fluentvalidation.aspnetcore/7.2.1",
+      "hashPath": "fluentvalidation.aspnetcore.7.2.1.nupkg.sha512"
     },
     "htmlagilitypack/1.5.5": {
       "type": "package",

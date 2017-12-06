@@ -292,6 +292,27 @@ tinymce.init({
             </script>
 
             <script>
+                getprofile = function (id, name)
+                {
+                    obj = new Object();
+                    obj.userid = id;
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/Account/profile/"+name,
+                        data: JSON.stringify(obj),
+                        success: function (result) {
+                            console.log(obj);
+                        }
+                    });
+
+                }
+            </script>
+
+            <script>
                 var updatepost = function (id)
                 {
                     var update = new Object();

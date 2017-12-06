@@ -74,7 +74,13 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
+        [HttpPost]
+        public IActionResult profile ([FromBody] PassProfileModel input)
+        {
+            string uid = input.userid;
+            var model = _context.User.Single(p => p.Id == uid);
+            return View(model);
+        }
         //
         // POST: /Account/Login
         [HttpPost]
@@ -133,10 +139,11 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                string shownname;
-                if (model.displayedname != null) shownname = model.displayedname;
-                else shownname = model.UserName;
-                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname, Weight = 1 };
+                //string shownname;
+                //if (model.displayedname != null) shownname = model.displayedname;
+                //else shownname = model.UserName;
+                string shownname = model.UserName;
+                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname, level = UserLevel.regular, Weight = 1 };
                 //if (model.Avatar != null)
                 //{
                 //    string path = "/Files/" + model.Avatar.FileName;
@@ -154,10 +161,47 @@ namespace SelfOrg.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                      return RedirectToAction("Index", "Users");
+                      return RedirectToAction("Index", "Manage");
                 }
                 else
                 AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+       
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterGuest(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterGuest(GuestRegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+              
+                string shownname = model.UserName;
+                var user = new User { UserName = model.UserName, displayedname = shownname, level = UserLevel.guest, Weight = 1 };
+                
+                user.Avatar = "/Files/defaultpic.jpg";
+                user.RegDate = DateTime.Now;
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Manage");
+                }
+                else
+                    AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
