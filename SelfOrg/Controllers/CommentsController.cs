@@ -88,17 +88,19 @@ namespace SelfOrg.Controllers
 
                 int ratecount = 0;
                 model.commmodel.commrates = new int[model.commmodel.comments.Count()];
+                //var theserates = _context.CommRates.Where(p => p.UserId == userid).Include(p => p.Comment)
                 foreach (Comment selected in model.commmodel.comments) //проходим по комментариям к посту
                 {
-                    var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
-                    if (comrate != null)
-                    {
-                        model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
-                    }
-                    else
-                    {
-                        model.commmodel.commrates[ratecount] = 0;
-                    }
+                    //var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
+                    //if (comrate != null)
+                    //{
+                    //    model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
+                    //}
+                    //else
+                    //{
+                    //    model.commmodel.commrates[ratecount] = 0;
+                    //}
+                    model.commmodel.commrates[ratecount] = 0;
                     ratecount++;
                 }
             }
@@ -133,15 +135,16 @@ namespace SelfOrg.Controllers
             model.commrates = new int[model.comments.Count()];
             foreach (Comment selected in model.comments) //проходим по комментариям к посту
             {
-                var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
-                if (comrate != null)
-                {
-                    model.commrates[ratecount] = comrate.value; //если есть - записываем
-                }
-                else
-                {
-                    model.commrates[ratecount] = 0;
-                }
+                //var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
+                //if (comrate != null)
+                //{
+                //    model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
+                //}
+                //else
+                //{
+                //    model.commmodel.commrates[ratecount] = 0;
+                //}
+                model.commrates[ratecount] = 0;
                 ratecount++;
             }
             return PartialView("postcomments", model);
@@ -240,15 +243,16 @@ namespace SelfOrg.Controllers
             model.commrates = new int[model.comments.Count()];
             foreach (Comment selected in model.comments) //проходим по комментариям к посту
             {
-                var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
-                if (comrate != null)
-                {
-                    model.commrates[ratecount] = comrate.value; //если есть - записываем
-                }
-                else
-                {
-                    model.commrates[ratecount] = 0;
-                }
+                //var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
+                //if (comrate != null)
+                //{
+                //    model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
+                //}
+                //else
+                //{
+                //    model.commmodel.commrates[ratecount] = 0;
+                //}
+                model.commrates[ratecount] = 0;
                 ratecount++;
             }
             return PartialView("postcomments", model);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,12 +11,8 @@ using Microsoft.Extensions.Options;
 using SelfOrg.Models;
 using SelfOrg.Models.AccountViewModels;
 using SelfOrg.Services;
-using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
-using System.Diagnostics;
 using SelfOrg.Data;
 
 namespace SelfOrg.Controllers

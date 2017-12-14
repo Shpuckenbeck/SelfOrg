@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZ6QtQulIr0a6amg8z+ifOgAAAAACAAAAAAAQZgAAAAEAACAAAACaeu/nLwzN4nCE6KGKuOhQecTYwq72Fdd2ywGJMRWIBwAAAAAOgAAAAAIAACAAAAAOG9QZ8hs/qT0SJuqKOWbb62/tzl3ItOGnRQ/v8NiRzoAAAADultP514UPXwbw2p36f0++ZPF139FRhdT7fSC4gdlMeQ5Ezuz9fVRJgRgTL1o5MhMkqCpKZPc8hsRj67qdX9w03rJMIIV7fGYSxu145awJ8v0MLpDrI3LR472RL3o7Q8MJKh7Z2CyQVZCZwReNwVeShCKSNVGjQRf1LrtWHA7dPkAAAABiXCzT09BlllpWiwi6+igVGG2X+U1EsI4v3GWKhF5/0rrVPOEXPmIQ6CD8IEK/JJMkGPyHsnIK8zvqbaRB9LtU</EncryptedPassword>
+    <_NewBackgroundProfile>False</_NewBackgroundProfile>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:self-org2017dbserver.database.windows.net,1433;Initial Catalog=Self-Org2017_db;User Id=dbadmin@self-org2017dbserver;Password=ADGjmp2580</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="SelfOrg.Data.ApplicationDbContext">
+      <Value>Data Source=tcp:self-org2017dbserver.database.windows.net,1433;Initial Catalog=Self-Org2017_db;User Id=dbadmin@self-org2017dbserver;Password=ADGjmp2580</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
