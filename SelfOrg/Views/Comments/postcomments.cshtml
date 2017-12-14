@@ -10,7 +10,12 @@
         <div id="comment-@item.CommentId" class="parentcomment">
            
             <div id="comrate" class="voting">
-                @{ if (Model.commrates[index] == 0)
+                @{ if (Model.islogged == false)
+                    { <input type="image" src="~/images/updoot.svg" disabled class="inactive" id="up" onclick="vote(this, @item.CommentId)" height="12" width="12" />
+                    @item.rating
+
+                        <input type="image" src="~/images/downdoot.svg" disabled class="inactive" id="down" onclick="vote(this, @item.CommentId)" height="12" width="12" /> }
+                    else if (Model.commrates[index] == 0)
                     { <input type="image" src="~/images/updoot.svg" class="inactive" id="up" onclick="vote(this, @item.CommentId)" height="12" width="12" />
                     @item.rating
 
@@ -43,7 +48,11 @@
                 </div>
                 <div id="message-@item.CommentId" class="message">
                     <span> @Html.Raw(@item.Text)</span>
+                    @{if (@Model.islogged == true)
+                        {
                     <input class="btn btn-default" type="button" id="replybut" value="Ответить" onclick="replyto(this)" />
+                            }
+                        }
                     <div id="replydiv" class="row"  style="display:none">
                         <br/>
                             <textarea id="comment-@item.CommentId"></textarea>

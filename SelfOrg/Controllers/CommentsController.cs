@@ -46,7 +46,9 @@ namespace SelfOrg.Controllers
             model.post.rating = sum;
             //--------------------------проверка на доступность оценки---------------------------------
 
-            bool islogged = (User.Identity.IsAuthenticated); 
+            bool islogged = (User.Identity.IsAuthenticated);
+
+            model.commmodel.islogged = islogged; //чек на логин и в модели комментариев
             if (islogged)
             {
                 ClaimsPrincipal currentUser = this.User;
@@ -127,6 +129,7 @@ namespace SelfOrg.Controllers
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
             CommentsModel model = new CommentsModel();
+            model.islogged = true;
             model.comments = _context.Comments.Where(p => p.PostId == properid).Include(p => p.User);
 
             //--------------------------состояние комментариев-----------------------------
@@ -236,6 +239,7 @@ namespace SelfOrg.Controllers
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
             CommentsModel model = new CommentsModel();
+            model.islogged = true;
             model.comments = _context.Comments.Where(p => p.PostId == com.PostId).Include(p => p.User);
             //--------------------------состояние комментариев-----------------------------
 
@@ -311,6 +315,7 @@ namespace SelfOrg.Controllers
                 }
             }
             CommentsModel model = new CommentsModel();
+            model.islogged = true;
             model.comments = _context.Comments.Where(p => p.PostId == rated.PostId).Include(p => p.User);
             //--------------------------состояние комментариев-----------------------------
 
@@ -318,15 +323,16 @@ namespace SelfOrg.Controllers
             model.commrates = new int[model.comments.Count()];
             foreach (Comment selected in model.comments) //проходим по комментариям к посту
             {
-                var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == uid))); //для каждого ищем оценку, данную этим пользователем
-                if (comrate != null)
-                {
-                    model.commrates[ratecount] = comrate.value; //если есть - записываем
-                }
-                else
-                {
-                    model.commrates[ratecount] = 0;
-                }
+                //var comrate = _context.CommRates.SingleOrDefault(p => ((p.CommentId == selected.CommentId) && (p.UserId == userid))); //для каждого ищем оценку, данную этим пользователем
+                //if (comrate != null)
+                //{
+                //    model.commmodel.commrates[ratecount] = comrate.value; //если есть - записываем
+                //}
+                //else
+                //{
+                //    model.commmodel.commrates[ratecount] = 0;
+                //}
+                model.commrates[ratecount] = 0;
                 ratecount++;
             }
             return PartialView("postcomments", model);
