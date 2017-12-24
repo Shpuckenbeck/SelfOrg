@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.PostDate)
             </td>
             <td>
-                <a asp-action="Sorting" asp-route-id="@item.Category.CategoryId">@item.Category.CatName</a>
+                <a asp-action="category" asp-route-id="@item.Category.CategoryId">@item.Category.CatName</a>
                 
             </td>
             <td>

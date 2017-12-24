@@ -1,42 +1,12 @@
 ﻿@model IEnumerable<SelfOrg.Models.Category>
-
-@{
-    ViewData["Title"] = "Index";
+    @{
+        ViewData["Title"] = "Категории";
+    }
+<h2>Все категории</h2>
+@foreach (var item in Model)
+{
+   <h3>@item.CatName</h3>
+   <h4>@item.CatDescr</h4>
+   <a asp-controller="Posts" asp-action="category" asp-route-id="@item.CategoryId">Постов в категории: @item.postcount</a>
 }
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CatName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CatDescr)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CatName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CatDescr)
-            </td>
-            <td>
-                <a asp-action="set" asp-route-id="@item.CategoryId">Настроить</a> |
-                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

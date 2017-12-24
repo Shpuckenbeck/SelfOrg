@@ -124,6 +124,7 @@ namespace SelfOrg.Models
         [Required(ErrorMessage = "Введите описание категории")]
         [Display(Name = "Описание")]
         public string CatDescr { get; set; }
+        public int postcount { get; set; } //количество постов в категории
     }
 
     public class Pic

@@ -162,7 +162,9 @@ namespace SelfOrg.Controllers
 
 
                 }
-
+                var Cat = _context.Categories.SingleOrDefault(p => p.CategoryId == model.Cat);
+                Cat.postcount++;
+                _context.Update(Cat);
                 await _context.SaveChangesAsync();
                 return Redirect("/Comments/viewpost/"+redir);
             }
@@ -250,6 +252,8 @@ namespace SelfOrg.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.SingleOrDefaultAsync(m => m.PostID == id);
+            var Cat = _context.Categories.SingleOrDefault(p => p.CategoryId == post.CategoryId);
+            Cat.postcount--;
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

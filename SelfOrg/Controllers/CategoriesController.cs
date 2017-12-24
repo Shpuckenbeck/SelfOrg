@@ -20,16 +20,16 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> tech()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
-        //public IActionResult all()
-        //{
-        //    var bucketlist = _context.Categories.Include(p => p.Post)
-        //        return null;
-        //}
+        public IActionResult Index()
+        {
+            var model = _context.Categories.ToList();
+                return View(model);
+        }
 
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
