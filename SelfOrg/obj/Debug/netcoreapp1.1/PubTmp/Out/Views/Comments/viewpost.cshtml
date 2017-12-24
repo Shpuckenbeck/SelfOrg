@@ -142,26 +142,34 @@ tinymce.init({
 
             <script>
                 var comment = function (id) {
-                    var output = new Object();
-                    output.id = id;
-                    output.comment = tinymce.activeEditor.getContent();
-                    tinymce.activeEditor.setContent("");
-                    console.log(JSON.stringify(output));
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        type: "POST",
-                        url: "/Comments/comment/",
-                        data: JSON.stringify(output),
-                        success: function (result) {
-                            console.log(output);
-                        }
-                    })
-                        .done(function (partialViewResult) {
-                            $("#comments").html(partialViewResult);
-                        });
+                    var text = tinymce.activeEditor.getContent();
+                    if (text == "") {
+                        var error = document.getElementById('errormsg');
+                        error.textContent = "Пожалуйста, введите текст комментария";
+
+                    }
+                    else {
+                        var output = new Object();
+                        output.id = id;
+                        output.comment = text;
+                        tinymce.activeEditor.setContent("");
+                        console.log(JSON.stringify(output));
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            url: "/Comments/comment/",
+                            data: JSON.stringify(output),
+                            success: function (result) {
+                                console.log(output);
+                            }
+                        })
+                            .done(function (partialViewResult) {
+                                $("#comments").html(partialViewResult);
+                            });
+                    }
 
                 }
             </script>

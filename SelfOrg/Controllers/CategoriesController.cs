@@ -25,6 +25,12 @@ namespace SelfOrg.Controllers
             return View(await _context.Categories.ToListAsync());
         }
 
+        //public IActionResult all()
+        //{
+        //    var bucketlist = _context.Categories.Include(p => p.Post)
+        //        return null;
+        //}
+
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -4,7 +4,7 @@
     ViewData["Title"] = Model.Last().Category.CatName;
 }
 
-<h3>@Model.Last().Category.CatName</h3>
+<h3>Записи категории "@Model.Last().Category.CatName"</h3>
 
 @{
     foreach (var item in Model)

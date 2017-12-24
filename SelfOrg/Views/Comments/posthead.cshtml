@@ -4,7 +4,7 @@
 <div id="headdiv" class="head">
     <hr />
 
-    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<span style="font-style:italic; color:gray">(категория: @Model.post.Category.CatName)</span>
+    <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<a asp-controller="Posts" asp-action="category" asp-route-id="@Model.post.Category.CategoryId" style="font-style:italic; color:gray">(категория: @Model.post.Category.CatName)</a>
     <br />
     <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <time style="font-size: 90%">@Model.post.PostDate</time>
     @{ 

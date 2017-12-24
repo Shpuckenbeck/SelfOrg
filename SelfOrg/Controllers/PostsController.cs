@@ -54,7 +54,7 @@ namespace SelfOrg.Controllers
         }
 
        
-        public async Task<IActionResult> Sorting(int id)
+        public async Task<IActionResult> category(int id)
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id).OrderByDescending(p => p.PostDate);
             return View(await applicationDbContext.ToListAsync());
