@@ -7,10 +7,10 @@ namespace SelfOrg.Models
 {
     public class CommentViewModel
     {
-        public Post post { get; set; }
-        public IQueryable<Comment> comments { get; set; }
-        public CommentsModel commmodel { get; set; }
-        public IQueryable<CatCrit> crits { get; set; }
+        public Post post { get; set; } //пост для просмотра
+        public IQueryable<Comment> comments { get; set; }//комментарии к этому посту. Не уверен, нужно ли оно сейчас
+        public CommentsModel commmodel { get; set; }//отдельно - модель для просмотра комментариев
+        public IQueryable<CatCrit> crits { get; set; }//критерии оценки
         public bool rateable { get; set; } //может ли пользователь оценить пост (если автор/уже голосовал - нет)
         public float userrating { get; set; } //оценка, данная пользователем посту - временное решение?
         public bool editable { get; set; } //определяет возможность редактирования поста
@@ -19,9 +19,9 @@ namespace SelfOrg.Models
 
     public class CommentsModel
     {
-        public IQueryable<Comment> comments { get; set; }
+        public IQueryable<Comment> comments { get; set; } //комментарии к этому посту
         public int[] commrates { get; set; } //оценки комментариев ДАННЫМ пользователем
-        public bool islogged { get; set; }
-        
+        public bool islogged { get; set; }//залогинен ли
+
     }
 }

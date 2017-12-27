@@ -20,12 +20,13 @@ using System.Security.Claims;
 using System.Diagnostics;
 using SelfOrg.Data;
 
-
+//-----------------------------------------Управление профилем
 namespace SelfOrg.Controllers
 {
     [Authorize]
     public class ManageController : Controller
-    {
+    { 
+        //----------------------------------Что-то системное-----------------------------
         private readonly ApplicationDbContext _context;
         IHostingEnvironment _appEnvironment;
         private readonly UserManager<User> _userManager;
@@ -62,7 +63,7 @@ namespace SelfOrg.Controllers
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(ManageMessageId? message = null) //открытие профиля текущего пользователя
         {
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Пароль обновлён"
@@ -89,13 +90,13 @@ namespace SelfOrg.Controllers
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 User = user
             };
-            var ratings = _context.Ratings.Where(p => p.Post.UserId == user.Id).Include(p => p.User);
+            var ratings = _context.Ratings.Where(p => p.Post.UserId == user.Id).Include(p => p.User); //здесь и далее высчитывается суммарный ретинг
             float sum = 0;
             foreach (Rating item in ratings)
             {
                 sum += item.rating*item.User.Weight;
             }
-            var comratings = _context.CommRates.Where(p => p.Comment.UserId == user.Id).Include(p => p.User);
+            var comratings = _context.CommRates.Where(p => p.Comment.UserId == user.Id).Include(p => p.User); //рейтинг комментариев учитывается, но оценивается вдвое меньше
             foreach (CommRate item in comratings)
             {
                 sum += Convert.ToSingle(item.value * 0.5); //меня напрягают приведения типов, от них стоит избавиться. Олсо не запилить ли раздельные счета за комменты и за посты?
@@ -104,11 +105,11 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> rateupdate(float Rating)
+        public async Task<IActionResult> rateupdate(float Rating) //пересчёт веса голоса
         {
-            var user = await GetCurrentUserAsync();
-            var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < Rating) && (p.Higher > Rating));
-            user.Weight = level.Mul;
+            var user = await GetCurrentUserAsync(); //берём текущего пользователя
+            var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < Rating) && (p.Higher > Rating)); //находим вес голоса, который соответствуе его рейтингу
+            user.Weight = level.Mul; //присваиваем, обновляем
             var result = await _userManager.UpdateAsync(user);
             return RedirectToAction("Index");
 
@@ -119,7 +120,7 @@ namespace SelfOrg.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddAvatar(IFormFile uploads)
+        public async Task<IActionResult> AddAvatar(IFormFile uploads) //установка аватара
         {
             if (uploads != null)
             {
@@ -130,11 +131,11 @@ namespace SelfOrg.Controllers
                 {
                     await uploads.CopyToAsync(fileStream);
                 }
-                Pic file = new Pic { Name = uploads.FileName, Path = path};
+                Pic file = new Pic { Name = uploads.FileName, Path = path}; //новая запись в таблице с изображениями 
                 _context.Pics.Add(file);
                 _context.SaveChanges();
                 var user = await GetCurrentUserAsync();
-                user.Avatar = file.Path;
+                user.Avatar = file.Path; //текущему пользователю прописываем путь до нового аватара
                 _context.Update(user);
                 _context.SaveChanges();
             }
@@ -142,7 +143,7 @@ namespace SelfOrg.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public async Task<IActionResult> UpdateUser()
+        public async Task<IActionResult> UpdateUser() 
         {
             var user = await GetCurrentUserAsync();
             UpdateUserViewModel model = new UpdateUserViewModel();
@@ -154,7 +155,7 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
+        public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)//обновление данных пользователя - стандартная
         {
             var user = await GetCurrentUserAsync();
 
@@ -167,6 +168,7 @@ namespace SelfOrg.Controllers
 
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.UpdateUserSuccess });
         }
+        //-------------------------------------------------------Стандартные методы---------------------------------------------------
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

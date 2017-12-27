@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
-
+//Важность критериев для категорий
 namespace SelfOrg.Controllers
 {
-    public class CatCritsController : Controller
+    public class CatCritsController : Controller //--------------------------------Используется только для отладки-------------------------------------------------------
     {
         private readonly ApplicationDbContext _context;
 

@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
-
+//Множители оценки, соответствующие текущему рейтингу пользователя
+//-------------------------------------------------------Стандартные методы---------------------------------------------------
 namespace SelfOrg.Controllers
 {
     public class MultipliersController : Controller

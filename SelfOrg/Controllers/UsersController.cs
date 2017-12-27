@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
-
+//пользователи
 namespace SelfOrg.Controllers
 {
     public class UsersController : Controller
@@ -18,7 +18,7 @@ namespace SelfOrg.Controllers
         {
             _context = context;    
         }
-
+        //-------------------------------------------------------Стандартные методы---------------------------------------------------
         // GET: Users
         public async Task<IActionResult> Index()
         {

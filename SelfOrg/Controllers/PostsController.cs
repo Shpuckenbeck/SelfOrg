@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
+//Посты
 namespace SelfOrg.Controllers
 {
     [Authorize]
@@ -19,20 +19,20 @@ namespace SelfOrg.Controllers
     {
         //SignInManager<User> SignInManager;
         //UserManager<User> UserManager;
-        public static string Truncate(string value, int maxLength)
+        public static string Truncate(string value, int maxLength) //метод укорачивания поста для предпросмотра
         {
             if (string.IsNullOrEmpty(value)) return value;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength); //если меньше максимальной длины, то ставим полностью, иначе - обрезаем
         }
 
-        public static string TruncBody (string input)
+        public static string TruncBody (string input) //создание предпросмотра
         {
             string result = null;
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(input);
             //Regex.Replace(input, "<.*?>", string.Empty);
-            string text = doc.DocumentNode.InnerText;
-            result = Truncate(text, 200);
+            string text = doc.DocumentNode.InnerText; //выкидываем HTML-разметку во избежание ошибок
+            result = Truncate(text, 200); //режем до 200 символов
             return result;
         }
 
@@ -46,7 +46,7 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() //стандартный метод
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
             //var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Post.PostTags).Include(p => p.Tag);
@@ -54,12 +54,12 @@ namespace SelfOrg.Controllers
         }
 
        
-        public async Task<IActionResult> category(int id)
+        public async Task<IActionResult> category(int id) //выбираем посты, принадлежащие к конкретной категории
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id).OrderByDescending(p => p.PostDate);
             return View(await applicationDbContext.ToListAsync());
         }
-        public async Task<IActionResult> tags(int id)
+        public async Task<IActionResult> tags(int id) //выбираем посты, содержащие конкретный тег
         {
             var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id).OrderByDescending(p => p.Post.PostDate);
             return View(await applicationDbContext.ToListAsync());
@@ -69,6 +69,7 @@ namespace SelfOrg.Controllers
         //    var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id);
         //    return PartialView(await applicationDbContext.ToListAsync());
         //}
+        //-------------------------------------------------------Стандартный метод---------------------------------------------------
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -100,22 +101,22 @@ namespace SelfOrg.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostViewModel model)
+        public async Task<IActionResult> Create(PostViewModel model) //создание поста
         {
             
             if (ModelState.IsValid)
             {
-                Post post = new Post();
+                Post post = new Post(); //создаём модель
                 post.PostName = model.Name;
                 post.CategoryId = model.Cat;
-                post.content = model.Text;
-                post.PostDescr = TruncBody(post.content);
+                post.content = model.Text; //кладём данные из входной модели
+                post.PostDescr = TruncBody(post.content); //обрезаем текст лоя создания првеью
                
                 ClaimsPrincipal currentUser = this.User;
                 var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-                post.UserId = currentUserID;
-                post.PostDate = DateTime.Now;
-                string postslug = Slugifier.Transliterate(post.PostName);
+                post.UserId = currentUserID; //автором ставим текущего пользователя
+                post.PostDate = DateTime.Now; //дата тоже текущая
+                string postslug = Slugifier.Transliterate(post.PostName); //создаётся slug-ссылка
                 postslug = Slugifier.Slugify(postslug);
                 post.PostSlug = postslug;
                 String[] rawtags = model.Tags.Split(','); //входная строка тегов разбивается запятыми на отдельные теги
@@ -163,7 +164,7 @@ namespace SelfOrg.Controllers
 
                 }
                 var Cat = _context.Categories.SingleOrDefault(p => p.CategoryId == model.Cat);
-                Cat.postcount++;
+                Cat.postcount++; //увеличиваем количество постов в категории, к которой принадлежит данный пост
                 _context.Update(Cat);
                 await _context.SaveChangesAsync();
                 return Redirect("/Comments/viewpost/"+redir);
@@ -172,7 +173,7 @@ namespace SelfOrg.Controllers
            
             return View(model);
         }
-
+        //-------------------------------------------------------Стандартные методы---------------------------------------------------
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -253,7 +254,7 @@ namespace SelfOrg.Controllers
         {
             var post = await _context.Posts.SingleOrDefaultAsync(m => m.PostID == id);
             var Cat = _context.Categories.SingleOrDefault(p => p.CategoryId == post.CategoryId);
-            Cat.postcount--;
+            Cat.postcount--; //удалили из категории пост - уменьшили счётчик постов
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

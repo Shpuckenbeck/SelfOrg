@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
-
+// атегории
 namespace SelfOrg.Controllers
 {
     public class CategoriesController : Controller
@@ -20,11 +20,11 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> tech()
+        public async Task<IActionResult> tech() //-------------------------------ќкно управлени€ категори€ми-----------------------------------------------
         {
             return View(await _context.Categories.ToListAsync());
         }
-
+        //-------------------------------------------------------—тандартные методы---------------------------------------------------
         public IActionResult Index()
         {
             var model = _context.Categories.ToList();
@@ -152,12 +152,12 @@ namespace SelfOrg.Controllers
         }
 
         [HttpGet]
-        public IActionResult set(int id)
+        public IActionResult set(int id) //Ќастройка важности критериев дл€ каждой категории
         {
             CatCritViewModel model = new CatCritViewModel();
-            model.category = _context.Categories.SingleOrDefault(p => p.CategoryId == id);
-            model.crits = _context.Criteria;            
-            model.prio = new Priority[_context.Criteria.Count()];
+            model.category = _context.Categories.SingleOrDefault(p => p.CategoryId == id); //выбор нужной категории
+            model.crits = _context.Criteria;   //выбор всех критериев         
+            model.prio = new Priority[_context.Criteria.Count()]; //сейчас не используетс€ из-за проблем с потоками Ѕƒ
             //int count = 0;
             //foreach (Criterion item in model.crits)
             //{
@@ -171,32 +171,32 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> set (CatCritViewModel model)
+        public async Task<IActionResult> set (CatCritViewModel model) //Ќастройка важности критериев дл€ каждой категории
         {
             int count = 0;
-            foreach (int item in model.critid)
+            foreach (int item in model.critid) //дл€ каждого задействованного критери€
             {
-                CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == model.catid) && (p.CriterionId == item)));  
-                if (check != null)
+                CatCrit check = _context.CatCrits.SingleOrDefault(p => ((p.CategoryId == model.catid) && (p.CriterionId == item)));  //провер€ем, задавалась ли важность ранее
+                if (check != null) //если да, то есть запись о приоритете данного критери€ дл€ данной категории существует
                 {
-                    check.prio = model.prio[count];
-                    _context.CatCrits.Update(check);
+                    check.prio = model.prio[count]; //обновл€ем эту запись
+                    _context.CatCrits.Update(check); //обновл€ем Ѕƒ
                     await _context.SaveChangesAsync();
                 }
-                else
+                else //если приоритет настраиваетс€ впервые
                 {
-                    CatCrit catcrit = new CatCrit();
-                    catcrit.CategoryId = model.catid;
+                    CatCrit catcrit = new CatCrit(); //создаЄтс€ нова€ запись
+                    catcrit.CategoryId = model.catid; //в неЄ помещаютс€ данные из модели
                     catcrit.CriterionId = item;
                     catcrit.prio = model.prio[count];
-                    _context.CatCrits.Add(catcrit);
+                    _context.CatCrits.Add(catcrit); //обавл€ем запись в Ѕƒ
                     await _context.SaveChangesAsync();
                 }
                 count++;
             }
             return RedirectToAction("Index");
         }
-
+        //--------------------------—тандартный метод---------------------------------------
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.CategoryId == id);

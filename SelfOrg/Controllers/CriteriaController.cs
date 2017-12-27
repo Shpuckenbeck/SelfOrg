@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
-
+//----------------------------------Управление критериями. Много-много стандартных методов--------------------------------------
 namespace SelfOrg.Controllers
 {
     public class CriteriaController : Controller

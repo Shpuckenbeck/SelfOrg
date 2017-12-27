@@ -14,7 +14,7 @@ using SelfOrg.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using SelfOrg.Data;
-
+//Вход, регистрация и прочее
 namespace SelfOrg.Controllers
 {
     [Authorize]
@@ -61,7 +61,7 @@ namespace SelfOrg.Controllers
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null) 
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
@@ -69,19 +69,19 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-        [HttpPost]
-        public IActionResult profile ([FromBody] PassProfileModel input)
-        {
-            string uid = input.userid;
-            var model = _context.User.Single(p => p.Id == uid);
-            return View(model);
-        }
+        //[HttpPost] //не используется
+        //public IActionResult profile ([FromBody] PassProfileModel input)
+        //{
+        //    string uid = input.userid;
+        //    var model = _context.User.Single(p => p.Id == uid);
+        //    return View(model);
+        //}
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null) //стандартный вход
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -118,7 +118,7 @@ namespace SelfOrg.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string returnUrl = null) 
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -129,29 +129,15 @@ namespace SelfOrg.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null) //регистрация пользователя
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                //string shownname;
-                //if (model.displayedname != null) shownname = model.displayedname;
-                //else shownname = model.UserName;
+                
                 string shownname = model.UserName;
-                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname, level = UserLevel.regular, Weight = 1 };
-                //if (model.Avatar != null)
-                //{
-                //    string path = "/Files/" + model.Avatar.FileName;
-                //    // сохраняем файл в папку Files в каталоге wwwroot
-                //    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                //    {
-                //        await model.Avatar.CopyToAsync(fileStream);
-                //    }
-                //    Pic file = new Pic { Name = model.Avatar.FileName, Path = path };
-                //    _context.Pics.Add(file);
-                //    user.Avatar = file.Path;
-                //}
-                user.Avatar = "/Files/defaultpic.jpg";
+                var user = new User { UserName = model.UserName, Email = model.Email, Name = model.Name, Surname = model.Surname, displayedname = shownname, level = UserLevel.regular, Weight = 1 }; //создание пользователя с обычным уровнем
+                user.Avatar = "/Files/defaultpic.jpg"; //установка стандартного аватара
                 user.RegDate = DateTime.Now;
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -179,14 +165,14 @@ namespace SelfOrg.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterGuest(GuestRegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> RegisterGuest(GuestRegisterViewModel model, string returnUrl = null) //регистрация гостя
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
               
                 string shownname = model.UserName;
-                var user = new User { UserName = model.UserName, displayedname = shownname, level = UserLevel.guest, Weight = 1 };
+                var user = new User { UserName = model.UserName, displayedname = shownname, level = UserLevel.guest, Weight = 1 }; //создание пользователя с уровнем гостя аналогично Register
                 
                 user.Avatar = "/Files/defaultpic.jpg";
                 user.RegDate = DateTime.Now;
@@ -202,7 +188,7 @@ namespace SelfOrg.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        //----------------------------------------------------------Много стандартных методов---------------------------------------------------------
         //
         // POST: /Account/Logout
         [HttpPost]

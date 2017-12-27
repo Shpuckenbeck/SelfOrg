@@ -7,7 +7,7 @@ namespace SelfOrg.Models
 {
     public class CommentRateModel
     {
-        public string commentid { get; set; }
-        public string action { get; set; }
+        public string commentid { get; set; } //id комментария
+        public string action { get; set; } //тип оценки
     }
 }

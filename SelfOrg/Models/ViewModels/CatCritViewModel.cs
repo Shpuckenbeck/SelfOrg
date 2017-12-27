@@ -7,13 +7,13 @@ namespace SelfOrg.Models
 {
     public class CatCritViewModel
     {
-        public Category category { get; set; }
-        public int catid { get; set; }
+        public Category category { get; set; } //категория
+        public int catid { get; set; } //отдельно - id категории
         [Display(Name="Критерий")]
-        public IQueryable<Criterion> crits { get; set; }
+        public IQueryable<Criterion> crits { get; set; } //доступные критерии
         //public List<CatCrit> catcrits { get; set; }
-        public int[] critid { get; set; }
-        public Priority[] prio { get; set; }
+        public int[] critid { get; set; } //отдельно - массив id критериев
+        public Priority[] prio { get; set; } //массив значений приоритета
     }
 
     //public class CritPostModel

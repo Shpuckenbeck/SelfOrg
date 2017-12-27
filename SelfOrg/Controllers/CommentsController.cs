@@ -10,7 +10,7 @@ using SelfOrg.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using SelfOrg.Components;
-
+//Комментарии
 namespace SelfOrg.Controllers
 {
     public class CommentsController : Controller
@@ -23,21 +23,21 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() //Стандартный
         {
             var applicationDbContext = _context.Comments.Include(c => c.Post).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
-        public async Task<IActionResult> viewpost(int id)
+        public async Task<IActionResult> viewpost(int id) //Просмотр поста
         {
-            CommentViewModel model = new CommentViewModel();
-            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id);
+            CommentViewModel model = new CommentViewModel(); //создаётся модель
+            var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == id); //выбор поста по id
             model.post = post;
             model.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User); //возможно, не нужно
-            model.commmodel = new CommentsModel();
-            model.commmodel.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User);
-            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion);
-            var ratings = _context.Ratings.Where(p => p.PostId == id).Include(p => p.User);
+            model.commmodel = new CommentsModel(); //создание модели комментариев
+            model.commmodel.comments = _context.Comments.Where(p => p.PostId == id).Include(p => p.User); //выбор комментариев к этому посту
+            model.crits = _context.CatCrits.Where(p => p.CategoryId == post.CategoryId).Include(p => p.Category).Include(p => p.Criterion); //выбор критериев
+            var ratings = _context.Ratings.Where(p => p.PostId == id).Include(p => p.User);//здесь и до следующего комментария вычисляется суммарный рейтинг поста
             float sum = 0;
             foreach (Rating item in ratings)
             {
@@ -46,29 +46,29 @@ namespace SelfOrg.Controllers
             model.post.rating = sum;
             //--------------------------проверка на доступность оценки---------------------------------
 
-            bool islogged = (User.Identity.IsAuthenticated);
+            bool islogged = (User.Identity.IsAuthenticated); //првоерка, есть ли вход
 
             model.commmodel.islogged = islogged; //чек на логин и в модели комментариев
-            if (islogged)
+            if (islogged) //если пользователь вошёл
             {
                 ClaimsPrincipal currentUser = this.User;
-                string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-                model.rateable = true;
-                if (post.UserId == userid)
+                string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value; //поулчаем его id
+                model.rateable = true; //по умолчанию пользователь имеет право оценивать запись
+                if (post.UserId == userid) //если id автора поста совпадает с id пользователя, то пользователь, как автор поста, не может его оценивать
                 {
                     model.rateable = false;
                 }
-                else
+                else //если пользователь - не автор поста
                 {
-                    bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid));
-                    if (check == true)
+                    bool check = _context.Ratings.Any(p => (p.PostId == post.PostID) && (p.UserId == userid)); //проверяем, ставил ли он уже этмоу посту оценку
+                    if (check == true) //если ставил - больше оценивать не может
                     {
                         model.rateable = false;
                     }
                     else model.rateable = true;
                 }
-                model.userrating = 0;
-                if (model.rateable == false)
+                model.userrating = 0; 
+                if (model.rateable == false) //если пользователь уже оценивал запись, находим данную им оценку
                 {
                     foreach (Rating your in ratings)
                     {
@@ -77,9 +77,9 @@ namespace SelfOrg.Controllers
                     }
                 }
                 //---------------------првоерка на доступность редактирования---------------------------
-                if (userid == post.UserId)
+                if (userid == post.UserId) //смотрим, автор или нет
                 {
-                    model.editable = true;
+                    model.editable = true; //автор может редактировать пост
                 }
                 else
                 {
@@ -87,7 +87,8 @@ namespace SelfOrg.Controllers
                 }
 
                 //--------------------------состояние комментариев-----------------------------
-
+                //этот метод должен смотреть, какие комментарии пользователь лайкал или дизлайкал. 
+                //из -за проблем с потоками БД сейчас не используется, надо переписать всю концепцию
                 int ratecount = 0;
                 model.commmodel.commrates = new int[model.commmodel.comments.Count()];
                 //var theserates = _context.CommRates.Where(p => p.UserId == userid).Include(p => p.Comment)
@@ -107,30 +108,32 @@ namespace SelfOrg.Controllers
                 }
             }
 
-            else
+            else //если входа нет, редактировать нельзся
             {
                 model.editable = false;
             }
+            
             model.islogged = islogged;
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> comment([FromBody] ReplyViewModel inmodel)
+        public async Task<IActionResult> comment([FromBody] ReplyViewModel inmodel) //комментирование поста
         {
            
-            Comment newcom = new Comment();
+            Comment newcom = new Comment(); //создаём новый комментарий
             ClaimsPrincipal currentUser = this.User;
-            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            newcom.UserId = userid;
+            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value; 
+            newcom.UserId = userid; //автором пишем текущего пользователя
             int properid = Convert.ToInt32(inmodel.id);
-            newcom.PostId = properid;
-            newcom.Text = inmodel.comment;
-            newcom.CommentDate = DateTime.Now;
-            _context.Comments.Add(newcom);
+            newcom.PostId = properid; //записываем id поста, который комментируем
+            newcom.Text = inmodel.comment; //записываем текст коммента
+            newcom.CommentDate = DateTime.Now; //дату задаём текущую
+            _context.Comments.Add(newcom); //добавляем запись в БД
             await _context.SaveChangesAsync();
-            CommentsModel model = new CommentsModel();
-            model.islogged = true;
-            model.comments = _context.Comments.Where(p => p.PostId == properid).Include(p => p.User);
+            CommentsModel model = new CommentsModel(); //создаём модель для обновления блока комментариев на странице
+            model.islogged = true; //раз комментарий создан, то пользователь априори вошёл в систему
+            model.comments = _context.Comments.Where(p => p.PostId == properid).Include(p => p.User); //вытаскиваем все комментарии
+            //---------------------------------------------Здесь и далее многие методы повторяются дословно. Я не знаю, будет ли это как-то переписано, но комментарии в коде точно не дублируются. Их можно найти в верхних методах----------
 
             //--------------------------состояние комментариев-----------------------------
 
@@ -155,11 +158,11 @@ namespace SelfOrg.Controllers
         [HttpPost]
         public async Task<IActionResult> editpost([FromBody] PostUpdateModel upmodel) //слишком много повторных действий. есть смысл тащить из поста аяксом?
         {
-            int postid = Convert.ToInt32(upmodel.postid);
-            Post changedpost = _context.Posts.Single(p => p.PostID == postid);
-            changedpost.content = upmodel.postbody;
-            changedpost.LastModified = DateTime.Now;
-            _context.Update(changedpost);
+            int postid = Convert.ToInt32(upmodel.postid); //берём id изменяемого поста
+            Post changedpost = _context.Posts.Single(p => p.PostID == postid); //находим его в БД
+            changedpost.content = upmodel.postbody; //задаём ему новый текст
+            changedpost.LastModified = DateTime.Now; //дата последнего изменения - текущая
+            _context.Update(changedpost); //сохраняем
             _context.SaveChanges();
             CommentViewModel model = new CommentViewModel();
             var post = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == postid);
@@ -225,8 +228,8 @@ namespace SelfOrg.Controllers
         [HttpPost]
         public async Task<IActionResult> reply([FromBody] ReplyViewModel inmodel) //ответ на комментарий
         {
-
-            Comment newcom = new Comment();
+            //аналогично методу comment, но здесь в комментари также указывается, на какой комментарий произведён ответ
+            Comment newcom = new Comment(); 
             ClaimsPrincipal currentUser = this.User;
             string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             newcom.UserId = userid;
@@ -235,7 +238,7 @@ namespace SelfOrg.Controllers
             newcom.PostId = com.PostId;
             newcom.Text = inmodel.comment;
             newcom.CommentDate = DateTime.Now;
-            newcom.ReplyTo = com.CommentId;
+            newcom.ReplyTo = com.CommentId; //id родительского комментария
             _context.Comments.Add(newcom);
             await _context.SaveChangesAsync();
             CommentsModel model = new CommentsModel();
@@ -263,12 +266,13 @@ namespace SelfOrg.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> ratecom([FromBody] CommentRateModel ratemodel)
+        public async Task<IActionResult> ratecom([FromBody] CommentRateModel ratemodel) //оценка комментария
         {
-            ClaimsPrincipal currentUser = this.User;
-            int commid = Convert.ToInt32(ratemodel.commentid);
+            ClaimsPrincipal currentUser = this.User;//берём id пользователя
+            int commid = Convert.ToInt32(ratemodel.commentid); //и комментария
             int value;
-            if (ratemodel.action == "up")
+            //елси лайк, то рейтинг будем меня на +1, если дизлайк - на -1
+            if (ratemodel.action == "up") 
             {
                 value = 1;
             }
@@ -340,12 +344,12 @@ namespace SelfOrg.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings) 
+        public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings)  //оценка поста
         {
             ClaimsPrincipal currentUser = this.User;
            string userid = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             double amount = 0;
-            foreach (RatingViewModel item in ratings)
+            foreach (RatingViewModel item in ratings) //смотрим, сколько всего критериев. это нужно для рассчёта веса
             {
                 amount += Math.Pow(2, Convert.ToInt32(item.weight));
             }
@@ -354,18 +358,19 @@ namespace SelfOrg.Controllers
             //result += Convert.ToSingle(alpha);
             foreach (RatingViewModel item in ratings)
             {
-                result += Convert.ToSingle(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha);
-                Rating newrate = new Rating();
-                newrate.CriterionId = Convert.ToInt16(item.criterion);
-                newrate.PostId = Convert.ToInt16(item.post);
-                newrate.UserId = userid;
-                newrate.rating = Convert.ToSingle(Math.Round(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha, 3));
+                result += Convert.ToSingle(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha); //вычисление рейтинга БЕЗ поправки на вес голоса пользователя
+                Rating newrate = new Rating(); //создаём запись оценки
+                newrate.CriterionId = Convert.ToInt16(item.criterion); //задаём критерий
+                newrate.PostId = Convert.ToInt16(item.post); //id поста
+                newrate.UserId = userid; //пользователя
+                newrate.rating = Convert.ToSingle(Math.Round(Convert.ToInt32(item.rating) * Math.Pow(2, Convert.ToInt32(item.weight)) * alpha, 3)); //оценку округляем до 3 знаков после запятой
                 _context.Add(newrate);
                 await _context.SaveChangesAsync();
             }
             Math.Round(result, 3);
             int theid = Convert.ToInt32(ratings[0].post);
-            Post ratedpost = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == theid);
+            Post ratedpost = await _context.Posts.Include(p => p.User).Include(p => p.Category).SingleOrDefaultAsync(p => p.PostID == theid); //здесь готовый рейтинг умножается на вес пользователя и плюсуется к рейтингу поста
+            //я не уверен, надо ли оно, но пускай пока будет
             ratedpost.rating += result;
             _context.Update(ratedpost);
             await _context.SaveChangesAsync();
@@ -415,6 +420,7 @@ namespace SelfOrg.Controllers
             }
             return PartialView("posthead", model);
         }
+        //-------------------------------------------------------Стандартные методы---------------------------------------------------
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
