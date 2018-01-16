@@ -28,4 +28,6 @@ C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\UserSecr
 C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.AssemblyInfo.cs
 C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.dll
 C:\Users\shpuc\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.pdb
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.csproj.CoreCompileInputs.cache
+C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\SelfOrg.AssemblyInfoInputs.cache
 C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs

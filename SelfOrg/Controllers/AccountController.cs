@@ -14,6 +14,8 @@ using SelfOrg.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using SelfOrg.Data;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 //Вход, регистрация и прочее
 namespace SelfOrg.Controllers
 {
@@ -69,14 +71,25 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-        //[HttpPost] //не используется
-        //public IActionResult profile ([FromBody] PassProfileModel input)
-        //{
-        //    string uid = input.userid;
-        //    var model = _context.User.Single(p => p.Id == uid);
-        //    return View(model);
-        //}
-        //
+        [HttpGet]
+        public async Task<IActionResult> view(string username)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(m => m.UserName == username);
+            return View(user);
+        }
+        [HttpGet]
+        public IActionResult Index()
+        {
+            bool logged = (User.Identity.IsAuthenticated);
+            if (logged == true)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]

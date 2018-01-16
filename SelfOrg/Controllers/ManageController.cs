@@ -25,7 +25,8 @@ namespace SelfOrg.Controllers
 {
     [Authorize]
     public class ManageController : Controller
-    { 
+    {
+        //public Task mytask = new Task(WeightCalc.Calculate(_context));
         //----------------------------------Что-то системное-----------------------------
         private readonly ApplicationDbContext _context;
         IHostingEnvironment _appEnvironment;
@@ -59,7 +60,7 @@ namespace SelfOrg.Controllers
             _context = context;
             _appEnvironment = appEnvironment;
         }
-
+        
         //
         // GET: /Manage/Index
         [HttpGet]
@@ -105,12 +106,23 @@ namespace SelfOrg.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> rateupdate(float Rating) //пересчёт веса голоса
+        public async Task<ActionResult> rateupdate(float Rating) //пересчёт веса голоса
         {
             var user = await GetCurrentUserAsync(); //берём текущего пользователя
             var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < Rating) && (p.Higher > Rating)); //находим вес голоса, который соответствуе его рейтингу
             user.Weight = level.Mul; //присваиваем, обновляем
             var result = await _userManager.UpdateAsync(user);
+            //WeightCalc test = new WeightCalc(_context);
+            //test.Calculate();
+            //var users = _context.Users.ToList();
+            //foreach (User user in users)
+            //{
+            //    var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < user.rating) && (p.Higher > user.rating)); //находим вес голоса, который соответствуе его рейтингу
+            //    user.Weight = level.Mul;
+            //}
+            //_context.Users.UpdateRange(users);
+            // _context.SaveChanges();
+            //WeightCalc.Calculate(_context);
             return RedirectToAction("Index");
 
         }
