@@ -57,11 +57,19 @@ namespace SelfOrg.Controllers
         public async Task<IActionResult> category(int id) //выбираем посты, принадлежащие к конкретной категории
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id).OrderByDescending(p => p.PostDate);
+            foreach (Post item in applicationDbContext)
+            {
+                item.rating = Convert.ToSingle(Math.Round(item.rating, 3)); //округляю рейтинг лишний раз. Я же его уже округлил? И, видимо, поле рейтинга в посте всё же используется. Однажды всё переберу
+            }
             return View(await applicationDbContext.ToListAsync());
         }
         public async Task<IActionResult> tags(int id) //выбираем посты, содержащие конкретный тег
         {
             var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id).OrderByDescending(p => p.Post.PostDate);
+            foreach (PostTag item in applicationDbContext)
+            {
+                item.Post.rating = Convert.ToSingle(Math.Round(item.Post.rating, 3)); //округляю рейтинг лишний раз. Я же его уже округлил? И, видимо, поле рейтинга в посте всё же используется. Однажды всё переберу
+            }
             return View(await applicationDbContext.ToListAsync());
         }
         //public async Task<IActionResult> gettags(int id)

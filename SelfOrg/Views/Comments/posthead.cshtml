@@ -6,7 +6,7 @@
 
     <span style="font-size: 160%">@Model.post.PostName</span> &nbsp;&nbsp;&nbsp;<a asp-controller="Posts" asp-action="category" asp-route-id="@Model.post.Category.CategoryId" style="font-style:italic; color:gray">(категория: @Model.post.Category.CatName)</a>
     <br />
-    <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <time style="font-size: 90%">@Model.post.PostDate</time>
+    <span style="font-weight: bold; font-size: 120%">@Model.post.User.displayedname</span> <a asp-controller="Account" asp-action="view" asp-route-id="@Model.post.User.UserName"><img src="~/images/users.svg" height="12" width="12" style="margin-top:-5px" /></a> <time style="font-size: 90%">@Model.post.PostDate</time>
     @{ 
         if(Model.post.LastModified != null)
         {
