@@ -71,12 +71,29 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+        [Route("Account/view/{username}")]
         [HttpGet]
         public async Task<IActionResult> view(string username)
         {
             var user = await _context.User.SingleOrDefaultAsync(m => m.UserName == username);
             return View(user);
         }
+        //[Route("Account/view")]
+        //[HttpGet]
+        //public IActionResult view()
+        //{
+        //    bool logged = (User.Identity.IsAuthenticated);
+        //    if (logged == true)
+        //    {
+        //        return RedirectToAction("Index", "Manage");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //}
+        [Route("Account/view")]
+        [Route("Account")]
         [HttpGet]
         public IActionResult Index()
         {

@@ -86,6 +86,10 @@ namespace SelfOrg
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                //routes.MapRoute(
+                //    name: "Accounts",
+                //    template: "{controller= Account}/{action = view}/{username}"
+                //    );
             });
         }
     }
