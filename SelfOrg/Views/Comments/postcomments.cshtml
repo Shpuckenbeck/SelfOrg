@@ -45,7 +45,7 @@
                 <div id="info-@item.CommentId" class="info">
                     <a href="javascript:void(0)" id="toggle-@item.CommentId" onclick="togglecomment(@item.CommentId)">[-]</a>
                     @*@Html.DisplayFor(modelItem => item.User.displayedname) написал*@
-                    <span class="@item.User.level" >@item.User.displayedname </span> <a asp-controller="Account" asp-action ="view" asp-route-id="@item.User.UserName"><img src="~/images/users.svg" height="12" width="12" style="margin-top:-3px" /></a>
+                    <span class="@item.User.level" >@item.User.displayedname </span> <a asp-controller="Account" asp-action ="view" asp-route-id="@item.User.UserName"><img title="Профиль пользователя @item.User.displayedname" src="~/images/users.svg" height="12" width="12" style="margin-top:-3px" /></a>
                     @Html.DisplayFor(modelItem => item.CommentDate) :
                     <a href="javascript:void(0)" class="placeholder" style="display: none" onclick="togglecomment(@item.CommentId)">комментарий скрыт</a>
                 </div>

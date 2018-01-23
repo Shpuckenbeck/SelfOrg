@@ -126,6 +126,7 @@ namespace SelfOrg.Controllers
             return RedirectToAction("Index");
 
         }
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult system()
         {

@@ -1,0 +1,18 @@
+﻿@model IEnumerable<SelfOrg.Models.User>
+
+@{
+    ViewData["Title"] = "Роли";
+}
+
+<h2>Пользователи</h2>
+<table class="table">
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.displayedname</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
+using Microsoft.AspNetCore.Authorization;
 //Категории
 namespace SelfOrg.Controllers
 {
@@ -32,6 +33,7 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Categories/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,6 +52,7 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -66,12 +69,13 @@ namespace SelfOrg.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("tech");
             }
             return View(category);
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +127,7 @@ namespace SelfOrg.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,7 +155,7 @@ namespace SelfOrg.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult set(int id) //Настройка важности критериев для каждой категории
         {

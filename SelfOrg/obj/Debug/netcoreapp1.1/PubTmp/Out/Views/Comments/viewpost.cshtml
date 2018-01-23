@@ -116,26 +116,27 @@ tinymce.init({
                 {
                     var getname = "comment-" + id;
                     var test = tinymce.get(getname).getContent();
-                    var output = new Object();
-                    output.id = id;
-                    output.comment = test;
-                    console.log(JSON.stringify(output));
-                    $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    type: "POST",
-                    url: "/Comments/reply/",
-                    data: JSON.stringify(output),
-                    success: function (result)
-                    {
-                        console.log(output);
+                    if (test != "") {
+                        var output = new Object();
+                        output.id = id;
+                        output.comment = test;
+                        console.log(JSON.stringify(output));
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            url: "/Comments/reply/",
+                            data: JSON.stringify(output),
+                            success: function (result) {
+                                console.log(output);
+                            }
+                        })
+                            .done(function (partialViewResult) {
+                                $("#comments").html(partialViewResult);
+                            });
                     }
-                    }) 
-                        .done(function (partialViewResult) {
-                            $("#comments").html(partialViewResult);
-                        });
 
                 }
             </script>

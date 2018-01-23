@@ -14,7 +14,7 @@ using System.Security.Claims;
 //Посты
 namespace SelfOrg.Controllers
 {
-    [Authorize]
+    
     public class PostsController : Controller
     {
         //SignInManager<User> SignInManager;
@@ -79,6 +79,7 @@ namespace SelfOrg.Controllers
         //}
         //-------------------------------------------------------Стандартный метод---------------------------------------------------
         // GET: Posts/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -100,8 +101,16 @@ namespace SelfOrg.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CatName");
-            return View();
+            bool islogged = (User.Identity.IsAuthenticated);
+            if (islogged)
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CatName");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Posts/Create

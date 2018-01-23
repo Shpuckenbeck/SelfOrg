@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7DL4+IUJWUCMsC9TgutRDwAAAAACAAAAAAAQZgAAAAEAACAAAAB003qywpNZZWoehSdmXw6Q4hZXpiwhz6LPpkQUlziBKgAAAAAOgAAAAAIAACAAAACWy5NuLE9ckEDrdvsA0uHvWWpAX3+NyhTraTlMOA06koAAAAA3OdtHg4TXJmYfsvQo6ZjVfRPuUwN9SFIaE6g1otIL/Dpz6z5o9nO/N0UT89G0QwsETVrC8CNXSdGOt7buT7SfuosvOLw23lRRzWOw7DhwhaqlNjoHyPhyGKBTXcwOtDhfHUOSA3+yVG9q6IFTIVv2cj1WCUW1FJ8QOr1i9dNIi0AAAAA89F7KPGNk71f7+Z7Zye1eedwTcqRhqIRMAvgACizJ7m29OX4boRmOSdTcgQEcSggSCCFMpxoTz5cbBR8//EqZ</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=tcp:selforgdb.database.windows.net,1433;Initial Catalog=selforgdb;Persist Security Info=False;User ID=sqladmin;Password=Admin2018;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="SelfOrg.Data.ApplicationDbContext">
+      <Value>Server=tcp:selforgdb.database.windows.net,1433;Initial Catalog=selforgdb;Persist Security Info=False;User ID=sqladmin;Password=Admin2018;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

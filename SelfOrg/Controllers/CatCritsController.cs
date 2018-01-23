@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
+using Microsoft.AspNetCore.Authorization;
 //Важность критериев для категорий
 namespace SelfOrg.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CatCritsController : Controller //--------------------------------Используется только для отладки-------------------------------------------------------
     {
         private readonly ApplicationDbContext _context;

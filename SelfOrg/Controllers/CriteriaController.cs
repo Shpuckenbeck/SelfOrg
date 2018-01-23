@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
+using Microsoft.AspNetCore.Authorization;
 //----------------------------------Управление критериями. Много-много стандартных методов--------------------------------------
 namespace SelfOrg.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CriteriaController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -12,6 +12,10 @@
     <UserSecretsId>aspnet-SelfOrg-bfe62d55-aa2a-4a97-a5eb-b6a476bb1be1</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\selforg - Web Deploy.pubxml" />
+  </ItemGroup>
+
   
   <ItemGroup>
     <PackageReference Include="Dropzone" Version="4.2.0" />

@@ -4,7 +4,7 @@
     ViewData["Title"] = Model.Last().Category.CatName;
 }
 
-<h3>@Model.Last().Category.CatName</h3>
+<h3>Записи категории "@Model.Last().Category.CatName"</h3>
 
 @{
     foreach (var item in Model)
@@ -13,7 +13,7 @@
             <div style="float: left; font-size: 150%; width: 7%; padding-top: 1px; height:auto" id="rating-value">@item.rating      &nbsp;&nbsp;&nbsp;</div>
             <div id="postcontent" style="width: 93%; float: right">
                 <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.PostID" style="font-size: 160%">@item.PostName</a>  &nbsp;&nbsp;&nbsp;
-                <a asp-controller="Posts" asp-action="Sorting" asp-route-id="@item.Category.CategoryId" style="font-style:italic; color:gray">(категория: @item.Category.CatName)</a>
+                <a asp-controller="Posts" asp-action="category" asp-route-id="@item.Category.CategoryId" style="font-style:italic; color:gray">(категория: @item.Category.CatName)</a>
                 <br />
                 <span style="font-weight:700">Опубликовал </span><span>@item.User.displayedname </span> <span style="font-size: 90%">@item.PostDate</span>
                 <br />

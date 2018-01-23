@@ -4,60 +4,27 @@
         ViewData["Title"] = Model.Last().Tag.TagName;
     }
 
-   
-<h3>@Model.Last().Tag.TagName</h3>
-    <p>
-
-    </p>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Post.PostName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Post.PostDescr)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Post.PostDate)
-                </th>
+<h3>Записи по тегу "@Model.Last().Tag.TagName"</h3>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Post.Category)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Post.User)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Post.PostName)
-                    </td>
-                    <td>
-                        @Html.Raw(@item.Post.PostDescr)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Post.PostDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Post.Category.CatName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Post.User.displayedname)
-                    </td>
-                    <td>
-                        
-                        <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID">Подробно</a>
-                      
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@{
+    foreach (var item in Model)
+    {
+        <div id="post-@item.Post.PostID" style="height: 150px">
+            <div style="float: left; font-size: 150%; width: 7%; padding-top: 1px; height:auto" id="rating-value">@item.Post.rating      &nbsp;&nbsp;&nbsp;</div>
+            <div id="postcontent" style="width: 93%; float: right">
+                <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID" style="font-size: 160%">@item.Post.PostName</a>  &nbsp;&nbsp;&nbsp;
+                <a asp-controller="Posts" asp-action="category" asp-route-id="@item.Post.Category.CategoryId" style="font-style:italic; color:gray">(категория: @item.Post.Category.CatName)</a>
+                <br />
+                <span style="font-weight:700">Опубликовал </span><span>@item.Post.User.displayedname </span> <span style="font-size: 90%">@item.Post.PostDate</span>
+                <br />
+                @Html.Raw(@item.Post.PostDescr)
+                <br />
+                <a asp-controller="Comments" asp-action="viewpost" asp-route-id="@item.Post.PostID">Читать полностью</a>
+                <p>Теги: @await Component.InvokeAsync("PostTags", new { id = @item.Post.PostID })</p>
+            </div>
+        </div>
+
+    }
+}
