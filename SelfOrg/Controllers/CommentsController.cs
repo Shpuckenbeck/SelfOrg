@@ -28,6 +28,12 @@ namespace SelfOrg.Controllers
             var applicationDbContext = _context.Comments.Include(c => c.Post).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
+        /// <summary>
+        /// Просмотр поста. Включает в себя поиск поста по id в базе данных, выбор комментариев к нему,
+        /// подсчёт рейтинга, проверка доступа пользователя к редактированию/оценке поста
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> viewpost(int id) //Просмотр поста
         {
             CommentViewModel model = new CommentViewModel(); //создаётся модель
@@ -45,7 +51,7 @@ namespace SelfOrg.Controllers
             }
             model.post.rating = sum;
             //--------------------------проверка на доступность оценки---------------------------------
-
+            
             bool islogged = (User.Identity.IsAuthenticated); //првоерка, есть ли вход
 
             model.commmodel.islogged = islogged; //чек на логин и в модели комментариев
@@ -116,6 +122,15 @@ namespace SelfOrg.Controllers
             model.islogged = islogged;
             return View(model);
         }
+        /// <summary>
+        /// Создание комментария. Из представления AJAX-запросом передаётся JSON-модель ReplyViewModel.
+        /// Создаётся новая запись для таблицы комментариев, в которую из модели передаются id поста
+        /// и текст комментария. автором задаётся текущий пользователь, датой - текущее время.
+        /// Затем создаётся CommentsModel, в которую подгружаются все коммментарии к посту, включая созданный. 
+        /// Это необходимо для частичного обновления страницы без полной перезагрузки
+        /// </summary>
+        /// <param name="inmodel"></param>
+        /// <returns></returns>        
         [HttpPost]
         public async Task<IActionResult> comment([FromBody] ReplyViewModel inmodel) //комментирование поста
         {
@@ -155,8 +170,16 @@ namespace SelfOrg.Controllers
             }
             return PartialView("postcomments", model);
         }
+        /// <summary>
+        /// Редактирование поста. На вход подаётся модель PostUdpateModel,
+        /// из которой берётся id изменяемого поста и его новый текст. Датой
+        /// последнего изменения задаётся текущая
+        /// </summary>
+        /// <param name="upmodel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> editpost([FromBody] PostUpdateModel upmodel) //слишком много повторных действий. есть смысл тащить из поста аяксом?
+            //кстати, зачем я делаю проверку на вход и редактирование, если отредактировааший пользователь по дефолту залогинен и не может оценивать? НА РЕФАКТОРИНГ
         {
             int postid = Convert.ToInt32(upmodel.postid); //берём id изменяемого поста
             Post changedpost = _context.Posts.Single(p => p.PostID == postid); //находим его в БД
@@ -225,6 +248,15 @@ namespace SelfOrg.Controllers
             return PartialView("posthead", model);
 
         }
+        /// <summary>
+        /// Ответ на комментарий. Из представления AJAX-запросом передаётся JSON-модель ReplyViewModel.
+        /// Создаётся новая запись для таблицы комментариев, в которую из модели передаются id поста,
+        /// id родительского комментария и текст ответа. Автором задаётся текущий пользователь, датой - текущее время.
+        /// Затем создаётся CommentsModel, в которую подгружаются все коммментарии к посту, включая созданный. 
+        /// Это необходимо для частичного обновления страницы без полной перезагрузки
+        /// </summary>
+        /// <param name="inmodel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> reply([FromBody] ReplyViewModel inmodel) //ответ на комментарий
         {
@@ -265,6 +297,18 @@ namespace SelfOrg.Controllers
             return PartialView("postcomments", model);
 
         }
+        /// <summary>
+        /// Оценка комментария. Из модели CommentRateModel получаем id оцениваемого комментария
+        /// и вид оценки - лайк или дизлайк. Автором оценки задаётся текущий пользователь.
+        /// Из вида оценки получаепм знчение - +1 или -1. Проверяем, существует ли уже
+        /// оценка комментария этим пользователем. Если нет - создаём новую и задаём ей 
+        /// имеющиеся параметры, а также изменяем рейтинг комментария. Если оценка уже поставлена, 
+        /// проверяем, такого же типа она была или нет. Если новая оценка имеет такой же тип,
+        /// то удаляем имеющуюся и изменяем рейтинг комментария. Если же новая оценка имеет другое значние,
+        /// то изменяем значение существующей и изменяем рейтинг комментария
+        /// </summary>
+        /// <param name="ratemodel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> ratecom([FromBody] CommentRateModel ratemodel) //оценка комментария
         {
@@ -342,7 +386,16 @@ namespace SelfOrg.Controllers
             return PartialView("postcomments", model);
 
         }
-
+        /// <summary>
+        /// Оценка поста. На вход получаем массив моделей RatingViewModel - по одной на критерий.
+        /// Пользователем задаём текущего пользователя. Вычисляем коэффициент голоса по каждому критерию
+        /// с помощью специальной формулы. Затем для каждого критерия создаём новую запись в таблице рейтингов.
+        /// Значение оценки для записи вычисляем как произведение сырой оценки от -5 до 5, коэффициента и
+        /// веса голоса пользователя. Результат округляем до 3 знаков после запятой. Изменяем рейтинг оцениваемого
+        /// поста, увеличивая его на поулченное значение, после чего обновляем часть страницы с информацией о посте
+        /// </summary>
+        /// <param name="ratings"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> rate ([FromBody] RatingViewModel[] ratings)  //оценка поста
         {

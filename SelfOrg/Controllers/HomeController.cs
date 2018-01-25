@@ -26,28 +26,25 @@ namespace SelfOrg.Controllers
             _context = context;
             _userManager = manager;
         }
-
+        /// <summary>
+        /// Главная страница. Выбираются все посты, сортируются по дате создания
+        /// от новых к старым и выводятся на страницу. Сюда перенаправляются
+        /// запросы /Posts/ и /Posts/Index/
+        /// </summary>
+        /// <returns></returns>
         // GET: Posts
+        [Route("Posts")]
+        [Route("Posts/Index")]
         public async Task<IActionResult> Index() //Выбор всех постов
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).OrderByDescending(p => p.PostDate);
             foreach (Post item in applicationDbContext)
             {
-                item.rating = Convert.ToSingle(Math.Round(item.rating, 3)); //округляю рейтинг лишний раз. Я же его уже округлил? И, видимо, поле рейтинга в посте всё же используется. Однажды всё переберу
+                item.rating = Convert.ToSingle(Math.Round(item.rating, 3)); //округляю рейтинг
             }
-            //var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Post.PostTags).Include(p => p.Tag);
             return View(await applicationDbContext.ToListAsync());
         }
-        //---------------------------------------Всё равно не работает
-        //public async Task<IActionResult> user(string login) 
-        //{
-        //    User user = await _context.User.SingleOrDefaultAsync(p => p.UserName == login);
-        //    IndexViewModel model = new IndexViewModel
-        //    {
-        //        User = user
-        //    };
-        //    return View(model);
-        //}
+        
         //-------------------------------------------------------Стандартные методы---------------------------------------------------
         public IActionResult About()
         {

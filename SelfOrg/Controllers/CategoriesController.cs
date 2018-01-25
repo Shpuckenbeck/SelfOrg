@@ -19,7 +19,11 @@ namespace SelfOrg.Controllers
         {
             _context = context;    
         }
-
+        /// <summary>
+        /// Окно управления категориями, доступно только администратору.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles ="admin")]
         // GET: Categories
         public async Task<IActionResult> tech() //-------------------------------Окно управления категориями-----------------------------------------------
         {
@@ -155,6 +159,14 @@ namespace SelfOrg.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        //-----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Настройка категории, доступно только администратору. 
+        /// Параметр на входе – id категории. Создаётся CatCritViewModel – модель для настройки категории, 
+        /// в которую помещаются данные о категории с соответствующим id, а также обо всех критериях оценки, существующих в системе.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult set(int id) //Настройка важности критериев для каждой категории
@@ -175,6 +187,15 @@ namespace SelfOrg.Controllers
             //}
             return View(model);
         }
+        /// <summary>
+        /// На вход поступает заполненная модель CatCritViewModel model. Для каждого критерия  из model.crits проверяется, 
+        /// есть ли в таблице CatCrits запись, соответствующая этому критерию и этой категории. 
+        /// Если такая запись есть, то в неё помещается новое значение, после чего таблица обновляется. 
+        /// Если же такой записи ещё не было, то создаётся новая. 
+        /// Данные об id категории и критерия, а также значении важности берутся из модели, после чего запись добавляется в таблицу.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> set (CatCritViewModel model) //Настройка важности критериев для каждой категории
         {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SelfOrg.Data;
 using SelfOrg.Models;
+using Microsoft.AspNetCore.Authorization;
 //пользователи
 namespace SelfOrg.Controllers
 {
@@ -20,6 +21,7 @@ namespace SelfOrg.Controllers
         }
         //-------------------------------------------------------Стандартные методы---------------------------------------------------
         // GET: Users
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.User.ToListAsync());

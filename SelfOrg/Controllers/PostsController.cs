@@ -19,12 +19,24 @@ namespace SelfOrg.Controllers
     {
         //SignInManager<User> SignInManager;
         //UserManager<User> UserManager;
+        /// <summary>
+        /// Обрезка строки. Если строка пустая - возвращает её. Если не превышает максимальной 
+        /// длины - возвращает строку, иначе - подстроку от первого символа до последнего допустимого
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxLength"></param>
+        /// <returns></returns>
         public static string Truncate(string value, int maxLength) //метод укорачивания поста для предпросмотра
         {
             if (string.IsNullOrEmpty(value)) return value;
             return value.Length <= maxLength ? value : value.Substring(0, maxLength); //если меньше максимальной длины, то ставим полностью, иначе - обрезаем
         }
-
+        /// <summary>
+        /// Генерация предпросмотра. Из строки выкидываются элементы HTML-разметки, после чего
+        /// она укорачивается до 200 символов
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string TruncBody (string input) //создание предпросмотра
         {
             string result = null;
@@ -48,35 +60,38 @@ namespace SelfOrg.Controllers
         // GET: Posts
         public async Task<IActionResult> Index() //стандартный метод
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);
-            //var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Post.PostTags).Include(p => p.Tag);
+            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);            
             return View(await applicationDbContext.ToListAsync());
         }
 
-       
+       /// <summary>
+       /// Сортировка по категориям. Выбираются только те посты, которые принадлежат к указанной категории
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
         public async Task<IActionResult> category(int id) //выбираем посты, принадлежащие к конкретной категории
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).Where(p => p.CategoryId == id).OrderByDescending(p => p.PostDate);
             foreach (Post item in applicationDbContext)
             {
-                item.rating = Convert.ToSingle(Math.Round(item.rating, 3)); //округляю рейтинг лишний раз. Я же его уже округлил? И, видимо, поле рейтинга в посте всё же используется. Однажды всё переберу
+                item.rating = Convert.ToSingle(Math.Round(item.rating, 3)); //округляю рейтинг 
             }
             return View(await applicationDbContext.ToListAsync());
         }
+        /// <summary>
+        /// Сортировка по тегам. Выбираются  только посты, содержащие конкретный тег
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> tags(int id) //выбираем посты, содержащие конкретный тег
         {
             var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id).OrderByDescending(p => p.Post.PostDate);
             foreach (PostTag item in applicationDbContext)
             {
-                item.Post.rating = Convert.ToSingle(Math.Round(item.Post.rating, 3)); //округляю рейтинг лишний раз. Я же его уже округлил? И, видимо, поле рейтинга в посте всё же используется. Однажды всё переберу
+                item.Post.rating = Convert.ToSingle(Math.Round(item.Post.rating, 3)); //округляю рейтинг
             }
             return View(await applicationDbContext.ToListAsync());
         }
-        //public async Task<IActionResult> gettags(int id)
-        //{
-        //    var applicationDbContext = _context.PostTags.Include(p => p.Post).Include(p => p.Post.Category).Include(p => p.Post.User).Include(p => p.Tag).Where(p => p.TagId == id);
-        //    return PartialView(await applicationDbContext.ToListAsync());
-        //}
         //-------------------------------------------------------Стандартный метод---------------------------------------------------
         // GET: Posts/Details/5
         [Authorize(Roles = "admin")]
@@ -116,6 +131,21 @@ namespace SelfOrg.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Создание поста. На вход подаётся модель PostViewModel, из которой берутся
+        /// название поста, текст, категория и теги. Автором задаётся текущий пользователь,
+        /// датой создания - текущая дата. Описание поста генерируется функцией TruncBody.
+        /// Создаётся url-slug поста, не используемый в текущей имплементации. 
+        /// Строка тегов разбивается по разделителю - запятой. После этого
+        /// для каждого тега создаётся slug, выполняющий роль нормализованной формы
+        /// хранения имени. Затем для каждого слага выполняется проверка - существует ли уже
+        /// тег с таким слагом. Если тег существует, то в таблицу PostTags просто добавляется 
+        /// запись о связи поста с тегом. Если нет - тег предварительно добавляется в таблицу Tags.
+        /// После добавления поста для категории, к которой он принадлежит, производится
+        /// увеличение счётчика постов в ней на единицу
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostViewModel model) //создание поста

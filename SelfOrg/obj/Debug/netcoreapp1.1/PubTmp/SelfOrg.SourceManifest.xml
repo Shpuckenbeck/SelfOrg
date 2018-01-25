@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
   <IisApp path="C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\PubTmp\Out\" />
-  <dbfullsql path="C:\Users\Jimmy\Documents\GitHub\SelfOrg\SelfOrg\obj\Debug\netcoreapp1.1\PubTmp\EFSQLScripts\SelfOrg.Data.ApplicationDbContext.sql" />
 </sitemanifest>

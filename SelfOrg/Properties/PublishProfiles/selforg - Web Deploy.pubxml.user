@@ -13,9 +13,4 @@
       <Value>Server=tcp:selforgdb.database.windows.net,1433;Initial Catalog=selforgdb;Persist Security Info=False;User ID=sqladmin;Password=Admin2018;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
     </DestinationConnectionStrings>
   </ItemGroup>
-  <ItemGroup>
-    <EFMigrations Include="SelfOrg.Data.ApplicationDbContext">
-      <Value>Server=tcp:selforgdb.database.windows.net,1433;Initial Catalog=selforgdb;Persist Security Info=False;User ID=sqladmin;Password=Admin2018;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
-    </EFMigrations>
-  </ItemGroup>
 </Project>

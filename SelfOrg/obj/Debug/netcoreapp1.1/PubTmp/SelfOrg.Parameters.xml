@@ -3,7 +3,4 @@
   <parameter name="IIS Web Application Name" description="" value="selforg" tags="IisApp">
     <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Jimmy\\Documents\\GitHub\\SelfOrg\\SelfOrg\\obj\\Debug\\netcoreapp1\.1\\PubTmp\\Out\\$" />
   </parameter>
-  <parameter name="SelfOrg.Data.ApplicationDbContext" description="" value="Server=tcp:selforgdb.database.windows.net,1433;Initial Catalog=selforgdb;Persist Security Info=False;User ID=sqladmin;Password=Admin2018;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="dbfullsql">
-    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\Jimmy\\Documents\\GitHub\\SelfOrg\\SelfOrg\\obj\\Debug\\netcoreapp1\.1\\PubTmp\\EFSQLScripts\\SelfOrg\.Data\.ApplicationDbContext\.sql$" />
-  </parameter>
 </parameters>

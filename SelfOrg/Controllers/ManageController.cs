@@ -36,11 +36,6 @@ namespace SelfOrg.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
-        //public ManageController(ApplicationDbContext context, IHostingEnvironment appEnvironment)
-        //{
-        //    _context = context;
-        //    _appEnvironment = appEnvironment;
-        //}
         public ManageController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
@@ -105,6 +100,13 @@ namespace SelfOrg.Controllers
             model.User.rating = sum;
             return View(model);
         }
+        /// <summary>
+        /// Пересчёт веса голоса текущего пользователя. Выполняется со страницы управления профилем,
+        /// откуда берётся текущий рейтинг. Из таблицы множителей рейтинга выбирается множитель,
+        /// соответствующий рейтингу пользователя, после чего это значение заменяет прошлый вес голоса
+        /// </summary>
+        /// <param name="Rating"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> rateupdate(float Rating) //пересчёт веса голоса
         {
@@ -112,26 +114,27 @@ namespace SelfOrg.Controllers
             var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < Rating) && (p.Higher > Rating)); //находим вес голоса, который соответствуе его рейтингу
             user.Weight = level.Mul; //присваиваем, обновляем
             var result = await _userManager.UpdateAsync(user);
-            //WeightCalc test = new WeightCalc(_context);
-            //test.Calculate();
-            //var users = _context.Users.ToList();
-            //foreach (User user in users)
-            //{
-            //    var level = _context.Multipliers.SingleOrDefault(p => (p.Lower < user.rating) && (p.Higher > user.rating)); //находим вес голоса, который соответствуе его рейтингу
-            //    user.Weight = level.Mul;
-            //}
-            //_context.Users.UpdateRange(users);
-            // _context.SaveChanges();
-            //WeightCalc.Calculate(_context);
             return RedirectToAction("Index");
 
         }
+        /// <summary>
+        /// Форма быстрого доступа к настройкам системы - категории, критерии, вес голоса
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult system()
         {
             return View();
         }
+        /// <summary>
+        /// Установка аватара. Выбранный файл загружается в wwwroot/Files/имя_файла,
+        /// запись о файле добавляется в таблицу Pics. После этого текущему пользователю
+        /// в поле Avatar записывается путь до загруженного файлы, таким образом устанавливается
+        /// новый аватар
+        /// </summary>
+        /// <param name="uploads"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddAvatar(IFormFile uploads) //установка аватара
         {

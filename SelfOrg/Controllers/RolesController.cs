@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SelfOrg.Models;
 using SelfOrg.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-
+//Роли и роли пользователей
 namespace SelfOrg.Controllers
 {
     [Authorize(Roles ="admin")]
@@ -21,9 +21,19 @@ namespace SelfOrg.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        /// <summary>
+        /// Вывод доступных ролей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
         public IActionResult Create() => View();
+        /// <summary>
+        /// Создание роли. На входе - строка с названием. Если строка не пуста, создаётся
+        /// новая роль через RoleManager с указанным именем, иначе выводятся ошибки
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -55,9 +65,18 @@ namespace SelfOrg.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Вывод списка пользователей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
+        /// <summary>
+        /// Управление ролями пользователей. Для пользователя, имеющего указанный id, выбирается
+        /// список доступных ролей, а также имеющихся у него. Эти списки, а также информация о пользователе, передаются в ChangeRoleViewModel
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
@@ -79,6 +98,12 @@ namespace SelfOrg.Controllers
 
             return NotFound();
         }
+        /// <summary>
+        /// Обновление списка ролей пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roles"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {

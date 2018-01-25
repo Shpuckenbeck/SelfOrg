@@ -58,7 +58,11 @@ namespace SelfOrg.Controllers
             _context = context;
             _appEnvironment = appEnvironment;
         }
-
+        /// <summary>
+        /// Стандартная функция входа, отображает форму. Доступна и неавторизованным пользователям.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         //
         // GET: /Account/Login
         [HttpGet]
@@ -71,6 +75,13 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+        /// <summary>
+        /// Возвращает профиль пользователя с UserName, подаваемым как параметр. 
+        /// Маршрутизация [Route…] нужна, чтобы подавать строковый параметр через слэш.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        //просмотр профиля пользователя
         [Route("Account/view/{username}")]
         [HttpGet]
         public async Task<IActionResult> view(string username)
@@ -78,31 +89,24 @@ namespace SelfOrg.Controllers
             var user = await _context.User.SingleOrDefaultAsync(m => m.UserName == username);
             return View(user);
         }
-        //[Route("Account/view")]
-        //[HttpGet]
-        //public IActionResult view()
-        //{
-        //    bool logged = (User.Identity.IsAuthenticated);
-        //    if (logged == true)
-        //    {
-        //        return RedirectToAction("Index", "Manage");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //}
+       
+        /// <summary>
+        /// Домашний метод Account. Если пользователь вошёл в систему, перенаправляет его на управление профилем, 
+        /// в противном случае – на главную. Благодаря маршрутизации, срабатывает также 
+        /// при обращении по ссылкам /Account/view без параметра и /Account/
+        /// </summary>
+        /// <returns></returns>
         [Route("Account/view")]
         [Route("Account")]
         [HttpGet]
         public IActionResult Index()
         {
             bool logged = (User.Identity.IsAuthenticated);
-            if (logged == true)
+            if (logged == true) //если есть вход, перенаправление на управление профилем
             {
                 return RedirectToAction("Index", "Manage");
             }
-            else
+            else //иначе - домой
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -153,7 +157,15 @@ namespace SelfOrg.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
+        /// <summary>
+        /// Изменённая функция регистрации.  Создаётся новый объект User с введёнными данными. 
+        /// Уровень созданного пользователя – обычный (regular), вес оценок по умолчанию 1. 
+        /// Аватаром задаётся стандартный, заранее находящийся в папке Files, дата регистрации – текущая. 
+        /// Если удаётся корректно создать пользователя – вход в систему под его данными и переход на страницу управления профилем, иначе – добавление ошибок и возврат формы.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         //
         // POST: /Account/Register
         [HttpPost]
@@ -204,7 +216,12 @@ namespace SelfOrg.Controllers
             return View();
         }
 
-        
+        /// <summary>
+        /// Регистрация гостя аналогична регистрации обычного пользователя, но пользователю присваивается уровень guest, а адрес электронной почты, имя и фамилия не вводятся.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
