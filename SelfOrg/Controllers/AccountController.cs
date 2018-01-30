@@ -184,20 +184,20 @@ namespace SelfOrg.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Manage");
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(
-                    //    "ConfirmEmail",
-                    //    "Account",
-                    //    new { userId = user.Id, code = code },
-                    //    protocol: HttpContext.Request.Scheme);
-                    //EmailService emailService = new EmailService();
-                    //await emailService.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //return RedirectToAction("Index", "Manage");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                    EmailService emailService = new EmailService();
+                    await emailService.SendEmailAsync(model.Email, "Подтвердите свою учётную запись",
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return RedirectToLocal(returnUrl);
+                    return RedirectToLocal(returnUrl);
                 }
                 else
                 AddErrors(result);

@@ -60,8 +60,9 @@ namespace SelfOrg.Controllers
         // GET: Posts
         public async Task<IActionResult> Index() //стандартный метод
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);            
-            return View(await applicationDbContext.ToListAsync());
+            //var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User);            
+            //return View(await applicationDbContext.ToListAsync());
+            return RedirectToAction("", "");
         }
 
        /// <summary>

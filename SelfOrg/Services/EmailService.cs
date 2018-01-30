@@ -13,7 +13,7 @@ namespace SelfOrg.Services
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "self-org@yandex.ru"));
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "noreply@self-org.ru"));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -24,7 +24,7 @@ namespace SelfOrg.Services
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.yandex.ru", 25, false);
-                await client.AuthenticateAsync("self-org@yandex.ru", "2+2=2*2=4");
+                await client.AuthenticateAsync("noreply@self-org.ru", "2+2=2*2=4");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);

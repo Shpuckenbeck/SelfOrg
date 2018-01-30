@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="selforg" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Jimmy\\Documents\\GitHub\\SelfOrg\\SelfOrg\\obj\\Debug\\netcoreapp1\.1\\PubTmp\\Out\\$" />
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\shpuc\\Documents\\GitHub\\SelfOrg\\SelfOrg\\obj\\Debug\\netcoreapp1\.1\\PubTmp\\Out\\$" />
   </parameter>
 </parameters>

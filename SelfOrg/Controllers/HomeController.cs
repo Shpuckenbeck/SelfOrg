@@ -33,8 +33,9 @@ namespace SelfOrg.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Posts
-        [Route("Posts")]
-        [Route("Posts/Index")]
+        //[Route("")]
+        //[Route("Posts")]
+        //[Route("Posts/Index")]
         public async Task<IActionResult> Index() //Выбор всех постов
         {
             var applicationDbContext = _context.Posts.Include(p => p.Category).Include(p => p.User).OrderByDescending(p => p.PostDate);

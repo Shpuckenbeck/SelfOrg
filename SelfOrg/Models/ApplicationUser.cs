@@ -24,8 +24,6 @@ namespace SelfOrg.Models
         [Display(Name = "Админ")]
         admin
     }
-    // Add profile data for application users by adding properties to the User class
-    //[FluentValidation.Attributes.Validator(typeof(UserValidator))]
     public class User : IdentityUser
     {
         //[Required(ErrorMessage = "Задайте имя")]
