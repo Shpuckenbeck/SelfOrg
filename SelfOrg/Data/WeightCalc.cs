@@ -19,6 +19,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SelfOrg.Data
 {
+    /// <summary>
+    /// Класс для пересчёта веса голоса всех пользователей.
+    /// Предполагался для автоматического Task'а, пересчитывающего
+    /// вес голоса каждый промежуток времени
+    /// </summary>
     public class WeightCalc
     {
        

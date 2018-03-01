@@ -6,14 +6,12 @@ using System.Text.RegularExpressions;
 using System.Text;
 namespace SelfOrg.Data
 {
-    
+    /// <summary>
+    /// Класс для создания url-slugs - нормализованных транслитерированных ссылок
+    /// </summary>
 
-    public static class Slugifier //для создания url-slugs - нормализованных транслитерированных ссылок
+    public static class Slugifier 
     {
-    
-
-   
-      
         public static string Transliterate(string text) //транслитерация по словарю с предварительным понижением регистра
         {
             Dictionary<string, string> transdict = new Dictionary<string, string>();  //словарь для перевода
@@ -55,7 +53,8 @@ namespace SelfOrg.Data
             transdict.Add("ю", "yu");
             transdict.Add("я", "ya");
             text = text.ToLowerInvariant();
-            string output = text;         
+            string output = text;      
+            //Каждый символ во входной строке заменяет по словарю - транслитерация
             foreach (KeyValuePair<string, string> key in transdict)
             {
                 output = output.Replace(key.Key, key.Value);
@@ -65,16 +64,16 @@ namespace SelfOrg.Data
        
         public static string Slugify (string value)
         {
-            //Replace spaces
+            //Замена пробелов
             value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
 
-            //Remove invalid chars
+            //Удаление некорректных символов
             value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
 
-            //Trim dashes from end
+            //Удаление - и _ из конца
             value = value.Trim('-', '_');
 
-            //Replace double occurences of - or _
+            //Удаление нескольких - и _ подряд
             value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
             return value;
         }

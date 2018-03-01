@@ -24,6 +24,10 @@ namespace SelfOrg.Models
         [Display(Name = "Админ")]
         admin
     }
+    /// <summary>
+    /// Пользователь системы. Наследовано от IdentityUser с переопределением
+    /// поля UserName для изменения отображения.
+    /// </summary>
     public class User : IdentityUser
     {
         //[Required(ErrorMessage = "Задайте имя")]
@@ -47,32 +51,34 @@ namespace SelfOrg.Models
         public string Avatar { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Дата регистрации")]
-        public DateTime RegDate { get; set; }
+        public DateTime RegDate { get; set; } //дата регистрации
         [Display(Name="Вес")]
         public float Weight { get; set; } //вес голоса пользователя
         [Display(Name ="Уровень")]
-        public UserLevel level { get; set; }
+        public UserLevel level { get; set; } //уровень - гость, базовый, подтверждённый, администратор
         [Display(Name = "Отчество")]
-        public string Middlename { get; set; }
+        public string Middlename { get; set; } //отчество
     }
 
+    /// <summary>
+    /// Класс поста системы
+    /// </summary>
     public class Post
     {
-
         public int PostID { get; set; }
         [Required(ErrorMessage = "Введите название")]
         [Display(Name = "Название")]
-        public string PostName { get; set; }
+        public string PostName { get; set; } //название поста
         [Required(ErrorMessage = "Введите текст")]
-        [Display(Name = "Текст")]
-        public string content { get; set; }
+        [Display(Name = "Текст")] 
+        public string content { get; set; } //текст поста
         [Required(ErrorMessage = "Введите описание")]
         [Display(Name = "Описание")]
-        public string PostDescr { get; set; }
+        public string PostDescr { get; set; } //краткое содержание поста
         [Required(ErrorMessage = "Выберите дату")]
         [DataType(DataType.Date)]
         [Display(Name = "Опубликовано")]
-        public DateTime PostDate { get; set; }
+        public DateTime PostDate { get; set; } //дата публикации
         public string PostSlug { get; set; } //url-представление
         public DateTime? LastModified { get; set; } //дата изменения
         [Required(ErrorMessage = "Выберите категорию")]
@@ -83,13 +89,16 @@ namespace SelfOrg.Models
         [Display(Name = "Автор")]
         public string UserId { get; set; }
         [Display(Name = "Автор")]
-        public User User { get; set; }
+        public User User { get; set; } //автор поста
         [Display(Name = "Рейтинг")]
-        public float rating { get; set; } //не будет нужен?
+        public float rating { get; set; } 
 
         public virtual ICollection<PostTag> PostTags { get; set; }
     }
 
+    /// <summary>
+    /// Класс комментария к посту
+    /// </summary>
     public class Comment
     {
         public int CommentId { get; set; }
@@ -109,9 +118,12 @@ namespace SelfOrg.Models
         public int PostId { get; set; }
         public Post Post { get; set; }
         public DateTime? LastModified { get; set; } //дата изменения
-        public int? ReplyTo { get; set; } //будет использоваться в дальнейшем для ответов на комментарии; указывает на id комментария, на который отвечают
+        public int? ReplyTo { get; set; } //для ответов на комментарии; указывает на id комментария, на который отвечают
     }
 
+    /// <summary>
+    /// Категория поста
+    /// </summary>
     public class Category
     {
 
@@ -125,6 +137,9 @@ namespace SelfOrg.Models
         public int postcount { get; set; } //количество постов в категории
     }
 
+    /// <summary>
+    /// Изображение
+    /// </summary>
     public class Pic
     {
         public int PicId { get; set; }
@@ -132,6 +147,9 @@ namespace SelfOrg.Models
         public string Path { get; set; }
     }
 
+    /// <summary>
+    /// Тег
+    /// </summary>
     public class Tag
     {
         public int TagId { get; set; }
@@ -139,6 +157,10 @@ namespace SelfOrg.Models
         public string TagSlug { get; set; }
        
     }
+
+    /// <summary>
+    /// Тег поста. Указывает ан связь между Tag и Post
+    /// </summary>
     public class PostTag
     {
         public int PostTagId { get; set; }
@@ -149,7 +171,9 @@ namespace SelfOrg.Models
         public int TagId { get; set; }
         public Tag Tag { get; set; }
     }
-
+    /// <summary>
+    /// Критерий оценки
+    /// </summary>
     public class Criterion
     {
         public int CriterionId { get; set; }
@@ -163,6 +187,9 @@ namespace SelfOrg.Models
         //public Priority prio { get; set; }
     }
 
+    /// <summary>
+    /// Оценка пользователем поста по критерию
+    /// </summary>
     public class Rating 
     {
         public int RatingId { get; set; }
@@ -175,6 +202,9 @@ namespace SelfOrg.Models
         public float rating { get; set; }
     }
 
+    /// <summary>
+    /// Множитель голоса
+    /// </summary>
     public class Multiplier //вес голоса по рейтингу
     {
         public int MultiplierId { get; set; }
@@ -183,6 +213,10 @@ namespace SelfOrg.Models
         public float Mul { get; set; }
     }
 
+    /// <summary>
+    /// Вес критерия при оценке в конкретной категории. Указывает
+    /// на связь между Category и Criterion
+    /// </summary>
     public class CatCrit //критерии категорий
     {
         public int CatCritId { get; set; }
@@ -193,6 +227,9 @@ namespace SelfOrg.Models
         public Priority prio { get; set; }
     }
 
+    /// <summary>
+    /// Оценка комментария пользователем
+    /// </summary>
     public class CommRate //рейтинг комментария
     {
         public int CommRateId { get; set; }

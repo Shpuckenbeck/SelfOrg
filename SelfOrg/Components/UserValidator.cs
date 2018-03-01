@@ -2,6 +2,8 @@
 
 namespace SelfOrg
 {
+    //не используется в данной имплементации
+
     //public class UserValidator : AbstractValidator<User>
     //{
         

@@ -112,29 +112,29 @@ tinymce.init({
                 }
             </script>
             <script>
-                var postreply = function (id)
+                var postreply = function (id) //ответ на комментарий
                 {
-                    var getname = "comment-" + id;
-                    var test = tinymce.get(getname).getContent();
-                    if (test != "") {
-                        var output = new Object();
-                        output.id = id;
-                        output.comment = test;
-                        console.log(JSON.stringify(output));
+                    var getname = "comment-" + id; //поиск формы ответа на комментарий
+                    var test = tinymce.get(getname).getContent(); //из поля ввода берётся текст
+                    if (test != "") { //если текст не пустой
+                        var output = new Object(); //создаём объект
+                        output.id = id; //записываем id комментария, на который отвечаем
+                        output.comment = test; //и текст
+                        console.log(JSON.stringify(output));//вывод в консоль для отладки, можно убрать
                         $.ajax({
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
                             },
-                            type: "POST",
+                            type: "POST", //отправляем объект в метод reply контроллера comments
                             url: "/Comments/reply/",
-                            data: JSON.stringify(output),
+                            data: JSON.stringify(output), //приводя объект в JSON
                             success: function (result) {
-                                console.log(output);
+                                console.log(output);//вывод в консоль для отладки, можно убрать
                             }
                         })
-                            .done(function (partialViewResult) {
-                                $("#comments").html(partialViewResult);
+                            .done(function (partialViewResult) { 
+                                $("#comments").html(partialViewResult); //после успеха обновляем частичное представление с комментариями
                             });
                     }
 
@@ -142,32 +142,32 @@ tinymce.init({
             </script>
 
             <script>
-                var comment = function (id) {
-                    var text = tinymce.activeEditor.getContent();
-                    if (text == "") {
-                        var error = document.getElementById('errormsg');
-                        error.textContent = "Пожалуйста, введите текст комментария";
+                var comment = function (id) { //комментарий к посту
+                    var text = tinymce.activeEditor.getContent(); //берём содержимое формы ввода
+                    if (text == "") {//если текст пустой
+                        var error = document.getElementById('errormsg'); 
+                        error.textContent = "Пожалуйста, введите текст комментария";//выводим просьбу ввести текст
 
                     }
-                    else {
-                        var output = new Object();
-                        output.id = id;
-                        output.comment = text;
-                        tinymce.activeEditor.setContent("");
-                        console.log(JSON.stringify(output));
+                    else { //если текст есть
+                        var output = new Object(); //аналогично postreply, создаём объект
+                        output.id = id; //кладём в него id поста
+                        output.comment = text; //и текст комментария
+                        tinymce.activeEditor.setContent(""); //обнуляем содержимое формы ввода
+                        console.log(JSON.stringify(output)); //вывод в консоль для отладки, можно убрать
                         $.ajax({
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
                             },
                             type: "POST",
-                            url: "/Comments/comment/",
-                            data: JSON.stringify(output),
+                            url: "/Comments/comment/", //отправляем объект в метод comment контроллера Comments
+                            data: JSON.stringify(output),//преобразовав в JSON
                             success: function (result) {
-                                console.log(output);
+                                console.log(output);//вывод в консоль для отладки, можно убрать
                             }
                         })
-                            .done(function (partialViewResult) {
+                            .done(function (partialViewResult) {//после успеха обновляем частичное представление с комментариями
                                 $("#comments").html(partialViewResult);
                             });
                     }
@@ -175,7 +175,7 @@ tinymce.init({
                 }
             </script>
 
-            <script>
+            <script> //показывает/скрывает форму оценки поста, если таковая доступна
                 $('#showbut').on('click', function (e) {
                     $('#showbut')
                         .parent()
@@ -187,23 +187,23 @@ tinymce.init({
                 });
             </script>
             <script>                
-                var submitrate = function (id) {
+                var submitrate = function (id) {//оценка поста
 
-                    var postdata = [];
+                    var postdata = []; //создаём массив данных
                     var counter = 0;
-                    $('.valueslider').each(function () {
-                        var name = $(this).attr('name');
-                        var value = $(this).val();
-                        var weight = $(this).attr('weight');
-                        postdata[counter] = {
+                    $('.valueslider').each(function () {//для каждого слайдера - то есть, для каждого критерия
+                        var name = $(this).attr('name');//записываем название критерия
+                        var value = $(this).val();//выставленное значение
+                        var weight = $(this).attr('weight');//вес критерия
+                        postdata[counter] = {//записываем эти данные в объект массива
                             "criterion": name,
                             "rating": value,
                             "weight": weight,
-                            "post" : id
+                            "post" : id//добавляем id поста
 
                         }
-                        console.log(postdata[counter]);
-                        console.log(JSON.stringify(postdata));
+                        console.log(postdata[counter]);//вывод в консоль для отладки, можно убрать
+                        console.log(JSON.stringify(postdata));//вывод в консоль для отладки, можно убрать
                         counter++;
                         //console.log($(this).attr('id'));
                     });
@@ -213,27 +213,27 @@ tinymce.init({
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        url: "/Comments/rate/",
+                        url: "/Comments/rate/",//отправляем массив в метод rate куонтроллера comments JSON'ом
                         data: JSON.stringify(postdata),
                         success: function (result) {
                             
                         }
 
                     }).done(function (partialViewResult) {
-                        $("#headdiv").html(partialViewResult);
+                        $("#headdiv").html(partialViewResult);//при успехе обновляем заголовочную часть поста
                     });
                 }
             </script>
             <script>
-                var togglecomment = function (id)
+                var togglecomment = function (id) //сокрытие комментариев
                 {
                     
-                    var name = "comment-" + id;
+                    var name = "comment-" + id;//находим нужный комментарий
                     var toggleddiv = document.getElementById(name);
-                    $(toggleddiv).find(' >.message').toggle();
-                    $(toggleddiv).find(' >.voting').toggle();
+                    $(toggleddiv).find(' >.message').toggle();//переключаем видимость его тела, а вместе с ним и всех дочерних комментариев
+                    $(toggleddiv).find(' >.voting').toggle();//а также элемента для оценки
                     var toggledinfo = document.getElementById("info-" + id);
-                    $(toggledinfo).find(' >.placeholder').toggle();
+                    $(toggledinfo).find(' >.placeholder').toggle();//переключаем видимость плейсхолдера ("комментарий скрыт")
                     var linkname = "#toggle-" + id;
                     var currenttext = $(linkname).text();
                     if (currenttext == '[-]')
@@ -248,20 +248,13 @@ tinymce.init({
             </script>
 
             <script>
-                $('#editbut').on('click', function (e) {
-                    console.log('working');
-                    $(this).next('div').toggle();
-                    var text = document.getElementById('postcontent').innerHTML;
-                    tinymce.get('editing').setContent(text);
-                    $(document.getElementById('postcontent')).toggle();
-                    //if ($(this).text == 'Редактировать') {
-                    //    $(this).text('Отменить');
-                    //}
-                    //else
-                    //{
-                    //    $(this).text('Редактировать');
-
-                    //}
+                $('#editbut').on('click', function (e) {//редактирование поста
+                    console.log('working');//вывод в консоль для отладки, можно убрать
+                    $(this).next('div').toggle();//меняем видимость формы редактирования
+                    var text = document.getElementById('postcontent').innerHTML;//берём текст поста
+                    tinymce.get('editing').setContent(text); //задаём его в форму редактирования
+                    $(document.getElementById('postcontent')).toggle();//меняем видимость тела поста
+                
                 });
             </script>
 
@@ -275,74 +268,53 @@ tinymce.init({
             </script>
 
             <script>
-                vote = function (arrow, id)
+                vote = function (arrow, id) //оценка комментария, по нажатию на стрелку
                 {
                     obj = new Object();
-                    obj.action = arrow.id;
-                    obj.commentid = id;
+                    obj.action = arrow.id;//берём значение стрелки - вверх или вниз
+                    obj.commentid = id;//и id комментария
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        url: "/Comments/ratecom/",
+                        url: "/Comments/ratecom/",//отправляем JSON в метод ratecom контроллера Comments
                         data: JSON.stringify(obj),
                         success: function (result) {
-                            console.log(obj);
+                            console.log(obj);//вывод в консоль для отладки, можно убрать
                         }
                     })
                         .done(function (partialViewResult) {
-                            $("#comments").html(partialViewResult);
+                            $("#comments").html(partialViewResult);//обновляем комментарии
                         });
 
 
                 }
             </script>
-
-            @*<script>
-                getprofile = function (id, name)
-                {
-                    obj = new Object();
-                    obj.userid = id;
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        type: "POST",
-                        url: "/Account/profile/"+name,
-                        data: JSON.stringify(obj),
-                        success: function (result) {
-                            console.log(obj);
-                        }
-                    });
-
-                }
-            </script>*@
-
+         
             <script>
-                var updatepost = function (id)
+                var updatepost = function (id) //редактирование поста
                 {
                     var update = new Object();
-                    update.postid = id;
-                    update.postbody = tinymce.get('editing').getContent();
-                    tinymce.get('editing').setContent('');
-                    console.log(JSON.stringify(update));
+                    update.postid = id;//берём id поста
+                    update.postbody = tinymce.get('editing').getContent();//и новый текст
+                    tinymce.get('editing').setContent('');//убираем текст из формы ввода
+                    console.log(JSON.stringify(update));//вывод в консоль для отладки, можно убрать
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        url: "/Comments/editpost/",
+                        url: "/Comments/editpost/",//отправляем в метод editpost контроллера Comments
                         data: JSON.stringify(update),
                         success: function (result) {
-                            console.log(update);
+                            console.log(update);//вывод в консоль для отладки, можно убрать
                         }
                     })
                         .done(function (partialViewResult) {
-                            $("#headdiv").html(partialViewResult);
+                            $("#headdiv").html(partialViewResult);//после успеха обновляем заголовочную часть поста
                         });
 
                 }
